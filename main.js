@@ -6,11 +6,14 @@ const { performRestCall } = require('./lib/rest');
 const blockchainInputs = JSON.parse(fs.readFileSync('./data/inputs.json', 'utf8'));
 const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
 let instanceId = "";
+let martsiaId = 0;
 
 // Function to process web3 call with predefined params
 async function processWeb3Call(index) {
     const { contractInfoPath, functionName, params } = blockchainInputs.calls[index];  // Take data from the specific call
-
+    if(params.hasOwnProperty("process_id")){
+        params.process_id = martsiaId;
+    }
     try {
         const result = await invokeContractFunction(contractInfoPath, functionName, params);  // Call the function with predefined params
         console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath}:`);
@@ -28,17 +31,17 @@ async function processRestCall(index) {
     let response = {};
     if (index === 1) {
         response = await performRestCall(method, endpoint, data);
-        instanceId = response;
+        instanceId = response.id;
+        martsiaId = response.martsiaId;
         console.log(`Successfully executed ${method} with instance ${instanceId}`);
     } else if (endpoint.includes("{instanceId}")) {
         endpoint = endpoint.replace("{instanceId}", instanceId);
         response = await performRestCall(method, endpoint, data);
         console.log(`Successfully executed ${method} with endpoint ${endpoint}`);
-    } else if (data.hasOwnProperty("instance_id")){
-        data.instance_id = instanceId
+    } else if (data.hasOwnProperty("process_id")){
+        data.process_id = martsiaId
         response = await performRestCall(method, endpoint, data);
         console.log(`Successfully executed ${method} with data ${data}`);
-
     } else {
         response = await performRestCall(method, endpoint, data);
         console.log(`Successfully executed ${method} `);
@@ -60,6 +63,7 @@ async function processCustomOrder(order) {
             console.error(`Error processing ${call.type} call at index ${call.index}:`,error);
         }
     }
+
 }
 
 // Define the order of calls (example: REST 1, REST 2, web3 1, REST 3, web3 2, web3 3)
