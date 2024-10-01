@@ -5,6 +5,7 @@ const { performRestCall } = require('./lib/rest');
 // Load input data for web3 and rest calls
 const blockchainInputs = JSON.parse(fs.readFileSync('./data/inputs.json', 'utf8'));
 const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
+let instanceId = "";
 
 // Function to process web3 call with predefined params
 async function processWeb3Call(index) {
@@ -12,7 +13,7 @@ async function processWeb3Call(index) {
 
     try {
         const result = await invokeContractFunction(contractInfoPath, functionName, params);  // Call the function with predefined params
-        console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath}:`, result);
+        console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath}:`);
         return result;  // Return the transaction result
     } catch (error) {
         console.error(`Failed to execute ${functionName} on contract at ${contractInfoPath}:`, error);
@@ -20,22 +21,27 @@ async function processWeb3Call(index) {
     }
 }
 
-
-
 // Function to process REST call
 async function processRestCall(index) {
     const { method, data } = restInputs[index];
     let { endpoint } = restInputs[index];
-    let instanceId = "";
     let response = {};
     if (index === 1) {
         response = await performRestCall(method, endpoint, data);
         instanceId = response;
-    } else if (index === 2 || index === 3 || index === 4) {
+        console.log(`Successfully executed ${method} with instance ${instanceId}`);
+    } else if (endpoint.includes("{instanceId}")) {
         endpoint = endpoint.replace("{instanceId}", instanceId);
         response = await performRestCall(method, endpoint, data);
+        console.log(`Successfully executed ${method} with endpoint ${endpoint}`);
+    } else if (data.hasOwnProperty("instance_id")){
+        data.instance_id = instanceId
+        response = await performRestCall(method, endpoint, data);
+        console.log(`Successfully executed ${method} with data ${data}`);
+
     } else {
         response = await performRestCall(method, endpoint, data);
+        console.log(`Successfully executed ${method} `);
     }
 
     return response;
@@ -51,7 +57,7 @@ async function processCustomOrder(order) {
                 await processRestCall(call.index);
             }
         } catch (error) {
-            console.error(`Error processing ${call.type} call at index ${call.index}:`, error);
+            console.error(`Error processing ${call.type} call at index ${call.index}:`,error);
         }
     }
 }
@@ -73,11 +79,13 @@ const customOrder = [
     { type: 'rest', index: 5 },  // subscribe user 2
 
     { type: 'rest', index: 6 },  // generateRSA user 3
-    { type: 'web3', index: 3 },  // setPublicKeyReaders user 3 - 0121 INSURER
+    { type: 'web3', index: 2 },  // setPublicKeyReaders user 3 - 0121 INSURER
     { type: 'rest', index: 7 }, // subscribe user 3
-    //{ type: 'rest', index: 2 },  // REST call 3
-    //{ type: 'web3', index: 1 },  // web3 call 2
-    //{ type: 'web3', index: 2 }   // web3 call 3
+
+    { type: 'rest', index: 8 }, // chorchain deploy
+    { type: 'rest', index: 9 }, // generateMartsiaInstance
+    { type: 'rest', index: 10}, // generateMartsiaInstance
+
 ];
 
 // Run the process with custom order

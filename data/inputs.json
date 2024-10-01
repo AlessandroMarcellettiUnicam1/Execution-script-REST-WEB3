@@ -23,14 +23,6 @@
         "ipfs_link_1": "0x55573158556a464654584e55556a4d7956316c464f57645753484242576a4e49",
         "ipfs_link_2": "0x6333706d4d7a4e4c6155565956315a49656c465a526e4a434e32317961413d3d"
       }
-    },
-    {
-      "contractInfoPath": "./data/contractInfo2.json",
-      "functionName": "anotherFunction",
-      "params": {
-        "param1": "value1",
-        "param2": "value2"
-      }
     }
   ]
 }

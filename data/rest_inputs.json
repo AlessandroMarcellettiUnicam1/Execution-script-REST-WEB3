@@ -17,30 +17,69 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
-      "userAddress": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"}
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"}
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/Customer/66cecfe4f3fd1971e0902e5e",
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
-    "data": {
-      "userAddress": "0xc58A17120480496809797520150f4aA43c24Fd43"}
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/BikeCenter/66ced583f3fd1971e0902e70",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Customer/66cecfe4f3fd1971e0902e5e/{instanceId}"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
-      "userAddress": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"}
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"}
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/Insurer/66ced5a1f3fd1971e0902e79",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/BikeCenter/66ced583f3fd1971e0902e70/{instanceId}"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
+    "data": {
+      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"}
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Insurer/66ced5a1f3fd1971e0902e79/{instanceId}"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/deploy/66cecfe4f3fd1971e0902e5e/{instanceId}"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/generateMartsiaInstance/66cecfe4f3fd1971e0902e5e/{instanceId}"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/certification/attributes_certification_and_authorities",
+    "data": {
+      "roles": {
+        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9": ["Customer@AUTH4"],
+        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21": ["Insurer@AUTH2"],
+        "0xc58A17120480496809797520150f4aA43c24Fd43": ["BikeCenter@AUTH1"]
+      },
+      "process_id": 0,
+      "policy": {
+        "48139": "Customer@AUTH4",
+        "75474": "BikeCenter@AUTH1",
+        "101905": "Customer@AUTH4",
+        "125206": "Customer@AUTH4",
+        "204853": "BikeCenter@AUTH1",
+        "232545": "Customer@AUTH4",
+        "250267": "BikeCenter@AUTH1",
+        "254840": "BikeCenter@AUTH1",
+        "292261": "Customer@AUTH4",
+        "452634": "BikeCenter@AUTH1",
+        "613980": "Customer@AUTH4",
+        "754740": "Customer@AUTH4",
+        "859550": "BikeCenter@AUTH1",
+        "952199": "BikeCenter@AUTH1",
+        "964350": "Insurer@AUTH2",
+        "964364": "Customer@AUTH4"
+      }
+    }
   }
+
 ]
