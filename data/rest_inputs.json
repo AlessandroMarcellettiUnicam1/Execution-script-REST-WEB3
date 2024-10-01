@@ -1,0 +1,46 @@
+[
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/choName2/66cecfe4f3fd1971e0902e5e",
+    "data": "XML_CONTENT_PLACEHOLDER"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/createInstance/66cecfe4f3fd1971e0902e5e",
+    "data": {
+      "modelID": "66f6a230a1588a08c4592bf4",
+      "optional": ["null"],
+      "mandatory": ["Customer", "BikeCenter", "Insurer"],
+      "visibleAt":  ["null"] }
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
+    "data": {
+      "userAddress": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"}
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/Customer/66cecfe4f3fd1971e0902e5e",
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
+    "data": {
+      "userAddress": "0xc58A17120480496809797520150f4aA43c24Fd43"}
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/BikeCenter/66ced583f3fd1971e0902e70",
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
+    "data": {
+      "userAddress": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"}
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/newSubscribe/{instanceId}/Insurer/66ced5a1f3fd1971e0902e79",
+  }
+]

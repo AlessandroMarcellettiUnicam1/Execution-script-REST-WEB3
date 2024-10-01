@@ -1,0 +1,387 @@
+{
+  "address": "0x10fB8d358C32a8AE6F884B8277154063942DCe9e",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "martsiaAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "name": "functionDone",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "elementToExecute",
+          "type": "uint64"
+        }
+      ],
+      "name": "changeStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "msgToExecute",
+          "type": "uint64"
+        }
+      ],
+      "name": "checkEventBased",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "msgToExecute",
+          "type": "uint64"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "publicvarNames",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "publicVarValues",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "cipher",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "elementWithConditions",
+          "type": "uint64[]"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "elementWithPublicVar",
+          "type": "uint64[]"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "publicVars",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "enum StateContract.Operator[]",
+          "name": "operators",
+          "type": "uint8[]"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "values",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "createConditions",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "element",
+          "type": "uint64"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "varName",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getAllowedVar",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "element",
+          "type": "uint64"
+        }
+      ],
+      "name": "getCondition",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "publicVar",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "enum StateContract.Operator",
+              "name": "op",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "value",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct StateContract.Condition",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "_element",
+          "type": "uint64"
+        }
+      ],
+      "name": "getInstanceElement",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "enum StateContract.ElementState",
+              "name": "state",
+              "type": "uint8"
+            },
+            {
+              "internalType": "enum StateContract.ElementType",
+              "name": "elementType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint64[]",
+              "name": "next",
+              "type": "uint64[]"
+            },
+            {
+              "internalType": "uint64[]",
+              "name": "previous",
+              "type": "uint64[]"
+            }
+          ],
+          "internalType": "struct StateContract.Element",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        }
+      ],
+      "name": "getInstancePolicy",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "msgToExecute",
+          "type": "uint64"
+        },
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getMartsiaChecks",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "_roles",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "users",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "elements",
+          "type": "uint64[]"
+        },
+        {
+          "internalType": "uint64[][]",
+          "name": "nextElements",
+          "type": "uint64[][]"
+        },
+        {
+          "internalType": "uint64[][]",
+          "name": "previousElements",
+          "type": "uint64[][]"
+        },
+        {
+          "internalType": "enum StateContract.ElementType[]",
+          "name": "types",
+          "type": "uint8[]"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "policy1",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "policy2",
+          "type": "bytes32"
+        }
+      ],
+      "name": "instantiateProcess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "instanceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "msgToExecute",
+          "type": "uint64"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "publicVarNames",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "publicVarValues",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "setPublicvariables",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
