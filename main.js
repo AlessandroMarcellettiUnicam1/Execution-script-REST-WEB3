@@ -46,7 +46,7 @@ async function processRestCall(index) {
         response = await performRestCall(method, endpoint, data);
         console.log(`Successfully executed ${method} `);
     }
-
+    console.log(response);
     return response;
 }
 
@@ -72,9 +72,9 @@ const customOrder = [
     //saveModel function
     //{ type: 'rest', index: 0 },
     // createInstance function
-    { type: 'rest', index: 1 },  // REST call 2
+    //{ type: 'rest', index: 1 },  // REST call 2
     //subscribe1-3
-    { type: 'rest', index: 2 },  //generateRSA user 1
+    /*{ type: 'rest', index: 2 },  //generateRSA user 1
     { type: 'web3', index: 0 },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
     { type: 'rest', index: 3 },  // subscribe user 1
 
@@ -88,7 +88,12 @@ const customOrder = [
 
     { type: 'rest', index: 8 }, // chorchain deploy
     { type: 'rest', index: 9 }, // generateMartsiaInstance
-    { type: 'rest', index: 10}, // generateMartsiaInstance
+    { type: 'rest', index: 10}, // certify
+    { type: 'web3', index: 3 }, //instantiate process */
+
+    //write for each message of the choreography
+    { type: 'rest', index: 11}, // write
+
 
 ];
 
