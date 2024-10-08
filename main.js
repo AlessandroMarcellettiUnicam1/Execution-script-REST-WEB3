@@ -14,9 +14,12 @@ async function processWeb3Call(index) {
     if(params.hasOwnProperty("process_id")){
         params.process_id = martsiaId;
     }
+    const startTime = Date.now();  // Start the timer
+
     try {
         const result = await invokeContractFunction(contractInfoPath, functionName, params);  // Call the function with predefined params
-        console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath}:`);
+        const elapsedTime = Date.now() - startTime;  // Calculate elapsed time
+        console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath} in ${elapsedTime} ms`);
         return result;  // Return the transaction result
     } catch (error) {
         console.error(`Failed to execute ${functionName} on contract at ${contractInfoPath}:`, error);
@@ -29,24 +32,31 @@ async function processRestCall(index) {
     const { method, data } = restInputs[index];
     let { endpoint } = restInputs[index];
     let response = {};
+
+    const startTime = Date.now();  // Start the timer
+
+
     if (index === 1) {
         response = await performRestCall(method, endpoint, data);
         instanceId = response.id;
         martsiaId = response.martsiaId;
-        console.log(`Successfully executed ${method} with instance ${instanceId}`);
+        //console.log(`Successfully executed ${method} with instance ${instanceId}`);
     } else if (endpoint.includes("{instanceId}")) {
         endpoint = endpoint.replace("{instanceId}", instanceId);
         response = await performRestCall(method, endpoint, data);
-        console.log(`Successfully executed ${method} with endpoint ${endpoint}`);
+        //console.log(`Successfully executed ${method} with endpoint ${endpoint}`);
     } else if (data.hasOwnProperty("process_id")){
         data.process_id = martsiaId
         response = await performRestCall(method, endpoint, data);
-        console.log(`Successfully executed ${method} with data ${data}`);
+        //console.log(`Successfully executed ${method}`);
     } else {
         response = await performRestCall(method, endpoint, data);
-        console.log(`Successfully executed ${method} `);
+        //console.log(`Successfully executed ${method} `);
     }
-    console.log(response);
+    const elapsedTime = Date.now() - startTime;  // Calculate elapsed time
+    console.log(`REST call ${endpoint} at index ${index} completed in ${elapsedTime} ms`);
+
+    //console.log(response);
     return response;
 }
 
@@ -72,9 +82,9 @@ const customOrder = [
     //saveModel function
     //{ type: 'rest', index: 0 },
     // createInstance function
-    //{ type: 'rest', index: 1 },  // REST call 2
+    { type: 'rest', index: 1 },  // REST call 2
     //subscribe1-3
-    /*{ type: 'rest', index: 2 },  //generateRSA user 1
+    { type: 'rest', index: 2 },  //generateRSA user 1
     { type: 'web3', index: 0 },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
     { type: 'rest', index: 3 },  // subscribe user 1
 
@@ -90,9 +100,10 @@ const customOrder = [
     { type: 'rest', index: 9 }, // generateMartsiaInstance
     { type: 'rest', index: 10}, // certify
     { type: 'web3', index: 3 }, //instantiate process */
+    { type: 'web3', index: 4 }  //Set conditions
 
     //write for each message of the choreography
-    { type: 'rest', index: 11}, // write
+    //{ type: 'rest', index: 11}, // write
 
 
 ];

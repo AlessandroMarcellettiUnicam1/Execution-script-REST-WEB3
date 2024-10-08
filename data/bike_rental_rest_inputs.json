@@ -1,16 +1,16 @@
 [
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/xRaysConfetty/66cecfe4f3fd1971e0902e5e",
+    "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/choName2/66cecfe4f3fd1971e0902e5e",
     "data": "XML_CONTENT_PLACEHOLDER"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8081/ChorChain/rest/createInstance/66cecfe4f3fd1971e0902e5e",
     "data": {
-      "modelID": "6704e8f8e00e4370dc17b860",
+      "modelID": "66f6a230a1588a08c4592bf4",
       "optional": ["null"],
-      "mandatory": ["Ward", "Radiology", "Patient"],
+      "mandatory": ["Customer", "BikeCenter", "Insurer"],
       "visibleAt":  ["null"] }
   },
   {
@@ -21,7 +21,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Ward/66cecfe4f3fd1971e0902e5e/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Customer/66cecfe4f3fd1971e0902e5e/{instanceId}"
   },
   {
     "method": "POST",
@@ -31,7 +31,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Radiology/66ced583f3fd1971e0902e70/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/BikeCenter/66ced583f3fd1971e0902e70/{instanceId}"
   },
   {
     "method": "POST",
@@ -41,7 +41,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Patient/66ced5a1f3fd1971e0902e79/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Insurer/66ced5a1f3fd1971e0902e79/{instanceId}"
   },
   {
     "method": "POST",
@@ -56,21 +56,28 @@
     "endpoint": "http://localhost:8080/certification/attributes_certification_and_authorities",
     "data": {
       "roles": {
-        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9": ["Ward@AUTH4"],
-        "0xc58A17120480496809797520150f4aA43c24Fd43": ["Radiology@AUTH1"],
-        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21": ["Patient@AUTH2"]
+        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9": ["Customer@AUTH4"],
+        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21": ["Insurer@AUTH2"],
+        "0xc58A17120480496809797520150f4aA43c24Fd43": ["BikeCenter@AUTH1"]
       },
       "process_id": 0,
       "policy": {
-        "81136": "Radiology@AUTH1",
-        "172507": "Ward@AUTH4",
-        "213167": "Ward@AUTH4",
-        "214061": "Radiology@AUTH1",
-        "367998": "Patient@AUTH2",
-        "409589": "Radiology@AUTH1",
-        "672807": "Radiology@AUTH1",
-        "842321": "Patient@AUTH2",
-        "896482": "Radiology@AUTH1"
+        "48139": "Customer@AUTH4",
+        "75474": "BikeCenter@AUTH1",
+        "101905": "Customer@AUTH4",
+        "125206": "Customer@AUTH4",
+        "204853": "BikeCenter@AUTH1",
+        "232545": "Customer@AUTH4",
+        "250267": "BikeCenter@AUTH1",
+        "254840": "BikeCenter@AUTH1",
+        "292261": "Customer@AUTH4",
+        "452634": "BikeCenter@AUTH1",
+        "613980": "Customer@AUTH4",
+        "754740": "Customer@AUTH4",
+        "859550": "BikeCenter@AUTH1",
+        "952199": "BikeCenter@AUTH1",
+        "964350": "Insurer@AUTH2",
+        "964364": "Customer@AUTH4"
       }
     }
   },
@@ -78,9 +85,9 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
+      "actor": 0x123,
       "process_id": 0,
-      "message": "Y2lhbwo=",
+      "message": btoa(inputValue),
       "message_id": 123
     }
   }
