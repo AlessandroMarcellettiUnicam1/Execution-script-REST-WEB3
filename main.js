@@ -10,14 +10,14 @@ let martsiaId = 0;
 
 // Function to process web3 call with predefined params
 async function processWeb3Call(index) {
-    const { contractInfoPath, functionName, params } = blockchainInputs.calls[index];  // Take data from the specific call
+    const { contractInfoPath, functionName, params, role} = blockchainInputs.calls[index];  // Take data from the specific call
     if(params.hasOwnProperty("process_id")){
         params.process_id = martsiaId;
     }
     const startTime = Date.now();  // Start the timer
 
     try {
-        const result = await invokeContractFunction(contractInfoPath, functionName, params);  // Call the function with predefined params
+        const result = await invokeContractFunction(contractInfoPath, functionName, params, role);  // Call the function with predefined params
         const elapsedTime = Date.now() - startTime;  // Calculate elapsed time
         console.log(`Successfully executed ${functionName} on contract at ${contractInfoPath} in ${elapsedTime} ms`);
         return result;  // Return the transaction result
@@ -84,26 +84,27 @@ const customOrder = [
     // createInstance function
     { type: 'rest', index: 1 },  // REST call 2
     //subscribe1-3
-    { type: 'rest', index: 2 },  //generateRSA user 1
-    { type: 'web3', index: 0 },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
+    //{ type: 'rest', index: 2 },  //generateRSA user 1
+    //{ type: 'web3', index: 0 },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
     { type: 'rest', index: 3 },  // subscribe user 1
 
-    { type: 'rest', index: 4 }, // generateRSA user 2
-    { type: 'web3', index: 1 },  // setPublicKeyReaders user 2 - FD43 BIKE CENTER
+    //{ type: 'rest', index: 4 }, // generateRSA user 2
+    //{ type: 'web3', index: 1 },  // setPublicKeyReaders user 2 - FD43 BIKE CENTER
     { type: 'rest', index: 5 },  // subscribe user 2
 
-    { type: 'rest', index: 6 },  // generateRSA user 3
-    { type: 'web3', index: 2 },  // setPublicKeyReaders user 3 - 0121 INSURER
+    //{ type: 'rest', index: 6 },  // generateRSA user 3
+    //{ type: 'web3', index: 2 },  // setPublicKeyReaders user 3 - 0121 INSURER
     { type: 'rest', index: 7 }, // subscribe user 3
 
     { type: 'rest', index: 8 }, // chorchain deploy
     { type: 'rest', index: 9 }, // generateMartsiaInstance
     { type: 'rest', index: 10}, // certify
     { type: 'web3', index: 3 }, //instantiate process */
-    { type: 'web3', index: 4 }  //Set conditions
+    { type: 'web3', index: 4 },  //Set conditions
 
     //write for each message of the choreography
-    //{ type: 'rest', index: 11}, // write
+    { type: 'rest', index: 11}, // write
+    { type: 'web3', index: 5}, // write
 
 
 ];
