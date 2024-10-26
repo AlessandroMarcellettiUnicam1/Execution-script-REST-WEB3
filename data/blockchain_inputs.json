@@ -1,5 +1,4 @@
-{
-  "calls": [
+[
     {
       "contractInfoPath": "./data/confidentialContract.json",
       "functionName": "setPublicKeyReaders",
@@ -7,7 +6,8 @@
         "ipfs_link_1": "0x5557314f6147357751573978574774764e6b7459546d5532516d6c3052544a6f",
         "ipfs_link_2": "0x4e46643651307469637a63324f544654536e466f4d554a5463485a5a56513d3d"
       },
-      "role": "default"
+      "role": "ward",
+      "name": "PublicKeyReaders_ward"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -16,7 +16,8 @@
         "ipfs_link_1": "0x55573153645655344d564a3464585978656b315857444a456445744c4d7a4d34",
         "ipfs_link_2": "0x63565a6f51315532556b466d55325a4864453570533359784f44523361413d3d"
       },
-      "role": "default"
+      "role": "radiology",
+      "name": "PublicKeyReaders_radiology"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -25,7 +26,8 @@
         "ipfs_link_1": "0x55573158556a464654584e55556a4d7956316c464f57645753484242576a4e49",
         "ipfs_link_2": "0x6333706d4d7a4e4c6155565956315a49656c465a526e4a434e32317961413d3d"
       },
-      "role": "default"
+      "role": "patient",
+      "name": "PublicKeyReaders_patient"
     },
     {
       "contractInfoPath": "./data/stateContract.json",
@@ -41,7 +43,8 @@
         "hashLink1": "0x55573152533355334f58567056546b3055334a3465565647597a497852326869",
         "hashLink2": "0x4d7a52685a6a563356576c32634763344e475a315255786c5a45314752513d3d"
       },
-      "role": "default"
+      "role": "default",
+      "name": "instantiateProcess"
     },
     {
       "contractInfoPath": "./data/stateContract.json",
@@ -54,7 +57,8 @@
         "operators": [0, 0, 0, 0],
         "values": ["0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000", "0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000"]
       },
-      "role": "default"
+      "role": "default",
+      "name": "setInstanceConditions"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -67,7 +71,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "patient"
+      "role": "patient",
+      "name": "execute_message_type"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -80,7 +85,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "ward"
+      "role": "ward",
+      "name": "execute_message_requestId"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -93,7 +99,8 @@
         "publicVarNames": ["0x6163636570746564000000000000000000000000000000000000000000000000"],
         "publicValues":  ["0x7472756500000000000000000000000000000000000000000000000000000000"]
       },
-      "role": "radiology"
+      "role": "radiology",
+      "name": "execute_message_accepted"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -106,7 +113,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "patient"
+      "role": "patient",
+      "name": "execute_message_certificationId"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -119,7 +127,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "patient"
+      "role": "patient",
+      "name": "execute_message_temperature"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -132,7 +141,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "patient"
+      "role": "patient",
+      "name": "execute_message_appointmentId"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -145,7 +155,8 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "radiology"
+      "role": "radiology",
+      "name": "execute_message_registration"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -158,7 +169,8 @@
         "publicVarNames": ["0x726567697374726174696f6e0000000000000000000000000000000000000000"],
         "publicValues":  ["0x7472756500000000000000000000000000000000000000000000000000000000"]
       },
-      "role": "radiology"
+      "role": "radiology",
+      "name": "execute_message_report"
     },
     {
       "contractInfoPath": "./data/confidentialContract.json",
@@ -171,7 +183,38 @@
         "publicVarNames": [],
         "publicValues":  []
       },
-      "role": "ward"
+      "role": "ward",
+      "name": "execute_message_resultID"
+    },
+    {
+      "contractInfoPath": "./data/confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 338648,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "radiology",
+      "name": "ask_auth_key_radiology"
+    },
+    {
+      "contractInfoPath": "./data/confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 0,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "ward",
+      "name": "ask_auth_key_ward"
+    },
+    {
+      "contractInfoPath": "./data/confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 0,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "patient",
+      "name": "ask_auth_key_patient"
     }
   ]
-}
+

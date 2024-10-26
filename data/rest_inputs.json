@@ -2,7 +2,8 @@
   {
     "method": "POST",
     "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/xRaysConfetty/66cecfe4f3fd1971e0902e5e",
-    "data": "XML_CONTENT_PLACEHOLDER"
+    "data": "XML_CONTENT_PLACEHOLDER",
+    "name": "saveModel"
   },
   {
     "method": "POST",
@@ -11,45 +12,54 @@
       "modelID": "6704e8f8e00e4370dc17b860",
       "optional": ["null"],
       "mandatory": ["Ward", "Radiology", "Patient"],
-      "visibleAt":  ["null"] }
+      "visibleAt":  ["null"] },
+    "name": "createInstance"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
-      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"}
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"},
+    "name": "generateKeyPair_ward"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Ward/66cecfe4f3fd1971e0902e5e/{instanceId}"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
-    "data": {
-      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"}
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Radiology/66ced583f3fd1971e0902e70/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Ward/66cecfe4f3fd1971e0902e5e/{instanceId}",
+    "name": "subscribe_ward"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"}
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"},
+    "name": "generateKeyPair_radiology"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Patient/66ced5a1f3fd1971e0902e79/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Radiology/66ced583f3fd1971e0902e70/{instanceId}",
+    "name": "subscribe_radiology"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/deploy/66cecfe4f3fd1971e0902e5e/{instanceId}"
+    "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
+    "data": {
+      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"},
+    "name": "generateKeyPair_patient"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/generateMartsiaInstance/66cecfe4f3fd1971e0902e5e/{instanceId}"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/Patient/66ced5a1f3fd1971e0902e79/{instanceId}",
+    "name": "subscribe_patient"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/deploy/66cecfe4f3fd1971e0902e5e/{instanceId}",
+    "name": "translation1"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/generateMartsiaInstance/66cecfe4f3fd1971e0902e5e/{instanceId}",
+    "name": "translation2"
   },
   {
     "method": "POST",
@@ -62,17 +72,18 @@
       },
       "process_id": 0,
       "policy": {
-        "81136": "Radiology@AUTH1",
-        "172507": "Ward@AUTH4",
-        "213167": "Ward@AUTH4",
-        "214061": "Radiology@AUTH1",
-        "367998": "Patient@AUTH2",
-        "409589": "Radiology@AUTH1",
-        "672807": "Radiology@AUTH1",
-        "842321": "Patient@AUTH2",
-        "896482": "Radiology@AUTH1"
+        "263543": "Radiology@AUTH1",
+        "550751": "Ward@AUTH4",
+        "961687": "Ward@AUTH4",
+        "128802": "Radiology@AUTH1",
+        "371747": "Patient@AUTH2",
+        "715574": "Radiology@AUTH1",
+        "437568": "Radiology@AUTH1",
+        "169042": "Patient@AUTH2",
+        "149350": "Radiology@AUTH1"
       }
-    }
+    },
+    "name": "attributesCertification"
   },
   {
     "method": "POST",
@@ -82,7 +93,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 263543
-    }
+    },
+    "name": "encrypt_message_type"
   },
   {
     "method": "POST",
@@ -92,7 +104,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 128802
-    }
+    },
+    "name": "encrypt_message_requestId"
   },
   {
     "method": "POST",
@@ -102,7 +115,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 550751
-    }
+    },
+    "name": "encrypt_message_accepted"
   },
   {
     "method": "POST",
@@ -112,7 +126,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 715574
-    }
+    },
+    "name": "encrypt_message_certificationId"
   },
   {
     "method": "POST",
@@ -122,7 +137,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 437568
-    }
+    },
+    "name": "encrypt_message_temperature"
   },
   {
     "method": "POST",
@@ -132,7 +148,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 149350
-    }
+    },
+    "name": "encrypt_message_appointmentId"
   },
   {
     "method": "POST",
@@ -142,7 +159,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 169042
-    }
+    },
+    "name": "encrypt_message_registration"
   },
   {
     "method": "POST",
@@ -152,7 +170,8 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 961687
-    }
+    },
+    "name": "encrypt_message_report"
   },
   {
     "method": "POST",
@@ -162,6 +181,104 @@
       "process_id": 0,
       "message": "Y2lhbwo=",
       "message_id": 371747
-    }
+    },
+    "name": "encrypt_message_resultId"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_wait",
+    "data": {
+      "process_id": 338648,
+      "message_id": 263543,
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
+      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
+      "starting_block": 0
+    },
+    "name": "decrypt_wait_type"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 128802,
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"
+    },
+    "name": "decrypt_check_requestId"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_wait",
+    "data": {
+      "process_id": 0,
+      "message_id": 550751,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
+      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
+      "starting_block": 0
+    },
+    "name": "decrypt_wait_accepted"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 715574,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
+    },
+    "name": "decrypt_check_certificationId"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 437568,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
+    },
+    "name": "decrypt_check_temperature"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 149350,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
+    },
+    "name": "decrypt_check_appointmentId"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_wait",
+    "data": {
+      "process_id": 0,
+      "message_id": 169042,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
+      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0xc58A17120480496809797520150f4aA43c24Fd43","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
+      "starting_block": 0
+    },
+    "name": "decrypt_wait_registration"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 961687,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
+    },
+    "name": "decrypt_check_ticketId"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 371747,
+      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
+    },
+    "name": "decrypt_check_resultID"
   }
+
 ]
