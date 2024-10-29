@@ -2,15 +2,23 @@ const fs = require('fs');
 const { invokeContractFunction } = require('./lib/blockchain');
 const { performRestCall } = require('./lib/rest');
 const xlsx = require('xlsx');
-const XLSX = require("xlsx"); // Install this with: npm install xlsx
+const XLSX = require("xlsx");
+const {Web3} = require("web3"); // Install this with: npm install xlsx
+const web3 = new Web3('http://127.0.0.1:7545');
 
 // Load input data for web3 and rest calls
 const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
 const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
 let instanceId = "";
 let martsiaId = 0;
+let rsa_key = [];
+let readingPolicies = [];
 // A map to keep track of timing results with unique call identifiers
 let timingDataMap = {};
+let encryptedIpfsLinks = [];
+
+
+
 
 // Initialize the structure of timing data map for all custom calls
 const initializeTimingDataMap = (order) => {
@@ -36,6 +44,17 @@ async function processWeb3Call(name, iteration) {
     if(params.hasOwnProperty("process_id") && params.process_id === 0){
         params.process_id = martsiaId;
     }
+    if(functionName === "setPublicKeyReaders"){
+        params.ipfs_link_1 = rsa_key[0];
+        params.ipfs_link_2 = rsa_key[1];
+    }else if(functionName === "instantiateProcess"){
+        params.hashLink1 = readingPolicies[0];
+        params.hashLink2 = readingPolicies[1];
+    }else if(functionName === "setIPFSLink"){
+        params.ipfs_link_1 = encryptedIpfsLinks[0];
+        params.ipfs_link_2 = encryptedIpfsLinks[1];
+    }
+
     const startTime = Date.now();  // Start the timer
 
     try {
@@ -63,8 +82,7 @@ async function processRestCall(name, iteration) {
     /*const { method, data } = restInputs[index];
     let { endpoint } = restInputs[index];
     let response = {};*/
-
-    const startTime = Date.now();  // Start the timer
+        const startTime = Date.now();  // Start the timer
 
     if (name === "createInstance") {
         response = await performRestCall(method, endpoint, data);
@@ -78,17 +96,30 @@ async function processRestCall(name, iteration) {
         //console.log(`Successfully executed ${method} with endpoint ${endpoint}`);
     } else if (data.hasOwnProperty("process_id") && data.process_id === 0){
         data.process_id = martsiaId
+        if (name === "attributesCertification"){
+            response = await performRestCall(method, endpoint, data);
+            readingPolicies[0] = web3.utils.asciiToHex(response.hash1)
+            readingPolicies[1] = web3.utils.asciiToHex(response.hash2)
+        }else if(name.includes("encrypt_message")){
+            response = await performRestCall(method, endpoint, data);
+            encryptedIpfsLinks[0] = web3.utils.asciiToHex(response.data[0].replace("b'", "").replace("'", ""));
+            encryptedIpfsLinks[1] = web3.utils.asciiToHex(response.data[1].replace("b'", "").replace("'", ""));
+        } else{
+            response = await performRestCall(method, endpoint, data);
+        }//console.log(`Successfully executed ${method}`);
+    } else if(name.includes("generateKeyPair")){
         response = await performRestCall(method, endpoint, data);
-        //console.log(`Successfully executed ${method}`);
+        //console.log(response);
+        rsa_key[0] = web3.utils.asciiToHex(response.data[0].replace("b'", "").replace("'", ""));
+        rsa_key[1] = web3.utils.asciiToHex(response.data[1].replace("b'", "").replace("'", ""));
     } else {
         response = await performRestCall(method, endpoint, data);
         //console.log(`Successfully executed ${method} `);
     }
     const elapsedTime = Date.now() - startTime;  // Calculate elapsed time
     console.log(`REST call ${endpoint} with name ${name} completed in ${elapsedTime} ms`);
-        const identifier = `rest_${name}`;
-        timingDataMap[identifier].iterations[iteration - 1] = elapsedTime;
-    console.log(response);
+    const identifier = `rest_${name}`;
+    timingDataMap[identifier].iterations[iteration - 1] = elapsedTime;
     return response;
     } else {
         console.error(`No input found for name: ${nameToFind}`);
@@ -105,7 +136,7 @@ async function processCustomOrder(order, iteration) {
                 await processRestCall(call.name, iteration);
             }
         } catch (error) {
-            console.error(`Error processing ${call.type} call with name ${call.name}:`,error);
+            console.error(`Error processing ${call.type} call with name ${call.name}:`);
         }
     }
 
@@ -133,9 +164,9 @@ function saveTimingDataToExcel(timingData) {
 // Define the order of calls (example: REST 1, REST 2, web3 1, REST 3, web3 2, web3 3)
 const customOrder = [
     //saveModel function
-   // { type: 'rest', name: 'saveModel' },
+    { type: 'rest', name: 'saveModel' },
     // createInstance function
-    /*{ type: 'rest', name: 'createInstance' },  // REST call 2
+    { type: 'rest', name: 'createInstance' },  // REST call 2
     //subscribe1-3
     { type: 'rest', name: 'generateKeyPair_ward' },  //generateRSA user 1
     { type: 'web3', name: 'PublicKeyReaders_ward' },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
@@ -157,13 +188,22 @@ const customOrder = [
 
     //write for each message of the choreography
     { type: 'rest', name: 'encrypt_message_type'}, // type
-    { type: 'web3', name: 'execute_message_type'}, // write
+    { type: 'web3', name: 'execute_message_type'}, // write*/
+
+    /*{ type: 'rest', name: 'encrypt_message_requestId'}, // type, requestId
+    { type: 'web3', name: 'execute_message_requestId'}, //
+
+    { type: 'rest', name: 'encrypt_message_accepted1'}, // accepted, date
+    { type: 'web3', name: 'execute_message_accepted1'}, // write
 
     { type: 'rest', name: 'encrypt_message_requestId'}, // type, requestId
     { type: 'web3', name: 'execute_message_requestId'}, //
 
-    { type: 'rest', name: 'encrypt_message_accepted'}, // accepted, date
-    { type: 'web3', name: 'execute_message_accepted'}, // write
+    { type: 'rest', name: 'encrypt_message_accepted2'}, // accepted, date
+    { type: 'web3', name: 'execute_message_accepted2'}, // write
+
+    { type: 'rest', name: 'encrypt_message_appointment'}, // accepted, date
+    { type: 'web3', name: 'execute_message_appointment'}, // write
 
     { type: 'rest', name: 'encrypt_message_certificationId'}, // certificationID
     { type: 'web3', name: 'execute_message_certificationId'}, // write
@@ -185,8 +225,10 @@ const customOrder = [
 
     //---------------------
     //first invocations to obtain the key
+    //{ type: 'rest', name: 'decrypt_check_type'},
     { type: 'web3', name: 'ask_auth_key_radiology'}, // write
-    { type: 'rest', name: 'decrypt_wait_type'} // type*/
+    { type: 'rest', name: 'decrypt_wait_type'} // type
+    //{ type: 'rest', name: 'decrypt_check_type'} // type*/
 
     //{ type: 'rest', name: 'decrypt_check_requestId'}, // type, requestId
     //{ type: 'web3', name: 'ask_auth_key_radiology'}, // type, requestId
