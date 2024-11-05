@@ -1,5 +1,5 @@
 {
-  "address": "0x98C84D7eaDe6Aa246075Caf7bAa7DcA459528725",
+  "address": "0x8c27b2cfe7Be4aa5b66704a13AB7Ceb9a9308349",
   "abi": [
     {
       "inputs": [
@@ -101,24 +101,6 @@
         }
       ],
       "name": "createConditions",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint64",
-          "name": "instanceId",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint64",
-          "name": "element",
-          "type": "uint64"
-        }
-      ],
-      "name": "ex_split",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -3,8 +3,9 @@ const { invokeContractFunction } = require('./lib/blockchain');
 const { performRestCall } = require('./lib/rest');
 const xlsx = require('xlsx');
 const XLSX = require("xlsx");
-const {Web3} = require("web3"); // Install this with: npm install xlsx
-const web3 = new Web3('http://127.0.0.1:7545');
+const {Web3} = require("web3");
+//const web3 = new Web3('http://127.0.0.1:7545');
+const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/aZ2f8OwVa3J2HcSEuQ2OncvsEiHQSNbW');
 
 // Load input data for web3 and rest calls
 const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
@@ -23,6 +24,7 @@ let encryptedIpfsLinks = [];
 // Initialize the structure of timing data map for all custom calls
 const initializeTimingDataMap = (order) => {
     for (const call of order) {
+        console.log(call);
         const identifier = `${call.type}_${call.name}`;
         const callDetail = call.type === 'web3'
             ? blockchainInputs.find(input => input.name === call.name).name
@@ -187,17 +189,17 @@ const customOrder = [
     { type: 'web3', name: 'setInstanceConditions' },  //Set conditions
 
     //write for each message of the choreography
-    { type: 'rest', name: 'encrypt_message_type'}, // type
-    { type: 'web3', name: 'execute_message_type'}, // write*/
+     { type: 'rest', name: 'encrypt_message_type'}, // type
+     { type: 'web3', name: 'execute_message_type'}, // write
 
-    /*{ type: 'rest', name: 'encrypt_message_requestId'}, // type, requestId
-    { type: 'web3', name: 'execute_message_requestId'}, //
+     //{ type: 'rest', name: 'encrypt_message_requestId1'}, // type, requestId
+    //{ type: 'web3', name: 'execute_message_requestId1'}, //
 
-    { type: 'rest', name: 'encrypt_message_accepted1'}, // accepted, date
-    { type: 'web3', name: 'execute_message_accepted1'}, // write
+    //{ type: 'rest', name: 'encrypt_message_accepted1'}, // accepted, date
+    //{ type: 'web3', name: 'execute_message_accepted1'}, // write
 
-    { type: 'rest', name: 'encrypt_message_requestId'}, // type, requestId
-    { type: 'web3', name: 'execute_message_requestId'}, //
+     { type: 'rest', name: 'encrypt_message_requestId2'}, // type, requestId
+    { type: 'web3', name: 'execute_message_requestId2'}, //
 
     { type: 'rest', name: 'encrypt_message_accepted2'}, // accepted, date
     { type: 'web3', name: 'execute_message_accepted2'}, // write
@@ -215,37 +217,51 @@ const customOrder = [
     { type: 'web3', name: 'execute_message_appointmentId'}, // write
 
     { type: 'rest', name: 'encrypt_message_registration'}, // registration
-    { type: 'web3', name: 'execute_message_registration'}, // write
+    { type: 'web3', name: 'execute_message_registration'}, // write*/
 
-    { type: 'rest', name: 'encrypt_message_report'}, // report,ticketId
-    { type: 'web3', name: 'execute_message_report'}, // write
+    { type: 'rest', name: 'encrypt_message_report'}, // report,ticketI
+     { type: 'web3', name: 'execute_message_report'}, // write
 
     { type: 'rest', name: 'encrypt_message_resultId'}, // resultID
-    { type: 'web3', name: 'execute_message_resultID'}, // write*/
+     { type: 'web3', name: 'execute_message_resultID'}, // write*/
 
     //---------------------
     //first invocations to obtain the key
-    //{ type: 'rest', name: 'decrypt_check_type'},
+    { type: 'rest', name: 'decrypt_check_type'},
     { type: 'web3', name: 'ask_auth_key_radiology'}, // write
-    { type: 'rest', name: 'decrypt_wait_type'} // type
+    { type: 'rest', name: 'decrypt_wait_type'}, // type
     //{ type: 'rest', name: 'decrypt_check_type'} // type*/
 
-    //{ type: 'rest', name: 'decrypt_check_requestId'}, // type, requestId
-    //{ type: 'web3', name: 'ask_auth_key_radiology'}, // type, requestId
+    //{ type: 'rest', name: 'decrypt_check_requestId1'},
+    { type: 'rest', name: 'decrypt_check_requestId2'},
 
-    /*{ type: 'web3', name: 'ask_auth_key_ward'}, // write
-    { type: 'rest', name: 'decrypt_wait_accepted'}, // type*/
+    //{ type: 'rest', name: 'decrypt_check_accepted1'},
+    { type: 'rest', name: 'decrypt_check_accepted2'},
+    { type: 'web3', name: 'ask_auth_key_ward'},
+    { type: 'rest', name: 'decrypt_wait_accepted'},
 
+    { type: 'rest', name: 'decrypt_check_accepted2'},
 
+    { type: 'rest', name: 'decrypt_check_appointment'},
+    { type: 'web3', name: 'ask_auth_key_patient'},
+    { type: 'rest', name: 'decrypt_wait_appointment'},
 
+    { type: 'rest', name: 'decrypt_check_certificationId'},
+    //{ type: 'web3', name: 'ask_auth_key_radiology'},
+    //{ type: 'rest', name: 'decrypt_wait_certificationId'},
+
+    { type: 'rest', name: 'decrypt_check_temperature'},
+
+    { type: 'rest', name: 'decrypt_check_appointmentId'},
+
+    { type: 'rest', name: 'decrypt_check_registration'},
+
+    { type: 'rest', name: 'decrypt_check_ticketId'},
+
+    { type: 'rest', name: 'decrypt_check_resultId'}
     //
 
-    /*{ type: 'rest', name: 'decrypt_certificationId'}, // certificationID
-    { type: 'rest', name: 'decrypt_temperature'}, // temperature
-    { type: 'rest', name: 'decrypt_appointmentId'}, // appointmentId
-    { type: 'rest', name: 'decrypt_registration'}, // registration
-    { type: 'rest', name: 'decrypt_report'}, // report,ticketId
-    { type: 'rest', name: 'decrypt_resultId'}, // resultID*/
+
 
 ];
 // Main function to iterate over the customOrder execution 5 times
