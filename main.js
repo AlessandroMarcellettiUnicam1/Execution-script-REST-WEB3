@@ -4,8 +4,8 @@ const { performRestCall } = require('./lib/rest');
 const xlsx = require('xlsx');
 const XLSX = require("xlsx");
 const {Web3} = require("web3");
-//const web3 = new Web3('http://127.0.0.1:7545');
-const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/aZ2f8OwVa3J2HcSEuQ2OncvsEiHQSNbW');
+const web3 = new Web3('http://127.0.0.1:7545');
+//const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/aZ2f8OwVa3J2HcSEuQ2OncvsEiHQSNbW');
 
 // Load input data for web3 and rest calls
 const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
@@ -189,16 +189,16 @@ const customOrder = [
     { type: 'web3', name: 'setInstanceConditions' },  //Set conditions
 
     //write for each message of the choreography
-     { type: 'rest', name: 'encrypt_message_type'}, // type
-     { type: 'web3', name: 'execute_message_type'}, // write
+    { type: 'rest', name: 'encrypt_message_type'}, // type
+    { type: 'web3', name: 'execute_message_type'}, // write
 
-     //{ type: 'rest', name: 'encrypt_message_requestId1'}, // type, requestId
+    //{ type: 'rest', name: 'encrypt_message_requestId1'}, // type, requestId
     //{ type: 'web3', name: 'execute_message_requestId1'}, //
 
     //{ type: 'rest', name: 'encrypt_message_accepted1'}, // accepted, date
     //{ type: 'web3', name: 'execute_message_accepted1'}, // write
 
-     { type: 'rest', name: 'encrypt_message_requestId2'}, // type, requestId
+    { type: 'rest', name: 'encrypt_message_requestId2'}, // type, requestId
     { type: 'web3', name: 'execute_message_requestId2'}, //
 
     { type: 'rest', name: 'encrypt_message_accepted2'}, // accepted, date
@@ -220,10 +220,10 @@ const customOrder = [
     { type: 'web3', name: 'execute_message_registration'}, // write*/
 
     { type: 'rest', name: 'encrypt_message_report'}, // report,ticketI
-     { type: 'web3', name: 'execute_message_report'}, // write
+    { type: 'web3', name: 'execute_message_report'}, // write
 
     { type: 'rest', name: 'encrypt_message_resultId'}, // resultID
-     { type: 'web3', name: 'execute_message_resultID'}, // write*/
+    { type: 'web3', name: 'execute_message_resultID'}, // write*/
 
     //---------------------
     //first invocations to obtain the key
@@ -240,7 +240,7 @@ const customOrder = [
     { type: 'web3', name: 'ask_auth_key_ward'},
     { type: 'rest', name: 'decrypt_wait_accepted'},
 
-    { type: 'rest', name: 'decrypt_check_accepted2'},
+    //{ type: 'rest', name: 'decrypt_check_accepted2'},
 
     { type: 'rest', name: 'decrypt_check_appointment'},
     { type: 'web3', name: 'ask_auth_key_patient'},
@@ -251,19 +251,12 @@ const customOrder = [
     //{ type: 'rest', name: 'decrypt_wait_certificationId'},
 
     { type: 'rest', name: 'decrypt_check_temperature'},
-
     { type: 'rest', name: 'decrypt_check_appointmentId'},
-
     { type: 'rest', name: 'decrypt_check_registration'},
-
     { type: 'rest', name: 'decrypt_check_ticketId'},
-
     { type: 'rest', name: 'decrypt_check_resultId'}
-    //
-
-
-
 ];
+
 // Main function to iterate over the customOrder execution 5 times
 async function main() {
     // Initialize the timing data map based on custom order

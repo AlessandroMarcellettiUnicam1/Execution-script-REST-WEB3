@@ -1,6 +1,6 @@
 [
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setPublicKeyReaders",
       "params": {
         "ipfs_link_1": 0,
@@ -10,7 +10,7 @@
       "name": "PublicKeyReaders_ward"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setPublicKeyReaders",
       "params": {
         "ipfs_link_1": 0,
@@ -20,7 +20,7 @@
       "name": "PublicKeyReaders_radiology"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setPublicKeyReaders",
       "params": {
         "ipfs_link_1": 0,
@@ -30,7 +30,7 @@
       "name": "PublicKeyReaders_patient"
     },
     {
-      "contractInfoPath": "./data/stateContract.json",
+      "contractInfoPath": "./data/local_stateContract.json",
       "functionName": "instantiateProcess",
       "params": {
         "process_id": 0,
@@ -48,7 +48,7 @@
       "name": "instantiateProcess"
     },
     {
-      "contractInfoPath": "./data/stateContract.json",
+      "contractInfoPath": "./data/local_stateContract.json",
       "functionName": "createConditions",
       "params": {
         "process_id": 0,
@@ -62,7 +62,7 @@
       "name": "setInstanceConditions"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -76,7 +76,7 @@
       "name": "execute_message_type"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -90,7 +90,7 @@
       "name": "execute_message_requestId1"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -104,7 +104,7 @@
       "name": "execute_message_requestId2"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -118,7 +118,7 @@
       "name": "execute_message_accepted1"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -132,7 +132,7 @@
       "name": "execute_message_accepted2"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -146,7 +146,7 @@
       "name": "execute_message_appointment"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -160,7 +160,7 @@
       "name": "execute_message_certificationId"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -174,7 +174,7 @@
       "name": "execute_message_temperature"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -188,7 +188,7 @@
       "name": "execute_message_appointmentId"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -202,7 +202,7 @@
       "name": "execute_message_registration"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -216,7 +216,7 @@
       "name": "execute_message_report"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "setIPFSLink",
       "params": {
         "process_id": 0,
@@ -230,7 +230,7 @@
       "name": "execute_message_resultID"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "notifyAuthorities",
       "params": {
         "process_id": 0,
@@ -240,7 +240,7 @@
       "name": "ask_auth_key_radiology"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "notifyAuthorities",
       "params": {
         "process_id": 0,
@@ -250,7 +250,7 @@
       "name": "ask_auth_key_ward"
     },
     {
-      "contractInfoPath": "./data/confidentialContract.json",
+      "contractInfoPath": "./data/local_confidentialContract.json",
       "functionName": "notifyAuthorities",
       "params": {
         "process_id": 0,
