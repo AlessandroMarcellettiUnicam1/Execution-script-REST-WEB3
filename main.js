@@ -8,8 +8,10 @@ const web3 = new Web3('http://127.0.0.1:7545');
 //const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/aZ2f8OwVa3J2HcSEuQ2OncvsEiHQSNbW');
 
 // Load input data for web3 and rest calls
-const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
-const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
+//const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
+const blockchainInputs = JSON.parse(fs.readFileSync('./data/incident_blockchain_inputs.json', 'utf8'));
+const restInputs = JSON.parse(fs.readFileSync('./data/incident_rest_inputs.json', 'utf8'));
+//const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
 let instanceId = "";
 let martsiaId = 0;
 let rsa_key = [];
@@ -111,7 +113,6 @@ async function processRestCall(name, iteration) {
         }//console.log(`Successfully executed ${method}`);
     } else if(name.includes("generateKeyPair")){
         response = await performRestCall(method, endpoint, data);
-        //console.log(response);
         rsa_key[0] = web3.utils.asciiToHex(response.data[0].replace("b'", "").replace("'", ""));
         rsa_key[1] = web3.utils.asciiToHex(response.data[1].replace("b'", "").replace("'", ""));
     } else {
@@ -164,7 +165,7 @@ function saveTimingDataToExcel(timingData) {
     xlsx.writeFile(workbook, 'timing_data.xlsx');
 }
 // Define the order of calls (example: REST 1, REST 2, web3 1, REST 3, web3 2, web3 3)
-const customOrder = [
+const customOrder_healthcare = [
     //saveModel function
     { type: 'rest', name: 'saveModel' },
     // createInstance function
@@ -257,15 +258,130 @@ const customOrder = [
     { type: 'rest', name: 'decrypt_check_resultId'}
 ];
 
+const customOrder = [
+    { type: 'rest', name: 'saveModel' },
+    // createInstance function
+    { type: 'rest', name: 'createInstance' },  // REST call 2
+    //subscribe1-3
+    //{ type: 'rest', name: 'generateKeyPair_customer' },  //generateRSA user 1
+    //{ type: 'web3', name: 'PublicKeyReaders_customer' },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
+    { type: 'rest', name: 'subscribe_customer' },  // subscribe user 1
+
+    //{ type: 'rest', name: 'generateKeyPair_retailer' }, // generateRSA user 2
+    //{ type: 'web3', name: 'PublicKeyReaders_retailer' },  // setPublicKeyReaders user 2 - FD43 BIKE CENTER
+    { type: 'rest', name: 'subscribe_retailer' },  // subscribe user 2
+
+    //{ type: 'rest', name: 'generateKeyPair_producer' },  // generateRSA user 3
+    //{ type: 'web3', name: 'PublicKeyReaders_producer' },  // setPublicKeyReaders user 3 - 0121 INSURER
+    { type: 'rest', name: 'subscribe_producer' }, // subscribe user 3
+
+    { type: 'rest', name: 'translation1' }, // chorchain deploy
+    { type: 'rest', name: 'translation2' }, // generateMartsiaInstance
+    { type: 'rest', name: 'attributesCertification'}, // certify
+    { type: 'web3', name: 'instantiateProcess' }, //instantiate process
+    { type: 'web3', name: 'setInstanceConditions' },  //Set conditions
+
+    //write for each message of the choreography
+    { type: 'rest', name: 'encrypt_message_goodAmount'}, // type
+    { type: 'web3', name: 'execute_message_goodAmount'}, // write
+
+    { type: 'rest', name: 'encrypt_message_priceAv'}, // type
+    { type: 'web3', name: 'execute_message_priceAv'}, // write
+
+    { type: 'rest', name: 'encrypt_message_productQuantity'}, // type
+    { type: 'web3', name: 'execute_message_productQuantity'}, // write
+
+    { type: 'rest', name: 'encrypt_message_availabilityCost'}, // type
+    { type: 'web3', name: 'execute_message_availabilityCost'}, // write
+
+    { type: 'rest', name: 'encrypt_message_receipt1'}, // type
+    { type: 'web3', name: 'execute_message_receipt1'}, // write
+
+    { type: 'rest', name: 'encrypt_message_stringOrderID'}, // type
+    { type: 'web3', name: 'execute_message_stringOrderID'}, // write
+
+    { type: 'rest', name: 'encrypt_message_certificationId'}, // type
+    { type: 'web3', name: 'execute_message_certificationId'}, // write
+
+    { type: 'rest', name: 'encrypt_message_shipInfo'}, // type
+    { type: 'web3', name: 'execute_message_shipInfo'}, // write
+
+    { type: 'rest', name: 'encrypt_message_receipt2'}, // type
+    { type: 'web3', name: 'execute_message_receipt2'}, // write
+
+    { type: 'rest', name: 'encrypt_message_orderDetail'}, // type
+    { type: 'web3', name: 'execute_message_orderDetail'}, // write
+
+    { type: 'rest', name: 'encrypt_message_customerAddress'}, // type
+    { type: 'web3', name: 'execute_message_customerAddress'}, // write
+
+    { type: 'rest', name: 'encrypt_message_customerShipment'}, // type
+    { type: 'web3', name: 'execute_message_customerShipment'}, // write
+
+    { type: 'web3', name: 'ask_auth_key_retailer'}, // write
+    { type: 'rest', name: 'decrypt_wait_goodAmount'}, // type
+
+    { type: 'web3', name: 'ask_auth_key_customer'}, // write
+    { type: 'rest', name: 'decrypt_wait_priceAv'}, // type
+
+    { type: 'web3', name: 'ask_auth_key_producer'}, // write
+    { type: 'rest', name: 'decrypt_wait_productQuantity'}, // type
+
+    { type: 'rest', name: 'decrypt_check_availabilityCost'}, // type
+    { type: 'rest', name: 'decrypt_check_receipt1'}, // type
+    { type: 'rest', name: 'decrypt_check_stringOrderID'}, // type
+    { type: 'rest', name: 'decrypt_check_certificationId'}, // type
+    { type: 'rest', name: 'decrypt_check_shipInfo'}, // type
+    { type: 'rest', name: 'decrypt_check_receipt2'}, // type
+    { type: 'rest', name: 'decrypt_check_orderDetail'}, // type
+    { type: 'rest', name: 'decrypt_check_customerAddress'}, // type
+    { type: 'rest', name: 'decrypt_check_customerShipment'}, // type
+
+
+
+]
+
+const customOrderIncident = [
+    { type: 'rest', name: 'saveModel' },
+    // createInstance function
+    { type: 'rest', name: 'createInstance' },
+    //subscribe1-3
+    { type: 'rest', name: 'generateKeyPair_SOFTWARE_DEVELOPER' },
+    { type: 'web3', name: 'PublicKeyReaders_SOFTWARE_DEVELOPER' },
+    { type: 'rest', name: 'subscribe_SOFTWARE_DEVELOPER' },
+
+    { type: 'rest', name: 'generateKeyPair_VIP_CUSTOMER' },
+    { type: 'web3', name: 'PublicKeyReaders_VIP_CUSTOMER' },
+    { type: 'rest', name: 'subscribe_VIP_CUSTOMER' },
+
+    { type: 'rest', name: 'generateKeyPair_2ND_LEVEL_SUPPORT_AGENT' },
+    { type: 'web3', name: 'PublicKeyReaders_2ND_LEVEL_SUPPORT_AGENT' },
+    { type: 'rest', name: 'subscribe_2ND_LEVEL_SUPPORT_AGENT' },
+
+    { type: 'rest', name: 'generateKeyPair_KEY_ACCOUNT_MANAGER' },
+    { type: 'web3', name: 'PublicKeyReaders_KEY_ACCOUNT_MANAGER' },
+    { type: 'rest', name: 'subscribe_KEY_ACCOUNT_MANAGER' },
+
+    { type: 'rest', name: 'generateKeyPair_1ST_LEVEL_SUPPORT_AGENT' },
+    { type: 'web3', name: 'PublicKeyReaders_1ST_LEVEL_SUPPORT_AGENT' },
+    { type: 'rest', name: 'subscribe_1ST_LEVEL_SUPPORT_AGENT' },
+
+    { type: 'rest', name: 'translation1' },
+    { type: 'rest', name: 'translation2' },
+    { type: 'rest', name: 'attributesCertification'},
+    { type: 'web3', name: 'instantiateProcess' },
+    { type: 'web3', name: 'setInstanceConditions' },
+]
+
 // Main function to iterate over the customOrder execution 5 times
 async function main() {
     // Initialize the timing data map based on custom order
-    initializeTimingDataMap(customOrder);
+    initializeTimingDataMap(customOrderIncident);
 
     // Run the custom order 5 times
     for (let i = 1; i <= 1; i++) {
         console.log(`--- Starting iteration ${i} ---`);
-        await processCustomOrder(customOrder, i);
+        await processCustomOrder(customOrderIncident, i);
         console.log(`--- Completed iteration ${i} ---`);
     }
 

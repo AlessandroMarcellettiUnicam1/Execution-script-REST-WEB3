@@ -1,0 +1,263 @@
+[
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setPublicKeyReaders",
+      "params": {
+        "ipfs_link_1": 0,
+        "ipfs_link_2": 0
+      },
+      "role": "ward",
+      "name": "PublicKeyReaders_ward"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setPublicKeyReaders",
+      "params": {
+        "ipfs_link_1": 0,
+        "ipfs_link_2": 0
+      },
+      "role": "radiology",
+      "name": "PublicKeyReaders_radiology"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setPublicKeyReaders",
+      "params": {
+        "ipfs_link_1": 0,
+        "ipfs_link_2": 0
+      },
+      "role": "patient",
+      "name": "PublicKeyReaders_patient"
+    },
+    {
+      "contractInfoPath": "./data/local_stateContract.json",
+      "functionName": "instantiateProcess",
+      "params": {
+        "process_id": 0,
+        "roles": ["0x526164696f6c6f67790000000000000000000000000000000000000000000000", "0x696e7465726e616c000000000000000000000000000000000000000000000000","0x50617469656e7400000000000000000000000000000000000000000000000000","0x696e7465726e616c000000000000000000000000000000000000000000000000", "0x696e7465726e616c000000000000000000000000000000000000000000000000", "0x5761726400000000000000000000000000000000000000000000000000000000",   "0x696e7465726e616c000000000000000000000000000000000000000000000000", "0x50617469656e7400000000000000000000000000000000000000000000000000", "0x50617469656e7400000000000000000000000000000000000000000000000000", "0x5761726400000000000000000000000000000000000000000000000000000000", "0x526164696f6c6f67790000000000000000000000000000000000000000000000", "0x696e7465726e616c000000000000000000000000000000000000000000000000", "0x526164696f6c6f67790000000000000000000000000000000000000000000000",     "0x696e7465726e616c000000000000000000000000000000000000000000000000", "0x50617469656e7400000000000000000000000000000000000000000000000000","0x526164696f6c6f67790000000000000000000000000000000000000000000000", "0x696e7465726e616c000000000000000000000000000000000000000000000000","0x696e7465726e616c000000000000000000000000000000000000000000000000"],
+        "users": [ "0xc58A17120480496809797520150f4aA43c24Fd43","0x0000000000000000000000000000000000000000","0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21", "0x0000000000000000000000000000000000000000","0x0000000000000000000000000000000000000000", "0x2eDFDA2154998dfe682996ff43DE98323de86dd9","0x0000000000000000000000000000000000000000","0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21","0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21","0x2eDFDA2154998dfe682996ff43DE98323de86dd9","0xc58A17120480496809797520150f4aA43c24Fd43","0x0000000000000000000000000000000000000000","0xc58A17120480496809797520150f4aA43c24Fd43","0x0000000000000000000000000000000000000000","0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21","0xc58A17120480496809797520150f4aA43c24Fd43","0x0000000000000000000000000000000000000000","0x0000000000000000000000000000000000000000"],
+        "elements": [666, 332730, 263543, 860669, 13889, 550751, 441483, 715574, 437568, 371747, 961687, 229775, 128802, 755150, 149350, 169042, 879917, 68120],
+        "nextElements": [[441483], [263543], [860669], [128802], [666, 860669], [13889], [715574, 437568], [755150], [755150], [229775], [371747], [], [550751], [149350], [169042], [879917], [961687, 68120], []],
+        "PreviousElements": [[13889], [], [332730], [263543, 13889], [550751], [128802], [666], [441483], [441483], [961687], [879917], [371747], [860669], [715574, 437568], [755150], [149350], [169042], [879917]],
+        "types": [1, 2, 1, 4, 3, 1, 5, 1, 1, 1, 1, 8, 1, 6, 1, 1, 3, 8],
+        "hashLink1": 0,
+
+        "hashLink2": 0
+      },
+      "role": "default",
+      "name": "instantiateProcess"
+    },
+    {
+      "contractInfoPath": "./data/local_stateContract.json",
+      "functionName": "createConditions",
+      "params": {
+        "process_id": 0,
+        "elementWithConditions": [666, 860669, 961687, 68120],
+        "elementWithPublicVar": [550751, 550751, 169042, 169042],
+        "publicVariables": ["0x6163636570746564000000000000000000000000000000000000000000000000", "0x6163636570746564000000000000000000000000000000000000000000000000", "0x726567697374726174696f6e0000000000000000000000000000000000000000", "0x726567697374726174696f6e0000000000000000000000000000000000000000"],
+        "operators": [1, 1, 1, 1],
+        "values": ["0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000", "0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000"]
+      },
+      "role": "default",
+      "name": "setInstanceConditions"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 263543,
+        "ipfs_link_1": "",
+        "ipfs_link_2": "",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "patient",
+      "name": "execute_message_type"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 128802,
+        "ipfs_link_1": "",
+        "ipfs_link_2": "",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "radiology",
+      "name": "execute_message_requestId1"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 128802,
+        "ipfs_link_1": "",
+        "ipfs_link_2": "",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "radiology",
+      "name": "execute_message_requestId2"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 550751,
+        "ipfs_link_1": "",
+        "ipfs_link_2": "",
+        "publicVarNames": ["0x6163636570746564000000000000000000000000000000000000000000000000"],
+        "publicValues":  ["0x66616C7365000000000000000000000000000000000000000000000000000000"]
+      },
+      "role": "ward",
+      "name": "execute_message_accepted1"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 550751,
+        "ipfs_link_1": "",
+        "ipfs_link_2": "",
+        "publicVarNames": ["0x6163636570746564000000000000000000000000000000000000000000000000"],
+        "publicValues":  ["0x7472756500000000000000000000000000000000000000000000000000000000"]
+      },
+      "role": "ward",
+      "name": "execute_message_accepted2"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 666,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "radiology",
+      "name": "execute_message_appointment"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 715574,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "patient",
+      "name": "execute_message_certificationId"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 437568,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "patient",
+      "name": "execute_message_temperature"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 149350,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "patient",
+      "name": "execute_message_appointmentId"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 169042,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": ["0x726567697374726174696f6e0000000000000000000000000000000000000000"],
+        "publicValues":  ["0x7472756500000000000000000000000000000000000000000000000000000000"]
+      },
+      "role": "radiology",
+      "name": "execute_message_registration"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 961687,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "radiology",
+      "name": "execute_message_report"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "setIPFSLink",
+      "params": {
+        "process_id": 0,
+        "message_id": 371747,
+        "ipfs_link_1": "0x5557316b5a56424c563370314e5767305958704b5958524b63564a4352316c6c",
+        "ipfs_link_2": "0x5658467462315a304e555a6f64456778566d6469633267306555647659773d3d",
+        "publicVarNames": [],
+        "publicValues":  []
+      },
+      "role": "ward",
+      "name": "execute_message_resultID"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 0,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "radiology",
+      "name": "ask_auth_key_radiology"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 0,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "ward",
+      "name": "ask_auth_key_ward"
+    },
+    {
+      "contractInfoPath": "./data/local_confidentialContract.json",
+      "functionName": "notifyAuthorities",
+      "params": {
+        "process_id": 0,
+        "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      },
+      "role": "patient",
+      "name": "ask_auth_key_patient"
+    }
+  ]
+
