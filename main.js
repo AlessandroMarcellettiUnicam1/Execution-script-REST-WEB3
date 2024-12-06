@@ -8,10 +8,10 @@ const web3 = new Web3('http://127.0.0.1:7545');
 //const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/aZ2f8OwVa3J2HcSEuQ2OncvsEiHQSNbW');
 
 // Load input data for web3 and rest calls
-//const blockchainInputs = JSON.parse(fs.readFileSync('./data/blockchain_inputs.json', 'utf8'));
-const blockchainInputs = JSON.parse(fs.readFileSync('./data/incident_blockchain_inputs.json', 'utf8'));
-const restInputs = JSON.parse(fs.readFileSync('./data/incident_rest_inputs.json', 'utf8'));
-//const restInputs = JSON.parse(fs.readFileSync('./data/rest_inputs.json', 'utf8'));
+const blockchainInputs = JSON.parse(fs.readFileSync('./data/incident_blockchainInputs.json', 'utf8'));
+//const blockchainInputs = JSON.parse(fs.readFileSync('./data/incident_blockchain_inputs.json', 'utf8'));
+//const restInputs = JSON.parse(fs.readFileSync('./data/incident_rest_inputs.json', 'utf8'));
+const restInputs = JSON.parse(fs.readFileSync('./data/incident_inputs.json', 'utf8'));
 let instanceId = "";
 let martsiaId = 0;
 let rsa_key = [];
@@ -263,16 +263,16 @@ const customOrder = [
     // createInstance function
     { type: 'rest', name: 'createInstance' },  // REST call 2
     //subscribe1-3
-    //{ type: 'rest', name: 'generateKeyPair_customer' },  //generateRSA user 1
-    //{ type: 'web3', name: 'PublicKeyReaders_customer' },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
+    { type: 'rest', name: 'generateKeyPair_customer' },  //generateRSA user 1
+    { type: 'web3', name: 'PublicKeyReaders_customer' },  // setPublicKeyReaders user 1 - DD9 CUSTOMER
     { type: 'rest', name: 'subscribe_customer' },  // subscribe user 1
 
-    //{ type: 'rest', name: 'generateKeyPair_retailer' }, // generateRSA user 2
-    //{ type: 'web3', name: 'PublicKeyReaders_retailer' },  // setPublicKeyReaders user 2 - FD43 BIKE CENTER
+    { type: 'rest', name: 'generateKeyPair_retailer' }, // generateRSA user 2
+    { type: 'web3', name: 'PublicKeyReaders_retailer' },  // setPublicKeyReaders user 2 - FD43 BIKE CENTER
     { type: 'rest', name: 'subscribe_retailer' },  // subscribe user 2
 
-    //{ type: 'rest', name: 'generateKeyPair_producer' },  // generateRSA user 3
-    //{ type: 'web3', name: 'PublicKeyReaders_producer' },  // setPublicKeyReaders user 3 - 0121 INSURER
+    { type: 'rest', name: 'generateKeyPair_producer' },  // generateRSA user 3
+    { type: 'web3', name: 'PublicKeyReaders_producer' },  // setPublicKeyReaders user 3 - 0121 INSURER
     { type: 'rest', name: 'subscribe_producer' }, // subscribe user 3
 
     { type: 'rest', name: 'translation1' }, // chorchain deploy
@@ -316,16 +316,24 @@ const customOrder = [
     { type: 'web3', name: 'execute_message_customerAddress'}, // write
 
     { type: 'rest', name: 'encrypt_message_customerShipment'}, // type
-    { type: 'web3', name: 'execute_message_customerShipment'}, // write
+    { type: 'web3', name: 'execute_message_customerShipment'}, // write*/
 
-    { type: 'web3', name: 'ask_auth_key_retailer'}, // write
+    { type: 'rest', name: 'decrypt_check_goodAmount'}, // type
+    { type: 'web3', name: 'ask_auth_key_producer'}, // write
     { type: 'rest', name: 'decrypt_wait_goodAmount'}, // type
 
-    { type: 'web3', name: 'ask_auth_key_customer'}, // write
-    { type: 'rest', name: 'decrypt_wait_priceAv'}, // type
+    { type: 'web3', name: 'ask_auth_key_producer'}, // write
+    { type: 'rest', name: 'decrypt_wait_goodAmount'}, // type
 
     { type: 'web3', name: 'ask_auth_key_producer'}, // write
-    { type: 'rest', name: 'decrypt_wait_productQuantity'}, // type
+    { type: 'rest', name: 'decrypt_wait_goodAmount'}, // type
+
+    //{ type: 'rest', name: 'decrypt_check_priceAv'}, // type
+    //{ type: 'web3', name: 'ask_auth_key_customer'}, // write
+    { type: 'rest', name: 'decrypt_check_priceAv'}, // type
+
+    //{ type: 'web3', name: 'ask_auth_key_retailer'}, // write
+    { type: 'rest', name: 'decrypt_check_productQuantity'}, // type
 
     { type: 'rest', name: 'decrypt_check_availabilityCost'}, // type
     { type: 'rest', name: 'decrypt_check_receipt1'}, // type
@@ -346,31 +354,96 @@ const customOrderIncident = [
     // createInstance function
     { type: 'rest', name: 'createInstance' },
     //subscribe1-3
-    { type: 'rest', name: 'generateKeyPair_SOFTWARE_DEVELOPER' },
-    { type: 'web3', name: 'PublicKeyReaders_SOFTWARE_DEVELOPER' },
-    { type: 'rest', name: 'subscribe_SOFTWARE_DEVELOPER' },
 
-    { type: 'rest', name: 'generateKeyPair_VIP_CUSTOMER' },
-    { type: 'web3', name: 'PublicKeyReaders_VIP_CUSTOMER' },
-    { type: 'rest', name: 'subscribe_VIP_CUSTOMER' },
 
-    { type: 'rest', name: 'generateKeyPair_2ND_LEVEL_SUPPORT_AGENT' },
-    { type: 'web3', name: 'PublicKeyReaders_2ND_LEVEL_SUPPORT_AGENT' },
-    { type: 'rest', name: 'subscribe_2ND_LEVEL_SUPPORT_AGENT' },
+    { type: 'rest', name: 'generateKeyPair_VIPCUSTOMER' },
+    { type: 'web3', name: 'PublicKeyReaders_VIPCUSTOMER' },
+    { type: 'rest', name: 'subscribe_VIPCUSTOMER' },
 
-    { type: 'rest', name: 'generateKeyPair_KEY_ACCOUNT_MANAGER' },
-    { type: 'web3', name: 'PublicKeyReaders_KEY_ACCOUNT_MANAGER' },
-    { type: 'rest', name: 'subscribe_KEY_ACCOUNT_MANAGER' },
+    { type: 'rest', name: 'generateKeyPair_SOFTWAREDEVELOPER' },
+    { type: 'web3', name: 'PublicKeyReaders_SOFTWAREDEVELOPER' },
+    { type: 'rest', name: 'subscribe_SOFTWAREDEVELOPER' },
 
-    { type: 'rest', name: 'generateKeyPair_1ST_LEVEL_SUPPORT_AGENT' },
-    { type: 'web3', name: 'PublicKeyReaders_1ST_LEVEL_SUPPORT_AGENT' },
-    { type: 'rest', name: 'subscribe_1ST_LEVEL_SUPPORT_AGENT' },
+    { type: 'rest', name: 'generateKeyPair_2NDLEVELSUPPORTAGENT' },
+    { type: 'web3', name: 'PublicKeyReaders_2NDLEVELSUPPORTAGENT' },
+    { type: 'rest', name: 'subscribe_2NDLEVELSUPPORTAGENT' },
+
+    { type: 'rest', name: 'generateKeyPair_KEYACCOUNTMANAGER' },
+    { type: 'web3', name: 'PublicKeyReaders_KEYACCOUNTMANAGER' },
+    { type: 'rest', name: 'subscribe_KEYACCOUNTMANAGER' },
+
+    { type: 'rest', name: 'generateKeyPair_1STLEVELSUPPORTAGENT' },
+    { type: 'web3', name: 'PublicKeyReaders_1STLEVELSUPPORTAGENT' },
+    { type: 'rest', name: 'subscribe_1STLEVELSUPPORTAGENT' },
 
     { type: 'rest', name: 'translation1' },
     { type: 'rest', name: 'translation2' },
     { type: 'rest', name: 'attributesCertification'},
     { type: 'web3', name: 'instantiateProcess' },
     { type: 'web3', name: 'setInstanceConditions' },
+
+    { type: 'rest', name: 'encrypt_message_problem'},
+    { type: 'web3', name: 'execute_message_problem'},
+
+    { type: 'rest', name: 'encrypt_message_questions'},
+    { type: 'web3', name: 'execute_message_questions'},
+
+    { type: 'rest', name: 'encrypt_message_answer'},
+    { type: 'web3', name: 'execute_message_answer'},
+
+    { type: 'rest', name: 'encrypt_message_handle'},
+    { type: 'web3', name: 'execute_message_handle'},
+
+    { type: 'rest', name: 'encrypt_message_firstIssue'},
+    { type: 'web3', name: 'execute_message_firstIssue'},
+
+    { type: 'rest', name: 'encrypt_message_result'},
+    { type: 'web3', name: 'execute_message_result'},
+
+   // { type: 'rest', name: 'encrypt_message_secondIssue'},
+    //{ type: 'web3', name: 'execute_message_secondIssue'},
+
+    //{ type: 'rest', name: 'encrypt_message_resolved'},
+    //{ type: 'web3', name: 'execute_message_resolved'},
+
+    // { type: 'rest', name: 'encrypt_message_devIssue'},
+    // { type: 'web3', name: 'execute_message_devIssue'},
+
+    //{ type: 'rest', name: 'encrypt_message_secondFeedback'},
+    //{ type: 'web3', name: 'execute_message_secondFeedback'},
+
+    //{ type: 'rest', name: 'encrypt_message_firstFeedback'},
+    //{ type: 'web3', name: 'execute_message_firstFeedback'},
+
+    //{ type: 'rest', name: 'encrypt_message_finalFeedback'},
+    //{ type: 'web3', name: 'execute_message_finalFeedback'},
+
+    //{ type: 'rest', name: 'encrypt_message_solution'},
+    //{ type: 'web3', name: 'execute_message_solution'},
+
+    { type: 'web3', name: 'ask_auth_key_KEYACCOUNTMANAGER'}, // write
+    { type: 'rest', name: 'decrypt_wait_problem'}, // type
+
+    { type: 'web3', name: 'ask_auth_key_KEYACCOUNTMANAGER'}, // write
+    { type: 'rest', name: 'decrypt_wait_questions'}, // type
+
+    //{ type: 'web3', name: 'ask_auth_key_KEYACCOUNTMANAGER'}, // write
+    // { type: 'rest', name: 'decrypt_wait_answer'}, // type
+
+    //{ type: 'web3', name: 'ask_auth_key_KEYACCOUNTMANAGER'}, // write
+    //{ type: 'rest', name: 'decrypt_wait_handle'}, // type
+
+    //{ type: 'web3', name: 'ask_auth_key_KEYACCOUNTMANAGER'}, // write
+    //{ type: 'rest', name: 'decrypt_wait_firstIssue'}, // type
+
+    { type: 'rest', name: 'decrypt_check_result'},
+    //{ type: 'rest', name: 'decrypt_check_secondIssue'},
+    //{ type: 'rest', name: 'decrypt_check_resolved'},
+    //{ type: 'rest', name: 'decrypt_check_devIssue'},
+    //{ type: 'rest', name: 'decrypt_check_secondFeedback'},
+    //{ type: 'rest', name: 'decrypt_check_firstFeedback'},
+    //{ type: 'rest', name: 'decrypt_check_finalFeedback'},
+    { type: 'rest', name: 'decrypt_check_solution'}
 ]
 
 // Main function to iterate over the customOrder execution 5 times

@@ -11,7 +11,7 @@
     "data": {
       "modelID": "6750d06307ece118e8a02875",
       "optional": ["null"],
-      "mandatory": ["SOFTWARE_DEVELOPER", "VIP_CUSTOMER", "2ND_LEVEL_SUPPORT_AGENT", "KEY_ACCOUNT_MANAGER", "1ST_LEVEL_SUPPORT_AGENT" ],
+      "mandatory": ["SOFTWAREDEVELOPER", "VIPCUSTOMER", "2NDLEVELSUPPORTAGENT", "KEYACCOUNTMANAGER", "1STLEVELSUPPORTAGENT" ],
       "visibleAt":  ["null"] },
     "name": "createInstance"
   },
@@ -20,60 +20,60 @@
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
       "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"},
-    "name": "generateKeyPair_SOFTWARE_DEVELOPER"
+    "name": "generateKeyPair_SOFTWAREDEVELOPER"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/SOFTWARE_DEVELOPER/66cecfe4f3fd1971e0902e5e/{instanceId}",
-    "name": "subscribe_SOFTWARE_DEVELOPER"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/SOFTWAREDEVELOPER/66cecfe4f3fd1971e0902e5e/{instanceId}",
+    "name": "subscribe_SOFTWAREDEVELOPER"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"},
-    "name": "generateKeyPair_VIP_CUSTOMER"
+    "name": "generateKeyPair_VIPCUSTOMER"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/VIP_CUSTOMER/66ced583f3fd1971e0902e70/{instanceId}",
-    "name": "subscribe_VIP_CUSTOMER"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/VIPCUSTOMER/66ced583f3fd1971e0902e70/{instanceId}",
+    "name": "subscribe_VIPCUSTOMER"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
       "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"},
-    "name": "generateKeyPair_2ND_LEVEL_SUPPORT_AGENT"
+    "name": "generateKeyPair_2NDLEVELSUPPORTAGENT"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/2ND_LEVEL_SUPPORT_AGENT/66ced5a1f3fd1971e0902e79/{instanceId}",
-    "name": "subscribe_2ND_LEVEL_SUPPORT_AGENT"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/2NDLEVELSUPPORTAGENT/66ced5a1f3fd1971e0902e79/{instanceId}",
+    "name": "subscribe_2NDLEVELSUPPORTAGENT"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
       "actor": "0xf90495686167301B110133f75A51D6AE729f3269"},
-    "name": "generateKeyPair_KEY_ACCOUNT_MANAGER"
+    "name": "generateKeyPair_KEYACCOUNTMANAGER"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/KEY_ACCOUNT_MANAGER/66ced5a1f3fd1971e0902e79/{instanceId}",
-    "name": "subscribe_KEY_ACCOUNT_MANAGER"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/KEYACCOUNTMANAGER/66ced5a1f3fd1971e0902e79/{instanceId}",
+    "name": "subscribe_KEYACCOUNTMANAGER"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/certification/generate_rsa_key_pair",
     "data": {
       "actor": "0x663AEDEc0F921407C7D2287D950fBcC853284fFe"},
-    "name": "generateKeyPair_1ST_LEVEL_SUPPORT_AGENT"
+    "name": "generateKeyPair_1STLEVELSUPPORTAGENT"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/1ST_LEVEL_SUPPORT_AGENT/66ced5a1f3fd1971e0902e79/{instanceId}",
-    "name": "subscribe_1ST_LEVEL_SUPPORT_AGENT"
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/1STLEVELSUPPORTAGENT/66ced5a1f3fd1971e0902e79/{instanceId}",
+    "name": "subscribe_1STLEVELSUPPORTAGENT"
   },
   {
     "method": "POST",
@@ -90,27 +90,27 @@
     "endpoint": "http://localhost:8080/certification/attributes_certification_and_authorities",
     "data": {
       "roles": {
-        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9": ["SOFTWARE_DEVELOPER@AUTH1"],
-        "0xc58A17120480496809797520150f4aA43c24Fd43": ["VIP_CUSTOMER@AUTH1"],
-        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21": ["2ND_LEVEL_SUPPORT_AGENT@AUTH1"],
-        "0xf90495686167301B110133f75A51D6AE729f3269": ["KEY_ACCOUNT_MANAGER@AUTH1"],
-        "0x663AEDEc0F921407C7D2287D950fBcC853284fFe": ["1ST_LEVEL_SUPPORT_AGENT@AUTH1"]
+        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9": ["SOFTWAREDEVELOPER@AUTH1"],
+        "0xc58A17120480496809797520150f4aA43c24Fd43": ["VIPCUSTOMER@AUTH2"],
+        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21": ["2NDLEVELSUPPORTAGENT@AUTH3"],
+        "0xf90495686167301B110133f75A51D6AE729f3269": ["KEYACCOUNTMANAGER@AUTH4"],
+        "0x663AEDEc0F921407C7D2287D950fBcC853284fFe": ["1STLEVELSUPPORTAGENT@AUTH5"]
       },
       "process_id": 0,
       "policy": {
-        "122191": "KEY_ACCOUNT_MANAGER@AUTH1",
-        "158876": "VIP_CUSTOMER@AUTH1",
-        "241890": "1ST_LEVEL_SUPPORT_AGENT@AUTH1",
-        "339754": "KEY_ACCOUNT_MANAGER@AUTH1",
-        "397646": "KEY_ACCOUNT_MANAGER@AUTH1",
-        "406627": "VIP_CUSTOMER@AUTH1",
-        "414261": "SOFTWARE_DEVELOPER@AUTH1",
-        "485017": "2ND_LEVEL_SUPPORT_AGENT@AUTH1",
-        "506440": "VIP_CUSTOMER@AUTH1",
-        "507339": "KEY_ACCOUNT_MANAGER@AUTH1",
-        "671322": "2ND_LEVEL_SUPPORT_AGENT@AUTH1",
-        "963044": "1ST_LEVEL_SUPPORT_AGENT@AUTH1",
-        "963229": "1ST_LEVEL_SUPPORT_AGENT@AUTH1"
+        "2": "SOFTWAREDEVELOPER@AUTH1",
+        "3": "KEYACCOUNTMANAGER@AUTH4",
+        "4": "KEYACCOUNTMANAGER@AUTH4",
+        "5": "SOFTWAREDEVELOPER@AUTH1",
+        "6": "SOFTWAREDEVELOPER@AUTH1",
+        "7": "KEYACCOUNTMANAGER@AUTH4",
+        "8": "2NDLEVELSUPPORTAGENT@AUTH3",
+        "9": "VIPCUSTOMER@AUTH2",
+        "10": "KEYACCOUNTMANAGER@AUTH4",
+        "11": "VIPCUSTOMER@AUTH2",
+        "12": "KEYACCOUNTMANAGER@AUTH4",
+        "13": "1STLEVELSUPPORTAGENT@AUTH5",
+        "14": "1STLEVELSUPPORTAGENT@AUTH5"
       }
     },
     "name": "attributesCertification"
@@ -122,7 +122,7 @@
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 397646
+      "message_id": 2
     },
     "name": "encrypt_message_problem"
   },
@@ -130,10 +130,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 506440
+      "message_id": 3
     },
     "name": "encrypt_message_questions"
   },
@@ -144,7 +144,7 @@
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 507339
+      "message_id": 4
     },
     "name": "encrypt_message_answer"
   },
@@ -152,10 +152,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 158876
+      "message_id": 5
     },
     "name": "encrypt_message_handle"
   },
@@ -163,10 +163,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 241890
+      "message_id": 6
     },
     "name": "encrypt_message_firstIssue"
   },
@@ -174,10 +174,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x663AEDEc0F921407C7D2287D950fBcC853284fFe",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 122191
+      "message_id": 7
     },
     "name": "encrypt_message_result"
   },
@@ -185,10 +185,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 406627
+      "message_id": 6
     },
     "name": "encrypt_message_solution"
   },
@@ -196,10 +196,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x663AEDEc0F921407C7D2287D950fBcC853284fFe",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 485017
+      "message_id": 8
     },
     "name": "encrypt_message_secondIssue"
   },
@@ -207,10 +207,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 963229
+      "message_id": 9
     },
     "name": "encrypt_message_resolved"
   },
@@ -218,10 +218,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x663AEDEc0F921407C7D2287D950fBcC853284fFe",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 339754
+      "message_id": 13
     },
     "name": "encrypt_message_finalFeedback"
   },
@@ -229,10 +229,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 414261
+      "message_id": 10
     },
     "name": "encrypt_message_devIssue"
   },
@@ -240,10 +240,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 671322
+      "message_id": 11
     },
     "name": "encrypt_message_secondFeedback"
   },
@@ -251,10 +251,10 @@
     "method": "POST",
     "endpoint": "http://localhost:8080/encrypt/",
     "data": {
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 963044
+      "message_id": 12
     },
     "name": "encrypt_message_firstFeedback"
   },
@@ -263,130 +263,139 @@
     "endpoint": "http://localhost:8080/decrypt_wait",
     "data": {
       "process_id": 0,
-      "message_id": 278194,
-      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
+      "message_id": 2,
+      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
       "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
       "starting_block": 0
     },
-    "name": "decrypt_wait_goodAmount"
+    "name": "decrypt_wait_problem"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_wait",
     "data": {
       "process_id": 0,
-      "message_id": 337729,
-      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
+      "message_id": 3,
+      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
       "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
       "starting_block": 0
     },
-    "name": "decrypt_wait_priceAv"
+    "name": "decrypt_wait_questions"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_wait",
     "data": {
       "process_id": 0,
-      "message_id": 659958,
-      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
+      "message_id": 4,
+      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
       "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
       "starting_block": 0
     },
-    "name": "decrypt_wait_productQuantity"
+    "name": "decrypt_wait_answer"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_wait",
+    "data": {
+      "process_id": 0,
+      "message_id": 5,
+      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
+      "starting_block": 0
+    },
+    "name": "decrypt_wait_handle"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_wait",
+    "data": {
+      "process_id": 0,
+      "message_id": 6,
+      "actor": "0xf90495686167301B110133f75A51D6AE729f3269",
+      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
+      "starting_block": 0
+    },
+    "name": "decrypt_wait_firstIssue"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 651366,
+      "message_id": 7,
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"
     },
-    "name": "decrypt_check_availabilityCost"
+    "name": "decrypt_check_result"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 754228,
+      "message_id": 8,
       "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"
     },
-    "name": "decrypt_check_receipt1"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8080/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 768939,
-      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
-      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
-      "starting_block": 0
-    },
-    "name": "decrypt_check_stringOrderID"
+    "name": "decrypt_check_secondIssue"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 204808,
+      "message_id": 9,
       "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"
     },
-    "name": "decrypt_check_certificationId"
+    "name": "decrypt_check_resolved"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 843758,
+      "message_id": 10,
+      "actor": "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21"
+    },
+    "name": "decrypt_check_devIssue"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 11,
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"
     },
-    "name": "decrypt_check_shipInfo"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8080/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 51871,
-      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43",
-      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"],
-      "starting_block": 0
-    },
-    "name": "decrypt_check_receipt2"
+    "name": "decrypt_check_secondFeedback"
   },
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 86817,
-      "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
-    },
-    "name": "decrypt_check_orderDetail"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://localhost:8080/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 474664,
+      "message_id": 10,
       "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"
     },
-    "name": "decrypt_check_customerAddress"
+    "name": "decrypt_check_firstFeedback"
   },
-
   {
     "method": "POST",
     "endpoint": "http://localhost:8080/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 289174,
+      "message_id": 8,
       "actor": "0x2eDFDA2154998dfe682996ff43DE98323de86dd9"
     },
-    "name": "decrypt_check_customerShipment"
+    "name": "decrypt_check_finalFeedback"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8080/decrypt_check",
+    "data": {
+      "process_id": 0,
+      "message_id": 6,
+      "actor": "0xc58A17120480496809797520150f4aA43c24Fd43"
+    },
+    "name": "decrypt_check_solution"
   }
 ]
