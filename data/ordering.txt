@@ -1,0 +1,10 @@
+type
+requestId
+accepted
+appointment
+certificationId
+temperature
+appointmentId
+registration
+report
+resultId

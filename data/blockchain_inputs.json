@@ -1,75 +1,230 @@
 [
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setPublicKeyReaders",
     "params": {
       "ipfs_link_1": 0,
       "ipfs_link_2": 0
     },
-    "role": "customer",
-    "name": "PublicKeyReaders_customer"
+    "role": "ward",
+    "name": "publicKeyReaders_ward"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setPublicKeyReaders",
     "params": {
       "ipfs_link_1": 0,
       "ipfs_link_2": 0
     },
-    "role": "retailer",
-    "name": "PublicKeyReaders_retailer"
+    "role": "radiology",
+    "name": "publicKeyReaders_radiology"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setPublicKeyReaders",
     "params": {
       "ipfs_link_1": 0,
       "ipfs_link_2": 0
     },
-    "role": "producer",
-    "name": "PublicKeyReaders_producer"
+    "role": "patient",
+    "name": "publicKeyReaders_patient"
   },
   {
-    "contractInfoPath": "./data/local_stateContract.json",
+    "contractInfo": "stateContract",
     "functionName": "instantiateProcess",
     "params": {
       "process_id": 0,
-      "roles": [ "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-        "0x437573746f6d6572000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
+      "roles": [
+        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x50617469656e7400000000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
-        "0x50726f6475636572000000000000000000000000000000000000000000000000",
-        "0x437573746f6d6572000000000000000000000000000000000000000000000000",
-        "0x50726f6475636572000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
-        "0x50726f6475636572000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
-        "0x437573746f6d6572000000000000000000000000000000000000000000000000",
-        "0x52657461696c6572000000000000000000000000000000000000000000000000",
-        "0x696e7465726e616c000000000000000000000000000000000000000000000000"],
-      "users": ["0x0000000000000000000000000000000000000000",
-        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
+        "0x5761726400000000000000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x50617469656e7400000000000000000000000000000000000000000000000000",
+        "0x50617469656e7400000000000000000000000000000000000000000000000000",
+        "0x5761726400000000000000000000000000000000000000000000000000000000",
+        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x50617469656e7400000000000000000000000000000000000000000000000000",
+        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000"
+      ],
+      "users": [
+        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x0000000000000000000000000000000000000000",
+        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
-        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
-        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
-        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
-        "0x62AbA4475128080Dd4B59FA5D7E2fAEb2B720A21",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
-        "0x2eDFDA2154998dfe682996ff43DE98323de86dd9",
-        "0xc58A17120480496809797520150f4aA43c24Fd43",
-        "0x0000000000000000000000000000000000000000"],
-      "elements": [587210, 278194, 337729, 344362, 190272, 659958, 843758, 51871, 651366, 754228, 768939, 204808, 86817, 474664, 289174, 875896],
-      "nextElements": [[278194], [337729], [344362], [190272, 659958], [51871], [651366], [190272], [86817], [754228], [768939], [204808], [843758], [474664], [289174], [875896], []],
-      "PreviousElements": [[], [587210], [278194], [337729], [344362, 843758], [344362], [204808], [190272], [659958], [651366], [754228], [768939], [51871], [86817], [474664], [289174]],
-      "types": [2, 1, 1, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8],
+        "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
+        "0x0000000000000000000000000000000000000000",
+        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+        "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
+        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x0000000000000000000000000000000000000000",
+        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x0000000000000000000000000000000000000000",
+        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x0000000000000000000000000000000000000000",
+        "0x0000000000000000000000000000000000000000"
+      ],
+      "elements": [
+        666,
+        332730,
+        263543,
+        860669,
+        13889,
+        550751,
+        441483,
+        715574,
+        437568,
+        371747,
+        961687,
+        229775,
+        128802,
+        755150,
+        149350,
+        169042,
+        879917,
+        68120
+      ],
+      "nextElements": [
+        [
+          441483
+        ],
+        [
+          263543
+        ],
+        [
+          860669
+        ],
+        [
+          128802
+        ],
+        [
+          666,
+          860669
+        ],
+        [
+          13889
+        ],
+        [
+          715574,
+          437568
+        ],
+        [
+          755150
+        ],
+        [
+          755150
+        ],
+        [
+          229775
+        ],
+        [
+          371747
+        ],
+        [],
+        [
+          550751
+        ],
+        [
+          149350
+        ],
+        [
+          169042
+        ],
+        [
+          879917
+        ],
+        [
+          961687,
+          68120
+        ],
+        []
+      ],
+      "PreviousElements": [
+        [
+          13889
+        ],
+        [],
+        [
+          332730
+        ],
+        [
+          263543,
+          13889
+        ],
+        [
+          550751
+        ],
+        [
+          128802
+        ],
+        [
+          666
+        ],
+        [
+          441483
+        ],
+        [
+          441483
+        ],
+        [
+          961687
+        ],
+        [
+          879917
+        ],
+        [
+          371747
+        ],
+        [
+          860669
+        ],
+        [
+          715574,
+          437568
+        ],
+        [
+          755150
+        ],
+        [
+          149350
+        ],
+        [
+          169042
+        ],
+        [
+          879917
+        ]
+      ],
+      "types": [
+        1,
+        2,
+        1,
+        4,
+        3,
+        1,
+        5,
+        1,
+        1,
+        1,
+        1,
+        8,
+        1,
+        6,
+        1,
+        1,
+        3,
+        8
+      ],
       "hashLink1": 0,
       "hashLink2": 0
     },
@@ -77,216 +232,235 @@
     "name": "instantiateProcess"
   },
   {
-    "contractInfoPath": "./data/local_stateContract.json",
-    "functionName": "createConditions",
-    "params": {
-      "process_id": 0,
-      "elementWithConditions": [190272, 659958],
-      "elementWithPublicVar": [337729, 337729],
-      "publicVariables": ["0x6176000000000000000000000000000000000000000000000000000000000000", "0x6176000000000000000000000000000000000000000000000000000000000000"],
-      "operators": [1, 1],
-      "values": ["0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000"]
-    },
-    "role": "default",
-    "name": "setInstanceConditions"
-  },
-  {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 278194,
+      "message_id": 666,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "customer",
-    "name": "execute_message_goodAmount"
+    "role": "radiology",
+    "name": "execute_message_appointment"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 337729,
-      "ipfs_link_1": "",
-      "ipfs_link_2": "",
-      "publicVarNames": ["0x6176000000000000000000000000000000000000000000000000000000000000"],
-      "publicValues":  ["0x66616c7365000000000000000000000000000000000000000000000000000000"]
-    },
-    "role": "retailer",
-    "name": "execute_message_priceAv"
-  },
-  {
-    "contractInfoPath": "./data/local_confidentialContract.json",
-    "functionName": "setIPFSLink",
-    "params": {
-      "process_id": 0,
-      "message_id": 659958,
+      "message_id": 263543,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "retailer",
-    "name": "execute_message_productQuantity"
+    "role": "patient",
+    "name": "execute_message_type"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 651366,
+      "message_id": 550751,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
-      "publicVarNames": [],
-      "publicValues":  []
+      "publicVarNames": [
+        "0x6163636570746564000000000000000000000000000000000000000000000000"
+      ],
+      "publicValues": [
+        "0x7472756500000000000000000000000000000000000000000000000000000000"
+      ]
     },
-    "role": "producer",
-    "name": "execute_message_availabilityCost"
+    "role": "ward",
+    "name": "execute_message_accepted"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 754228,
+      "message_id": 715574,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "retailer",
-    "name": "execute_message_receipt1"
-  },
-  {
-    "contractInfoPath": "./data/local_confidentialContract.json",
-    "functionName": "setIPFSLink",
-    "params": {
-      "process_id": 0,
-      "message_id": 768939,
-      "ipfs_link_1": "",
-      "ipfs_link_2": "",
-      "publicVarNames": [],
-      "publicValues":  []
-    },
-    "role": "producer",
-    "name": "execute_message_stringOrderID"
-  },
-  {
-    "contractInfoPath": "./data/local_confidentialContract.json",
-    "functionName": "setIPFSLink",
-    "params": {
-      "process_id": 0,
-      "message_id": 204808,
-      "ipfs_link_1": "",
-      "ipfs_link_2": "",
-      "publicVarNames": [],
-      "publicValues":  []
-    },
-    "role": "retailer",
+    "role": "patient",
     "name": "execute_message_certificationId"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 843758,
+      "message_id": 437568,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "producer",
-    "name": "execute_message_shipInfo"
+    "role": "patient",
+    "name": "execute_message_temperature"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 51871,
+      "message_id": 371747,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "customer",
-    "name": "execute_message_receipt2"
+    "role": "ward",
+    "name": "execute_message_resultId"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 86817,
+      "message_id": 961687,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "retailer",
-    "name": "execute_message_orderDetail"
+    "role": "radiology",
+    "name": "execute_message_report"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 474664,
+      "message_id": 128802,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "customer",
-    "name": "execute_message_customerAddress"
+    "role": "radiology",
+    "name": "execute_message_requestId"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "setIPFSLink",
     "params": {
       "process_id": 0,
-      "message_id": 289174,
+      "message_id": 149350,
       "ipfs_link_1": "",
       "ipfs_link_2": "",
       "publicVarNames": [],
-      "publicValues":  []
+      "publicValues": []
     },
-    "role": "retailer",
-    "name": "execute_message_customerShipment"
+    "role": "patient",
+    "name": "execute_message_appointmentId"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
+    "functionName": "setIPFSLink",
+    "params": {
+      "process_id": 0,
+      "message_id": 169042,
+      "ipfs_link_1": "",
+      "ipfs_link_2": "",
+      "publicVarNames": [
+        "0x726567697374726174696f6e0000000000000000000000000000000000000000"
+      ],
+      "publicValues": [
+        "0x7472756500000000000000000000000000000000000000000000000000000000"
+      ]
+    },
+    "role": "radiology",
+    "name": "execute_message_registration"
+  },
+  {
+    "contractInfo": "confidentialContract",
     "functionName": "notifyAuthorities",
     "params": {
       "process_id": 0,
-      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
     },
-    "role": "customer",
-    "name": "ask_auth_key_customer"
+    "role": "ward",
+    "name": "ask_auth_key_ward"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "notifyAuthorities",
     "params": {
       "process_id": 0,
-      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
     },
-    "role": "retailer",
-    "name": "ask_auth_key_retailer"
+    "role": "radiology",
+    "name": "ask_auth_key_radiology"
   },
   {
-    "contractInfoPath": "./data/local_confidentialContract.json",
+    "contractInfo": "confidentialContract",
     "functionName": "notifyAuthorities",
     "params": {
       "process_id": 0,
-      "list_auth": ["0x02d60FBDb2537670260c5809fa1FeA29Dc9E0530","0x7939C6E3217992B94BAadC9F3D2e7a63bB12696D","0x05e2103663dBd295E3a7C9D04E557c486557A61d","0xd9fE18FE773c1dCFACE73B1F50718F217654c083"]
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
     },
-    "role": "producer",
-    "name": "ask_auth_key_producer"
+    "role": "patient",
+    "name": "ask_auth_key_patient"
+  },
+  {
+    "contractInfo": "stateContract",
+    "functionName": "createConditions",
+    "params": {
+      "process_id": 0,
+      "elementWithConditions": [
+        666,
+        860669,
+        961687,
+        68120
+      ],
+      "elementWithPublicVar": [
+        550751,
+        550751,
+        169042,
+        169042
+      ],
+      "publicVariables": [
+        "0x6163636570746564000000000000000000000000000000000000000000000000",
+        "0x6163636570746564000000000000000000000000000000000000000000000000",
+        "0x726567697374726174696f6e0000000000000000000000000000000000000000",
+        "0x726567697374726174696f6e0000000000000000000000000000000000000000"
+      ],
+      "operators": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        "0x7472756500000000000000000000000000000000000000000000000000000000",
+        "0x66616c7365000000000000000000000000000000000000000000000000000000",
+        "0x7472756500000000000000000000000000000000000000000000000000000000",
+        "0x66616c7365000000000000000000000000000000000000000000000000000000"
+      ]
+    },
+    "role": "default",
+    "name": "setInstanceConditions"
   }
 ]
-

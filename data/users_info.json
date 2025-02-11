@@ -1,0 +1,17 @@
+[
+  {
+    "role": "ward",
+    "address": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
+    "privateKey": "0x2e78ccaac0156ec23652b710c05e3076de558a12addbeb6949817b93c557e857"
+  },
+  {
+    "role": "radiology",
+    "address": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+    "privateKey": "0x4f81120a31e3acb68d87b242dd0076247e83d08d85cc97b1b8c395ffda9bc43d"
+  },
+  {
+    "role": "patient",
+    "address": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+    "privateKey": "0xc0df5489a93d9d82a624a789e70fd00fa2c15b4187102a4494d4a2b65b243531"
+  }
+]
