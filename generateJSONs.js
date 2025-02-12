@@ -414,6 +414,56 @@ function transformEncrypterToAddresses(encrypter, requests_Roles) {
 }
 
 
+// Function to inject new a message
+function injectElement(data, insertAfter, newElement, requests_Roles) {
+    const indexAfter = data.elements.indexOf(insertAfter);
+    if (indexAfter === -1) {
+        throw new Error("Insert position not found in elements array.");
+    }
+    // Determine the element that was originally next after insertAfter
+    const originalNext = data.nextElements[indexAfter];
+    // Append the new element
+    data.elements.push(newElement);
+    const newIndex = data.elements.length - 1;
+    // Update nextElements
+    data.nextElements[indexAfter] = [newElement]; // Modify insertAfter to point to newElement
+    data.nextElements.push(originalNext); // Add newElement pointing to what insertAfter originally pointed to
+    // Update PreviousElements
+    if (originalNext.length > 0) {
+        originalNext.forEach(nextElement => {
+            const prevIndex = data.elements.indexOf(nextElement);
+            if (prevIndex !== -1) {
+                data.PreviousElements[prevIndex] = [newElement]; // Update previous of original next elements
+            }
+        });
+    }
+    data.PreviousElements.push([insertAfter]); // Add newElement pointing back to insertAfter
+    // Append new type and nameElement
+    data.types.push(1);
+    data.nameElements.push("element"+ newElement);
+    // Select a random non-"internal" value from encrypter
+    const filteredEncrypter = [...new Set(data.encrypter.filter(value => value !== "internal"))];
+    const randomEncrypter = filteredEncrypter[Math.floor(Math.random() * filteredEncrypter.length)];
+    data.encrypter.push(randomEncrypter);
+    // Select a random policy value from requests_Roles
+    const roleKeys = Object.keys(requests_Roles);
+    const randomKey = roleKeys[Math.floor(Math.random() * roleKeys.length)];
+    const randomRole = requests_Roles[randomKey][0]; // Take the first role in the selected entry
+    // Append the new policy
+    data.policy[newElement] = `${randomRole}`;
+    return data;
+}
+
+
+// Function to inject new messages
+function injectElements(data, amount, requests_Roles) {
+    let prev = 961687;
+    for (let i = 0; i < amount; i++) {
+        injectElement(data, prev, i+1, requests_Roles);
+        prev = i+1;
+    }
+}
+
 // The values to modify are the "requests" and the "userID" (cached value from frontend).
 function main() {
     // Create or clear the files and initialize them as empty JSON arrays
@@ -456,34 +506,19 @@ function main() {
     createInstanceGeneration(requests.modelID, requests.optional, mandatory_Extracted, requests.visibleAt);
     const mandatoryToLower = mandatory_Extracted.map(str => str.toLowerCase());
     const optionaltoLower = requests.optional.map(str => str.toLowerCase());
-
-
-// #####################################################################################################################################################
-
-
-    // 3. Generation of private keys and addresses for every mandatory and optional actor.
+    // Generation of private keys and addresses for every mandatory and optional actor.
     userInfoGeneration(mandatoryToLower, optionaltoLower);
-
-
-// #####################################################################################################################################################
-
-
-    // 4. It can also be called with keyPairGeneration, publicKeyReadersGeneration,
+    // It can also be called with keyPairGeneration, publicKeyReadersGeneration,
     // and subscribeGeneration for every single user or directly with subscribeGeneration.
     allSubscriptionsGeneration(mandatoryToLower, optionaltoLower);
-
-
-// #####################################################################################################################################################
-
-
-    // 5. It can also be called with translation1Generation and translation2Generation
+    // It can also be called with translation1Generation and translation2Generation
     translationsGeneration();
 
 
 // #####################################################################################################################################################
 
 
-    // 6.
+    // 3.
     requests = {
         encrypter: [
             "Radiology",
@@ -503,7 +538,7 @@ function main() {
             "Patient",
             "Radiology",
             "internal",
-            "internal"
+            "internal",
         ],
         elements: [666, 332730, 263543, 860669, 13889, 550751, 441483, 715574, 437568, 371747, 961687, 229775, 128802, 755150, 149350, 169042, 879917, 68120],
         nextElements: [[441483], [263543], [860669], [128802], [666, 860669], [13889], [715574, 437568], [755150], [755150], [229775], [371747], [], [550751], [149350], [169042], [879917], [961687, 68120], []],
@@ -513,15 +548,30 @@ function main() {
             "requestId", "", "appointmentId", "registration", "", ""],
         messageElements: ["MjUuMTAuMjAxNg", "", "MjUuMTAuMjAxNg", "", "","MjUuMTAuMjAxNg","",
             "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","", "MjUuMTAuMjAxNg","","MjUuMTAuMjAxNg",
-            "MjUuMTAuMjAxNg","",""]
+            "MjUuMTAuMjAxNg","",""],
+        // The actor names need to be UPPERCASE!
+        policy: {
+            "263543": "RADIOLOGY@AUTH1",
+            "550751": "WARD@AUTH4",
+            "961687": "WARD@AUTH4",
+            "128802": "RADIOLOGY@AUTH1",
+            "371747": "PATIENT@AUTH2",
+            "715574": "RADIOLOGY@AUTH1",
+            "437568": "RADIOLOGY@AUTH1",
+            "169042": "PATIENT@AUTH2",
+            "149350": "RADIOLOGY@AUTH1",
+            "666": "PATIENT@AUTH2",
+        }
     };
 
+    injectElements(requests, 29, requests_Roles)
+    console.log(requests);
     const addresses = transformEncrypterToAddresses(requests.encrypter, requests_Roles);
     instantiateProcessGeneration(requests.encrypter.map(stringToHex32), transformEncrypterToAddresses(requests.encrypter, requests_Roles), requests.elements, requests.nextElements, requests.PreviousElements, requests.types);
     // Generation of the JSON encryption objects
     for (let index = 0; index < requests.encrypter.length; index++) {
         if (requests.encrypter[index].toLowerCase() !== "internal") {
-            encryptionsGeneration(addresses[index], requests.messageElements[index], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === addresses[index])?.role, requests.nameElements[index]);
+            encryptionsGeneration(addresses[index], requests.messageElements[0], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === addresses[index])?.role, requests.nameElements[index]);
             appendToFile('data/messages_data.json', JSON.stringify({
                 message_id: requests.elements[index],
                 element: requests.nameElements[index]
@@ -536,27 +586,6 @@ function main() {
     }, []);
     const shortestPath = bfsShortestPath(root, targetTypes1, requests.types, requests.nameElements, requests.nextElements, requests.elements);
     fs.writeFileSync('data/ordering.txt', shortestPath.join('\n'), 'utf8');
-
-
-// #####################################################################################################################################################
-
-
-    // 7. THE ACTOR NAMES NEED TO BE UPPERCASE
-    requests = {
-        policy: {
-            "263543": "RADIOLOGY@AUTH1",
-            "550751": "WARD@AUTH4",
-            "961687": "WARD@AUTH4",
-            "128802": "RADIOLOGY@AUTH1",
-            "371747": "PATIENT@AUTH2",
-            "715574": "RADIOLOGY@AUTH1",
-            "437568": "RADIOLOGY@AUTH1",
-            "169042": "PATIENT@AUTH2",
-            "149350": "RADIOLOGY@AUTH1",
-            "666": "PATIENT@AUTH2"
-        }
-    };
-
     attributesCertificationGeneration(requests_Roles, requests.policy);
     // Generation of the ask_auth_key_ for every user
     const extractedRoles = Object.values(requests_Roles).map(roleArray =>
@@ -578,7 +607,7 @@ function main() {
 // #####################################################################################################################################################
 
 
-    // 8.
+    // 4.
     requests = {
         elementWithConditions: [666, 860669, 961687, 68120],
         elementWithPublicVar: [550751, 550751, 169042, 169042],

@@ -315,7 +315,6 @@ const Order = [
     {type: 'sub'},
     {type: 'inst'},
     {type: 'enc'},
-    {type: 'dec'},
     {type: 'dec'}
 ];
 
