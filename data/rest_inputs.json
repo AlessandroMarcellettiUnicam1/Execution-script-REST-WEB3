@@ -79,7 +79,7 @@
     "data": {
       "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
       "process_id": 0,
-      "message": "salame",
+      "message": "MjUuMTAuMjAxNg",
       "message_id": 666
     },
     "name": "encrypt_message_appointment"
@@ -90,7 +90,7 @@
     "data": {
       "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
       "process_id": 0,
-      "message": "Y29tcGxldGUgeC1yYXlz",
+      "message": "MjUuMTAuMjAxNg",
       "message_id": 263543
     },
     "name": "encrypt_message_type"

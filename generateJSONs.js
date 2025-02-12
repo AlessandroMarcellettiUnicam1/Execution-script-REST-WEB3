@@ -377,20 +377,58 @@ function bfsShortestPath(root, targetTypes1, types, nameElements, nextElements, 
 }
 
 
+// Function to convert string to hex with padding
+function stringToHex32(str) {
+    // Convert each character to its 2-digit hexadecimal representation
+    let hexStr = "";
+    for (let i = 0; i < str.length; i++) {
+        hexStr += str.charCodeAt(i).toString(16).padStart(2, "0");
+    }
+    // Pad the hex string with trailing zeros until it's 64 hex digits (32 bytes)
+    hexStr = hexStr.padEnd(64, "0");
+    // Prepend "0x" to indicate hexadecimal format
+    return "0x" + hexStr;
+}
+
+
+// Function to convert role names into addresses
+function transformEncrypterToAddresses(encrypter, requests_Roles) {
+    // Build a mapping from role name (uppercased) to its address
+    const roleToAddress = {};
+    for (const [address, roles] of Object.entries(requests_Roles)) {
+        if (roles && roles.length > 0) {
+            // Extract the role name (before the '@') and uppercase it
+            const [roleName] = roles[0].split('@');
+            roleToAddress[roleName.toUpperCase()] = address;
+        }
+    }
+    // Transform each element in the encrypter array to its corresponding address
+    return encrypter.map(role => {
+        const upperRole = role.toUpperCase();
+        if (upperRole === "INTERNAL") {
+            return "0x0000000000000000000000000000000000000000";
+        }
+        // Return the corresponding address from the mapping, or null if not found
+        return roleToAddress[upperRole] || null;
+    });
+}
+
+
 // The values to modify are the "requests" and the "userID" (cached value from frontend).
 function main() {
     // Create or clear the files and initialize them as empty JSON arrays
     createOrClearJson('data/rest_inputs.json');
     createOrClearJson('data/blockchain_inputs.json');
     createOrClearJson('data/messages_data.json');
-
+    let requests;
+    let requests_Roles;
 
 // #####################################################################################################################################################
 
 
     // 1.
     global.userID = "67abd73d603e7f33802360a8";
-    let requests = {
+    requests = {
         name: "xRaysConfetty"
     }
 
@@ -400,16 +438,23 @@ function main() {
 // #####################################################################################################################################################
 
 
-    // 2.
+    // 2. THE ACTOR NAMES NEED TO BE UPPERCASE
+    requests_Roles = {
+            "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258": ["WARD@AUTH4"],
+            "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB": ["RADIOLOGY@AUTH1"],
+            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a": ["PATIENT@AUTH2"]
+        };
     requests = {
             modelID: "67abd840603e7f33802360ad",
             optional: ["null"],
-            mandatory: ["Ward", "Radiology", "Patient"],
             visibleAt: ["null"]
     };
 
-    createInstanceGeneration(requests.modelID, requests.optional, requests.mandatory, requests.visibleAt);
-    const mandatoryToLower = requests.mandatory.map(str => str.toLowerCase());
+    const mandatory_Extracted = Object.values(requests_Roles)
+        .map(roleArray => roleArray[0].split('@')[0].toLowerCase())
+        .map(role => role.charAt(0).toUpperCase() + role.slice(1));
+    createInstanceGeneration(requests.modelID, requests.optional, mandatory_Extracted, requests.visibleAt);
+    const mandatoryToLower = mandatory_Extracted.map(str => str.toLowerCase());
     const optionaltoLower = requests.optional.map(str => str.toLowerCase());
 
 
@@ -440,59 +485,43 @@ function main() {
 
     // 6.
     requests = {
-        roles: ["0x526164696f6c6f67790000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x50617469656e7400000000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x5761726400000000000000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x50617469656e7400000000000000000000000000000000000000000000000000",
-            "0x50617469656e7400000000000000000000000000000000000000000000000000",
-            "0x5761726400000000000000000000000000000000000000000000000000000000",
-            "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x50617469656e7400000000000000000000000000000000000000000000000000",
-            "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-            "0x696e7465726e616c000000000000000000000000000000000000000000000000"],
-        users: [ "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-            "0x0000000000000000000000000000000000000000",
-            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-            "0x0000000000000000000000000000000000000000",
-            "0x0000000000000000000000000000000000000000",
-            "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-            "0x0000000000000000000000000000000000000000",
-            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-            "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-            "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-            "0x0000000000000000000000000000000000000000",
-            "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-            "0x0000000000000000000000000000000000000000",
-            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-            "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-            "0x0000000000000000000000000000000000000000",
-            "0x0000000000000000000000000000000000000000"],
+        encrypter: [
+            "Radiology",
+            "internal",
+            "Patient",
+            "internal",
+            "internal",
+            "Ward",
+            "internal",
+            "Patient",
+            "Patient",
+            "Ward",
+            "Radiology",
+            "internal",
+            "Radiology",
+            "internal",
+            "Patient",
+            "Radiology",
+            "internal",
+            "internal"
+        ],
         elements: [666, 332730, 263543, 860669, 13889, 550751, 441483, 715574, 437568, 371747, 961687, 229775, 128802, 755150, 149350, 169042, 879917, 68120],
         nextElements: [[441483], [263543], [860669], [128802], [666, 860669], [13889], [715574, 437568], [755150], [755150], [229775], [371747], [], [550751], [149350], [169042], [879917], [961687, 68120], []],
         PreviousElements: [[13889], [], [332730], [263543, 13889], [550751], [128802], [666], [441483], [441483], [961687], [879917], [371747], [860669], [715574, 437568], [755150], [149350], [169042], [879917]],
         types: [1, 2, 1, 4, 3, 1, 5, 1, 1, 1, 1, 8, 1, 6, 1, 1, 3, 8],
-        // And also:
         nameElements : ["appointment", "", "type", "", "", "accepted", "", "certificationId", "temperature", "resultId", "report", "",
             "requestId", "", "appointmentId", "registration", "", ""],
-        messageElements: ["salame", "MjUuMTAuMjAxNg", "Y29tcGxldGUgeC1yYXlz", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg",
-            "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg",
-            "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg"]
+        messageElements: ["MjUuMTAuMjAxNg", "", "MjUuMTAuMjAxNg", "", "","MjUuMTAuMjAxNg","",
+            "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","", "MjUuMTAuMjAxNg","","MjUuMTAuMjAxNg",
+            "MjUuMTAuMjAxNg","",""]
     };
 
-    instantiateProcessGeneration(requests.roles, requests.users, requests.elements, requests.nextElements, requests.PreviousElements, requests.types);
+    const addresses = transformEncrypterToAddresses(requests.encrypter, requests_Roles);
+    instantiateProcessGeneration(requests.encrypter.map(stringToHex32), transformEncrypterToAddresses(requests.encrypter, requests_Roles), requests.elements, requests.nextElements, requests.PreviousElements, requests.types);
     // Generation of the JSON encryption objects
-    for (let index = 0; index < requests.roles.length; index++) {
-        if (requests.users[index] !== "0x0000000000000000000000000000000000000000") {
-            encryptionsGeneration(requests.users[index], requests.messageElements[index], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === requests.users[index])?.role, requests.nameElements[index]);
+    for (let index = 0; index < requests.encrypter.length; index++) {
+        if (requests.encrypter[index].toLowerCase() !== "internal") {
+            encryptionsGeneration(addresses[index], requests.messageElements[index], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === addresses[index])?.role, requests.nameElements[index]);
             appendToFile('data/messages_data.json', JSON.stringify({
                 message_id: requests.elements[index],
                 element: requests.nameElements[index]
@@ -512,13 +541,8 @@ function main() {
 // #####################################################################################################################################################
 
 
-    // 7. THE ACTOR NAMES NEED TO BE UPPERCASE, OTHERWISE ERROR, BOH
+    // 7. THE ACTOR NAMES NEED TO BE UPPERCASE
     requests = {
-        roles: {
-            "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258": ["WARD@AUTH4"],
-            "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB": ["RADIOLOGY@AUTH1"],
-            "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a": ["PATIENT@AUTH2"]
-        },
         policy: {
             "263543": "RADIOLOGY@AUTH1",
             "550751": "WARD@AUTH4",
@@ -533,9 +557,9 @@ function main() {
         }
     };
 
-    attributesCertificationGeneration(requests.roles, requests.policy);
+    attributesCertificationGeneration(requests_Roles, requests.policy);
     // Generation of the ask_auth_key_ for every user
-    const extractedRoles = Object.values(requests.roles).map(roleArray =>
+    const extractedRoles = Object.values(requests_Roles).map(roleArray =>
         roleArray[0].split('@')[0]
     );
     for (const role of extractedRoles) {
