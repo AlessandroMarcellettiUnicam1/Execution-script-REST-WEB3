@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Chorchain | Query</title>
+    <script src="lib/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
+        integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+    <!-- graphics -->
+    <link rel="stylesheet" href="css/unicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" href="css/tooplate-style.css">
+
+    <link rel="stylesheet" href="css/querying.css">
+
+</head>
+
+<body ng-app="querying" ng-controller="queryingController" ng-cloak>
+
+    <!-- MENU -->
+    <nav class="navbar navbar-expand-sm  navbar-light bg-light" data-ng-init="setUser()">
+        <div class="container">
+
+            <img src="ChorChain_logo.png" width="150" height="52" alt="ChorChain logo">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="homePage.html" class="nav-link"><span data-hover="Home Page">Home Page</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="modeler.html" class="nav-link"><span data-hover="Modeler">Modeler</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="deploy.html" class="nav-link"><span data-hover="Execution Page">Execution Page</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="querying.html" class="nav-link active"><span data-hover="Querying">Querying</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="audit.html" class="nav-link"><span data-hover="Audit">Audit</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="personalPage.html" class="nav-link"><span data-hover="Personal Page">Personal Page</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid" style="margin-top: 16px;">
+        <div>
+            <object type="text/html" data="http://193.205.92.133:8545/graphql/ui" width="100%" height="800px" style="overflow:auto;border:5px ridge white">
+            </object>
+        </div>
+        <!---<div class="row">
+
+            <div class="card card-body" style="margin: 15px;">
+                <h5>Download all the transactions of a contract</h5>
+                <div class="row" style="margin: 0;">
+                    <input type="text" class="form-control col-md-11" placeholder="Instance id"
+                        ng-model="contractsQueryTransaction" />
+                    <button class="btn btn-primary col-md-1"
+                        ng-click="executeContractTransactionsQuery()">Query</button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="card card-body">
+                    <h5>Select an entity</h5>
+                    <label ng-repeat="entity in entities">
+                        <input type="radio" name="radio-entity" ng-model="$parent.selectedEntity" ng-value="entity"
+                            ng-change='onEntitySelectionChanged()' /> {{entity}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-body">
+                    <h5>Filtering rules</h5>
+                    <div class="container">
+                        <div ng-repeat="rule in rules" class="row top-spacing">
+                            <select ng-model="rule.Property" class="form-control col" ng-disabled="rule.Mandatory">
+                                <option ng-repeat="prop in fields" value="{{prop}}">{{prop}}</option>
+                            </select>
+                            <select ng-model="rule.Operator" class="form-control col-md-2" ng-disabled="rule.Mandatory"
+                                style="margin-left: 8px;">
+                                <option ng-repeat="op in operators" value="{{op}}">{{op}}</option>
+                            </select>
+                            <input type="text" ng-model="rule.Value" class="form-control col" style="margin-left: 8px;"
+                                ng-change="onRuleValueChanged()" />
+
+                            <div class="form-control col-md-1" ng-if="rule.LogicalOperator" style="margin-left: 8px;">
+                                {{rule.LogicalOperator}}
+                            </div>
+
+                            to comm <select ng-model="rule.LogicalOperator" class="form-control col-md-2"
+                                ng-disabled="rule.Mandatory && !rule.OperatorEditable" ng-if="rule.LogicalOperator" style="margin-left: 8px;">
+                                <option ng-repeat="op in logicalOperators" value="{{op}}">{{op}}</option>
+                            </select> until here
+
+                            <button ng-if="$last" class="btn btn-primary" ng-click="addNewConstratint()"
+                                style="margin-left: 8px;">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card card-body">
+                    <h5>Projection fields</h5>
+                    <label ng-repeat="field in fields">
+                        <input type="checkbox" ng-model="$parent.selectedFields[field]"
+                            ng-change="onFieldsSelectionChanged()" /> {{field}}
+                    </label>
+                </div>
+            </div>
+
+        </div>-->
+
+    </div>
+
+
+    <!-- Spinner overlay -->
+    <div class="spinner-container" ng-if="isQuerying">
+        <div class="spinner"></div>
+        <div>Executing query...</div>
+    </div>
+
+    <!-- Error dialog -->
+    <div class="dialog-container" ng-if="queryExecutionErrorOccurred">
+        <div class="dialog">
+            <div class="dialog-title">Warning</div>
+            <div class="dialog-content">{{queryExecutionErrorMessage}}</div>
+            <div class="dialog-actions">
+                <button class="btn btn-secondary" ng-click="closeErrorDialog()">Cancel</button>
+                <button class="btn btn-primary" ng-click="closeErrorDialog()">Ok</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div style="position: absolute; width: 100px; height: 100px; background-color: red; x: 100;" ng-if="contractTransactionsResult != null">
+    </div> -->
+
+    <!-- Results dialog -->
+    <div class="dialog-container"
+        ng-if="contractTransactionsResult || queryResult || queryResults || stringQueryResults">
+        <div class="dialog expandable-dialog">
+            <div class="dialog-title">Query results</div>
+            <div class="dialog-content table-responsive">
+                <div ng-if="stringQueryResults && !queryResult && !queryResults">{{stringQueryResults}}</div>
+
+                <table ng-if="queryResults && !queryResult && !stringQueryResults"
+                    class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th ng-repeat="(key, _) in queryResults[0]">{{key}}</th>
+                    </tr>
+                    <tr ng-repeat="item in queryResults">
+                        <td ng-repeat="(_, value) in item">
+                            {{value}}
+                        </td>
+                    </tr>
+                </table>
+
+                <table ng-if="queryResult && !queryResults && !stringQueryResults"
+                    class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th ng-repeat="(key, _) in queryResult">{{key}}</th>
+                    </tr>
+                    <tr>
+                        <td ng-repeat="(_, value) in queryResult">
+                            {{value}}
+                        </td>
+                    </tr>
+                </table>
+
+                <table ng-if="contractTransactionsResult && !queryResult && !queryResults && !stringQueryResults"
+                    class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th>Transaction hash</th>
+                    </tr>
+                    <tr ng-repeat="transaction in contractTransactionsResult">
+                        <td>
+                            {{transaction}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="dialog-actions">
+                <button class="btn btn-primary" ng-click="closeResultsDialog()">Ok</button>
+                <button class="btn btn-secondary" ng-click="exportResults()">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <!---<button class="btn btn-primary query-btn" ng-disabled="!canStartQueryExecution" ng-click="executeQuery()">
+        Execute query
+    </button>--->
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+
+    <script src="lib/querying/graphql-client-service.js"></script>
+    <script src="lib/querying/querying-controller.js"></script>
+
+</body>
+
+</html>

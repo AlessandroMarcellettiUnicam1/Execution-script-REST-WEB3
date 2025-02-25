@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Registration</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<script src="lib/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.6/dist/web3.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+
+	<!-- graphics -->
+	<link rel="stylesheet" href="css/unicons.css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<!-- MAIN STYLE -->
+	<link rel="stylesheet" href="css/tooplate-style.css">
+</head>
+<style>
+	div.video1 {
+		position: relative;
+		top: 60px;
+	}
+</style>
+
+<body ng-app="homePage" ng-controller="controller">
+	<div class="container">
+		<div class="row">
+			<div class="offset-md-3 mb-5">
+				<div class="card text-center">
+					<div class="card-body">
+						<h3>Welcome</h3>
+						<p>Please sign-up and then login with your account in MetaMask!</p>
+					</div>
+					<div class="card-body">
+						<ul class="nav nav-tabs  nav-justified" id="myTab" role="tablist">
+							<li class="nav-item"><a class="nav-link active" id="login-tab" data-toggle="tab"
+									href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a></li>
+							<li class="nav-item"><a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup"
+									role="tab" aria-controls="signup" aria-selected="false">Sign up or Create
+									account</a></li>
+						</ul>
+						<div class="tab-content m-4" id="myTabContent">
+							<!-- Login Tab content-->
+							<div class="tab-pane fade show active" id="login" role="tabpanel">
+								<h5 class="m-2 text-center">Login</h5>
+								<form method="POST" class="contact-form">
+									<div class="form-group">
+										<label for="address">Insert address</label>
+										<input type="text" class="form-control" id="address"
+											placeholder="Insert account address" ng-model="user.address">
+										<small id="addressHelp" class="form-text text-muted"> </small>
+									</div>
+									<input type="submit" id="loginbutton"
+										class="btn custom-btn custom-btn-bg custom-btn-link" value="Login" disabled
+										ng-click="loginUser()" />
+								</form>
+								<div class="video1">
+									<h2> Tool Demostration:</h2>
+									<video width="455" controls>
+										<source src="ChorChain_demo.mp4" type="video/mp4">
+											Your browser does not support HTML5 video.
+									</video>
+								</div>
+							</div>
+							<!-- Sign up Tab content-->
+							<div class="tab-pane fade" id="signup" role="tabpanel">
+								<h5 class="m-2 text-center">Sign Up</h5>
+								<hr>
+								<form method="POST" class="contact-form">
+									<label>Default MetaMask address account: </label>
+									<div class="form-group input-group">
+										<label class="input-group-text" id="labeladdress"></label>
+										<div class="input-group-append">
+											<button class="input-group-text " style="cursor:pointer;"
+												onclick="copyToClipboard('#labeladdress')"><i class="far fa-copy"></i></button>
+										</div>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="Copy here the default account..." id="addressRegUser"
+											ng-model="regUser.address">
+									</div>
+									<div class="form-group">
+										<input type="submit" class="btn custom-btn custom-btn-bg custom-btn-link"
+											value="Sign Up" ng-click="registerUser()">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="lib/app.js"></script>
+	<script src="lib/controller.js"></script>
+	<script src="lib/service.js"></script>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
+</body>
+
+<script>
+	window.addEventListener('load', function () {
+
+		// Check if Web3 has been injected by the browser (Mist/MetaMask).
+		/*if (typeof web3 !== 'undefined' && web3.currentProvider.isMetaMask == true) {
+			console.log("Metamask presente!");
+			//var Web3 = require('web3');
+			//var web3 = new Web3('https://rinkeby.infura.io/v3/080d5a8adcc244f4a289882d6063723c');
+
+			web3 = new Web3('https://rinkeby.infura.io/v3/080d5a8adcc244f4a289882d6063723c');
+			console.log(web3);
+			// window.ethereum.enable();
+		} else {
+			Swal.fire({
+				backdrop: false,
+				type: 'error',
+				title: 'MetaMask Extension not present!',
+				html: 'You will be redirected to the MetaMask site',
+				timer: 2500,
+				onBeforeOpen: () => {
+					Swal.showLoading()
+					timerInterval = setInterval(() => {
+						Swal.getContent().querySelector('strong')
+							.textContent = Swal.getTimerLeft()
+					}, 100)
+				},
+				onClose: () => {
+					clearInterval(timerInterval)
+				}
+			}).then((result) => {
+				if (
+					// Read more about handling dismissals
+					result.dismiss === Swal.DismissReason.timer
+				) {
+					console.log('I was closed by the timer')
+					window.location.replace('https://metamask.io/');
+
+				}
+			})
+
+		}*/
+		web3 = new Web3('https://rinkeby.infura.io/v3/080d5a8adcc244f4a289882d6063723c');
+
+	});
+</script>
+
+<script>
+	// If the MetaMask extension is present,you are asked to log in to your account the permissions to access the wallet
+
+	let account = '';
+	ethereum.enable();
+	async function loadAccount(){
+		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+		if (accounts[0] !== account) {
+			account = accounts[0];
+			$("#labeladdress").text(web3.utils.toChecksumAddress(account));
+		}
+	}
+
+	loadAccount();
+	//var account = web3.eth.accounts[0];
+
+
+
+	var accountInterval = setInterval(function () {
+		/*const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+		if (accounts[0] !== account) {
+			account = accounts[0]
+			$("#labeladdress").text($("#labeladdress").text(web3.utils.toChecksumAddress(account)));
+		}*/
+		loadAccount();
+
+		if (document.getElementById("address").value == account) {
+			document.getElementById("loginbutton").disabled = false;
+		} else
+			document.getElementById("loginbutton").disabled = false;
+
+	}, 100);
+</script>
+
+<script>
+	function copyToClipboard(element) {
+		var $temp = $("<input>");
+		$("body").append($temp);
+		$temp.val($(element).text()).select();
+		document.execCommand("copy");
+		$temp.remove();
+	}
+</script>
+
+<script>
+/*	var accountInterval = setInterval(function () {
+
+		var selectedAccount = '';
+		//web3.toChecksumAddress(web3.eth.accounts[0]);
+
+		if (document.getElementById("address").value == selectedAccount) {
+			document.getElementById("loginbutton").disabled = false;
+		} else
+			document.getElementById("loginbutton").disabled = true;
+
+	}, 100);*/
+</script>
+
+<script>
+	function createAccount() {
+		//console.log("entrato");
+
+		var addr = web3.personal.newAccount('password', function (error, result) {
+			if (!error) {
+				console.log(result);
+			}
+		});
+
+		console.log(addr);
+	}
+</script>
+
+</html>

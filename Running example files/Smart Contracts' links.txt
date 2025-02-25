@@ -1,0 +1,3 @@
+Link to the Process Smart Contract: https://sepolia.etherscan.io/address/0x98C84D7eaDe6Aa246075Caf7bAa7DcA459528725
+
+Link to the Confidentiality Smart Contract: https://sepolia.etherscan.io/address/0x8098B16468eB9Ed4786936C2d73B290D7796637C

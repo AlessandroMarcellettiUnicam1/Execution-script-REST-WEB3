@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Deploy of smart contract</title>
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
+		integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+	<script src="lib/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+
+	<!-- graphics -->
+	<link rel="stylesheet" href="css/unicons.css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<!-- MAIN STYLE -->
+	<link rel="stylesheet" href="css/tooplate-style.css">
+
+	<!-- Modeler import -->
+	<link rel="stylesheet" href="css/diagram-js.css" />
+	<link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn.css" />
+	<link rel="stylesheet" href="vendor/chor-js/font/include/css/choreography.css" />
+	<!-- Modeler end import -->
+	
+	<style>
+		.btn-secondary:not(:disabled):not(.disabled).active {
+			background-color: #6c757d;
+			border-color: #6c757d;
+			color: #fff;
+		}
+
+		.vertical-divider {
+			position: absolute;
+			z-index: 10;
+			top: 50%;
+			left: 50%;
+			margin: 0;
+			padding: 0;
+			width: auto;
+			height: 50%;
+			line-height: 0;
+			text-align: center;
+			text-transform: uppercase;
+			transform: translateX(-50%);
+		}
+		
+		.djs-select-wrapper {
+			display: none;
+			
+		}
+		
+		.djs-rename-wrapper {
+			display:none;
+		}
+		
+	</style>
+</head>
+
+<body ng-app="homePage" ng-controller="controller">
+	<!-- MENU -->
+	<nav class="navbar navbar-expand-sm  navbar-light bg-light" data-ng-init="setUser()">
+		<div class="container">
+			 <!-- <a class="navbar-brand" href="index.html"></i> ChorChain</a>--->
+      	<img src="ChorChain_logo.png" width="150" height="52" alt="ChorChin logo">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+				<span class="navbar-toggler-icon"></span>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mx-auto">
+					<li class="nav-item">
+						<a href="homePage.html" class="nav-link"><span data-hover="Home Page">Home Page</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="modeler.html" class="nav-link active"><span data-hover="Modeler">Modeler</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="deploy.html" class="nav-link"><span data-hover="Execution Page">Execution Page</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="querying.html" class="nav-link"><span data-hover="Querying">Querying</span></a>
+					</li>
+					<li class="nav-item">
+                        <a href="audit.html" class="nav-link"><span data-hover="Audit">Audit</span></a>
+					</li>
+					<li class="nav-item">
+                        <a href="personalPage.html" class="nav-link"><span data-hover="Personal Page">Personal Page</span></a>
+                    </li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<section class=" d-lg-flex justify-content-center align-items-center">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="btn-group" role="group">
+						<button class="btn custom-btn custom-btn-bg cutom-btn-link" id="js-new-diagram"
+							onclick="newModel()" title="Create a new Choreograpy Model">Create Model <i
+								class="fas fa-plus-circle"></i></button>
+						<button class="btn custom-btn custom-btn-bg cutom-btn-link" title="Import a Choreograpy Model"
+							onclick="document.getElementById('modelImport').click()"> Import Model <i
+								class="fas fa-upload"></i> </button>
+						<input type="file" id="modelImport" style="display:none;" accept=".bpmn, .xml"
+							onchange="importModel()" />
+						<button class="btn custom-btn custom-btn-bg cutom-btn-link" onclick="saveModel()"
+							title="Save Model">Save Model <i class="fa fa-inbox"></i></button>
+						<button class="btn custom-btn custom-btn-bg cutom-btn-link" title="Download Model"
+							data-toggle="modal" data-target="#modalDownload">Export Model <i
+								class="fas fa-download"></i></button>
+					</div>
+					<a href="homePage.html" class="btn custom-btn float-right">Back</a>
+				</div>
+			</div>
+			<div class="row">
+			
+				<div class="col-lg-12">
+					<div class="content with-diagram m-3" id="js-drop-zone" style="border:1px solid black">
+						<div id="canvas" data-ng-init="attach()" style="height:500px;">
+						</div>
+					</div>
+				</div>
+			</div>
+	<button type="button" class="modelNameTrigger" id="js-save" style="display:none"></button>
+	</section>
+			<!-- Modal download -->
+			<div id="modalDownload" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Model {{model.name}} Download </h4>
+						</div>
+						<div class="modal-body text-center">
+							<a id="js-download-diagram" class="btn custom-btn">Download BPMN file <i
+									class="far fa-file"></i></a>
+							<hr>
+							<a id="js-download-svg" class="btn custom-btn">Download as SVG image <i
+									class="far fa-file-image"></i></a>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn custom-btn custom-btn-yellow"
+								data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal download -->
+
+
+<!-- Modal message -->
+ <div class="modal fade" id="msg">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <!-- Modal body -->
+       <form>
+       
+       <div class="modal-body" >	
+       <div class="card">    
+			<div class="card-body">
+				<div class="form-group">
+					Message top
+					<div ng-hide="paymentCheckTop">
+						<div class="input-group" >
+							<input type="text" id="msgtop" name="msgtop" class="form-control" ng-model="task.fnametop" placeholder="function name"/>
+								<div class="input-group" ng-repeat="form in forms">
+									<div class="dropdown">
+										<select id="ciccio" class="browser-default custom-select" name="typet" ng-model="form.type">
+									      <option value="" disabled selected>Set parameter type</option>
+									      <option value="uint" class="dropdown-item" >uint</option>
+										  <option value="bool" class="dropdown-item" >boolean</option>
+										  <option value="string" class="dropdown-item" >string</option>
+										  <option value="address" class="dropdown-item" >address</option>
+									    </select>
+									</div>
+									<input type="text" class="form-control" name="vart" placeholder="var name" ng-model="form.vari">
+								</div>
+								<button class="btn custom-btn-dark btn-sm" ng-click="addParameter()">Add param</button>
+						</div>
+						
+					 </div>
+					<div class="custom-control custom-checkbox">
+					    <input class="custom-control-input" id="paymentCheckTop" type="checkbox" name="payt" ng-model="paymentCheckTop" value="true" >
+					    <label class="custom-control-label" for="paymentCheckTop">Check this box if the message is a payment function</label>
+				  	</div>
+				</div>
+				<div class="form-group">
+					Participant top
+					<input type="text" id="parttop" name="parttop" ng-model="task.parttop" class="form-control"/>
+				</div>
+				<div class="form-group">
+					Task name
+					<input type="text" id="task" name="task" ng-model="task.tname" class="form-control"/>
+				</div>
+				<div class="form-group">
+					Participant bottom
+					<input type="text" id="partbottom" name="partbottom" ng-model="task.partbot" class="form-control"/>
+				</div>
+				<div class="form-group">
+					Message bottom
+					<div ng-hide="paymentCheckBottom">
+						<div class="input-group">
+							<input type="text" id="msgbottom" name="msgbottom" class="form-control" ng-model="task.fnamebot" placeholder="function name"/>
+							<div class="input-group 2" ng-repeat="form in forms2">
+								<div class="dropdown">
+									<select class="browser-default custom-select" name="typeb" ng-model="form.type">
+								      <option value="" disabled selected>Set parameter type</option>
+								      <option value="uint" class="dropdown-item" >uint</option>
+									  <option value="bool" class="dropdown-item" >boolean</option>
+									  <option value="string" class="dropdown-item" >string</option>
+									  <option value="address" class="dropdown-item" >address</option>
+								    </select>
+							    </div>
+								<input type="text" class="form-control" name="varb" placeholder="var name" ng-model="form.vari">
+							</div>
+							<button class="btn custom-btn-dark btn-sm" ng-click="addParameter2()">Add param</button>
+						</div>
+					 </div>
+					<div class="custom-control custom-checkbox">
+					    <input class="custom-control-input" id="paymentCheckBottom" ng-model="paymentCheckBottom" type="checkbox" name="payb">
+					    <label class="custom-control-label" for="paymentCheckBottom">Check this box if the message is a payment function</label>
+				  	</div>
+				</div>
+			  </div>
+		</div>	  
+       <!-- Modal footer -->
+      <div class="modal-footer">
+      	<input type="submit" class="btn btn-success"  
+      		ng-click="submitform()"
+      		data-dismiss="modal" />
+      </div>
+      </div>
+	</form>
+     </div>
+   </div>
+</div>
+<!-- end modal message -->
+
+	<script src="lib/controller.js"></script>
+	<script src="lib/service.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+	<script src="lib/app.js"></script>
+	<script src="lib/appmodeler.js"></script>
+</body>
+
+<script>
+var taskid;
+var payCount = 0;
+
+	
+
+	/*function submitformsar(mt, typet, vart, pt, t, pb, mb, typeb, varb){
+		var paytop = document.getElementById('paymentCheckTop').checked;
+		var messagetop = "";
+		if(paytop == true){
+			messagetop = "payment"+payCount+"()";
+			payCount += 1;
+		} else {
+			if(mt != ""){
+				messagetop = mt+"("+typet+" "+vart+")";
+			}
+		}
+
+		var paybottom = document.getElementById('paymentCheckBottom').checked;
+		var messagebottom = "";
+		if(paybottom == true){
+			messagebottom = "payment"+payCount+"()";
+			payCount += 1;
+		} else {
+			if(mb != ""){
+				messagebottom = mb+"("+typeb+" "+varb+")";
+			}
+		}
+		testingfunction(taskid, messagetop, pt, t, pb, messagebottom);
+	}*/
+	
+	function saveModel() {
+
+		var specialCharacters = /^[a-zA-Z]*$/;
+		Swal.fire({
+			title: "Insert the new model name",
+			text: "Don't use special characters!",
+			input: 'text',
+			backdrop: false,
+			allowOutsideClick: false,
+			inputValidator: (value) => {
+				if (!value) {
+					return 'You need to write something!'
+				}
+				if (value == "taken") {
+					return 'This name is already taken!'
+				}
+				if (!specialCharacters.test(value)) {
+					return 'This name contains special characters!'
+				}
+			}
+		}).then((result) => {
+			swal({
+				type: 'success',
+				title: 'Model saved',
+				text: 'Your model has been saved as: ' + result.value + '.bpmn',
+				backdrop: false,
+
+			})
+			if (result.value) {
+				var nameAdded = result.value;
+				document.querySelector('.modelNameTrigger').setAttribute('data-value', nameAdded)
+
+				$("#js-save").trigger('click');
+			}
+		});
+	}
+
+	function newModel() {
+		swal({
+			type: 'success',
+			title: 'Your model has been created',
+			showConfirmButton: false,
+			timer: 1700,
+			backdrop: false
+		})
+	}
+
+	function importModel() {
+		
+		let timerInterval
+		Swal.fire({
+			title: 'Importing a model...',
+			backdrop: false,
+			timer: 600,
+			onBeforeOpen: () => {
+				Swal.showLoading()
+				timerInterval = setInterval(() => {
+					Swal.getContent().querySelector('strong')
+						.textContent = Swal.getTimerLeft()
+				}, 100)
+			},
+			onClose: () => {
+				clearInterval(timerInterval)
+			}
+		}).then((result) => {
+			if (
+				// Read more about handling dismissals
+				result.dismiss === Swal.DismissReason.timer
+			) {
+				console.log('I was closed by the timer')
+			}
+		})
+	}
+	
+	var accountInterval = setInterval(function () {
+		$('.djs-group').dblclick(function(e){
+			taskid = e.currentTarget.childNodes[0].dataset.elementId;
+			$('#msg').modal('show');
+		});
+	}, 100);
+
+	$(".dropdown-menu li option").click(function () {
+		$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+		$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+	});
+
+	$('#msg').on('hidden.bs.modal', function () {
+		$(this).find('form')[0].reset();
+		$('#msgParam').val('');
+		$('select').val('');		
+	});
+	
+	
+	$('.djs-element djs-shape hover').click(function () {
+		console.log($(this).attr("data-element-id"));
+	});
+
+</script>
+
+
+</html>

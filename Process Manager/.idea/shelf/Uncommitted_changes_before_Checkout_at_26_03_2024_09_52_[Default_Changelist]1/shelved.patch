@@ -1,0 +1,269 @@
+Index: src/main/resources/META-INF/persistence.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<persistence version=\"2.0\"\r\n             xmlns=\"http://java.sun.com/xml/ns/persistence\" \r\n             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n             xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence \r\n             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd\">\r\n\r\n    <persistence-unit name=\"OGMPU\" transaction-type=\"JTA\">\r\n        <provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>\r\n       <class>com.unicam.model.User</class>\r\n         <properties>\r\n            <property name=\"hibernate.ogm.datastore.provider\" value=\"mongodb\" />\r\n            <property name=\"hibernate.ogm.datastore.database\" value=\"EthUsers\" />\r\n            <property name=\"hibernate.ogm.datastore.username\" value=\"\" />\r\n  \t\t\t<property name=\"hibernate.ogm.datastore.password\" value=\"\" />\r\n        </properties>\r\n\t\t\r\n    </persistence-unit>\r\n</persistence>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/META-INF/persistence.xml b/src/main/resources/META-INF/persistence.xml
+--- a/src/main/resources/META-INF/persistence.xml	(revision 4e67a23b3a02ea065353c2b9c81fd9d2d0bc30f0)
++++ b/src/main/resources/META-INF/persistence.xml	(date 1711387381651)
+@@ -10,10 +10,10 @@
+        <class>com.unicam.model.User</class>
+          <properties>
+             <property name="hibernate.ogm.datastore.provider" value="mongodb" />
+-            <property name="hibernate.ogm.datastore.database" value="EthUsers" />
++            <property name="hibernate.ogm.datastore.database" value="ChorChain" />
+             <property name="hibernate.ogm.datastore.username" value="" />
+   			<property name="hibernate.ogm.datastore.password" value="" />
+         </properties>
+ 		
+     </persistence-unit>
+-</persistence>
+\ No newline at end of file
++</persistence>
+Index: src/com/unicam/rest/ContractFunctions.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.unicam.rest;\r\n\r\nimport java.io.BufferedReader;\r\nimport java.io.BufferedWriter;\r\nimport java.io.ByteArrayOutputStream;\r\nimport java.io.File;\r\n\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.io.InputStreamReader;\r\nimport java.io.OutputStreamWriter;\r\nimport java.lang.reflect.Field;\r\nimport java.lang.reflect.Method;\r\nimport java.lang.reflect.Parameter;\r\nimport java.math.BigInteger;\r\nimport java.nio.charset.StandardCharsets;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Paths;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\nimport java.util.HashMap;\r\nimport java.util.LinkedHashMap;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.stream.Stream;\r\nimport org.web3j.protocol.Web3j;\r\nimport org.web3j.protocol.admin.Admin;\r\nimport org.web3j.protocol.core.DefaultBlockParameterName;\r\nimport org.web3j.protocol.core.RemoteCall;\r\nimport org.web3j.protocol.core.methods.response.EthGetTransactionCount;\r\nimport org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;\r\nimport org.web3j.protocol.core.methods.response.EthSendTransaction;\r\nimport org.web3j.protocol.core.methods.response.TransactionReceipt;\r\nimport org.web3j.protocol.http.HttpService;\r\nimport org.web3j.tx.ChainId;\r\nimport org.web3j.tx.Contract;\r\nimport org.web3j.tx.RawTransactionManager;\r\nimport org.web3j.tx.TransactionManager;\r\nimport org.web3j.tx.gas.ContractGasProvider;\r\nimport org.web3j.tx.gas.DefaultGasProvider;\r\nimport org.web3j.utils.Numeric;\r\nimport com.unicam.model.ContractObject;\r\nimport com.unicam.model.Parameters;\r\nimport com.unicam.model.User;\r\nimport com.unicam.translator.Choreography_optimized;\r\nimport org.web3j.abi.FunctionEncoder;\r\nimport org.web3j.abi.datatypes.Address;\r\nimport org.web3j.abi.datatypes.Bool;\r\nimport org.web3j.abi.datatypes.Function;\r\nimport org.web3j.abi.datatypes.Uint;\r\nimport org.web3j.abi.datatypes.Utf8String;\r\nimport org.web3j.abi.datatypes.Type;\r\nimport org.web3j.codegen.SolidityFunctionWrapperGenerator;\r\nimport org.web3j.crypto.CipherException;\r\nimport org.web3j.crypto.Credentials;\r\nimport org.web3j.crypto.RawTransaction;\r\nimport org.web3j.crypto.TransactionEncoder;\r\nimport org.web3j.crypto.WalletUtils;\r\n\r\npublic class ContractFunctions {\r\n\r\n\r\n\tprivate List<String> participants;\r\n\tpublic List<String> tasks;\r\n\tpublic List<ContractObject> allFunctions;\r\n\tpublic String CONTRACT_ADDRESS = \"\";\r\n\tprivate static final String VirtualProsAccount = \"0x7A224d367EB99e849dC80F3d7b9FAC9E03Fe8Be0\";\r\n\r\n\tpublic static boolean pendingTransaction = false;\r\n\t\r\n\t//public static String projectPath = \"/home/virtualpros/ChorChainStorage\";\r\n\tpublic static String projectPath = System.getenv(\"ChorChain\"); \r\n\t\r\n\t//Web3j web3j = Web3j.build(new HttpService(\"https://rinkeby.infura.io/v3/080d5a8adcc244f4a289882d6063723c\"));\r\n\tWeb3j web3j = Web3j.build(new HttpService(\"https://sepolia.infura.io/v3/7910955c9b9a44ccab34f69dc0bf3a2f\"));\r\n\t//Admin adm = Admin.build(new HttpService(\"http://193.205.92.133:8545\"));\r\n\r\n\r\n\r\n\tpublic ContractObject createSolidity(String fileName, Map<String, User> participants, List<String> freeRoles, List<String> mandatoryRoles) {\r\n\t\tChoreography_optimized cho = new Choreography_optimized();\r\n\t\tFile f = new File(projectPath + File.separator + \"bpmn\"+ File.separator + fileName);\r\n\t\tContractObject contract = new ContractObject();\r\n\t\ttry {\r\n\t\t\tcontract = cho.start(f, participants, freeRoles, mandatoryRoles);\r\n\r\n\t\t} catch (Exception e) {\r\n\t\t\ttasks = null;\r\n\t\t\te.printStackTrace();\r\n\t\t}\r\n\t\treturn contract;\r\n\t}\r\n\t\r\n\t\r\n\tpublic void compile(String fileName) {\r\n\t\ttry {\r\n\t\t\tString fin = parseName(fileName, \".sol\");\r\n\r\n\t\t\tString solPath = projectPath + File.separator + \"resources\" + File.separator + fin;\r\n\t\t\t//System.out.println(\"Solidity PATH: \" + solPath);\r\n\t\t\tString destinationPath = projectPath +  File.separator + \"resources\";//sostituire compiled a resources\r\n\t\t\t//System.out.println(\"destination path \"+destinationPath);solc_old\r\n\t\t\tString[] comm = { \"solc\", solPath, \"--bin\", \"--abi\", \"--overwrite\", \"-o\", destinationPath };\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t//String comm = \"solc \" + solPath + \"--bin --abi --optimize -o \" + destinationPath;\r\n\r\n\t\t\tRuntime rt = Runtime.getRuntime();\r\n\r\n\t\t\tProcess p = rt.exec(comm);\r\n\t\t\tBufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));\r\n\t\t\tBufferedReader bre = new BufferedReader(new InputStreamReader(p.getErrorStream()));\r\n\t\t\tString line;\r\n\t\t\twhile ((line = bri.readLine()) != null) {\r\n\t\t\t     System.out.println(line);\r\n\t\t\t}\r\n\t\t\tbri.close();\r\n\t\t\twhile ((line = bre.readLine()) != null) {\r\n\t\t\t     System.out.println(line);\r\n\t\t\t}\r\n\t\t\tbre.close();\r\n\t\t\tp.waitFor();\r\n\t\t\t  \r\n\t\t\t\r\n\t\t\t//System.out.println(\"abi-bin done\");\r\n\r\n\t\t} catch (Exception e) {\r\n\t\t\te.printStackTrace();\r\n\r\n\t\t}\r\n\t}\r\n\r\n\tpublic void wrapper(String fileName) {\r\n\t\tString path = projectPath + File.separator + \"resources\" + File.separator;\r\n\t\tString p = Paths.get(\"\").toAbsolutePath().normalize().toString();\r\n  \t\tString abiPath = path + parseName(fileName, \".abi\");\r\n\t\tString binPath = path + parseName(fileName, \".bin\");\r\n\r\n\t\tString[] args2 = {\"-a\", abiPath, \"-b\", binPath, \"-o\", \"src\", \"-p\",\r\n\t\t\t\tprojectPath + File.separator + \"resources\" + File.separator, };\r\n\r\n\t\tSolidityFunctionWrapperGenerator.main(args2);\r\n\t}\r\n\r\n\tpublic Credentials getCredentialFromPrivateKey(String privateKey) throws IOException, CipherException {\r\n\t\t// return WalletUtils.loadCredentials(\"psw\",\r\n\t\t// \"src/main/resources/UTC--2018-12-06T16-44-54.114315504Z--19a3f868355394b5423106fb31f201da646139af\");\r\n\t\treturn Credentials.create(privateKey);\r\n\t}\r\n\r\n\tpublic static String parseName(String name, String extension) {\r\n\t\tString[] oldName = name.split(\"\\\\.\");\r\n\r\n\t\tString newName = oldName[0] + extension;\r\n\t\treturn newName;\r\n\t}\r\n\r\n\tpublic String reflection(String toExec, String role) {\r\n\t\tString finalName = \"\";\r\n\t\t//System.out.println(\"sobo dentro al metodo\");\r\n\r\n\t\ttry {\r\n\t\t\tClass c = Class.forName(\"com.unicam.resources.Abstract\");\r\n\r\n\t\t\tMethod methods[] = c.getDeclaredMethods();\r\n\r\n\t\t\tCredentials credentials;\r\n\r\n\t\t\tcredentials = WalletUtils.loadCredentials(\"123\",\r\n\t\t\t\t\tprojectPath + \"/ChorChain/src/com/unicam/resources/UTC--2019-01-16T15-25-24.286179700Z--1adc6ea9d2ddc4dcb45bfc36f01ca8e266026155\");\r\n\t\t\t//credentials = getCredentialFromPrivateKey(\"02D671CA1DC73973ED1E8FB53AA73235CC788DA792E41DB4170616EDED86D23D\");\r\n\t\t\t\r\n\t\t\t//Credentials credentials1 = WalletUtils.loadCredentials(\"123\", \"C:/Users/Alessandro/Desktop/ChorChain/src/com/unicam/resources/UTC--2019-01-25T17-30-24.611307800Z--c3939b1fb6c589fc8636085dd4c52e9b61dab675\");\r\n\r\n\t\t\tRemoteCall returnv;\r\n\r\n\t\t\t// controllo l'array contenente i metodi per cercare il deploy\r\n\t\t\tfor (Method method : methods) {\r\n\t\t\t\tif (method.getName() == \"deploy\" && toExec == \"deploy\") {\r\n\r\n\t\t\t\t\tParameter[] params = method.getParameters();\r\n\r\n\t\t\t\t\tif (params.length == 3\r\n\t\t\t\t\t\t\t&& !params[1].getType().toString().equals(TransactionManager.class.toString())) {\r\n\r\n\t\t\t\t\t\tObject arglist[] = new Object[3];\r\n\t\t\t\t\t\targlist[0] = web3j;\r\n\t\t\t\t\t\targlist[1] = credentials;\r\n\t\t\t\t\t\targlist[2] = new DefaultGasProvider();\r\n\t\t\t\t\t\t//System.out.println(arglist.length);\r\n\t\t\t\t\t\treturnv = (RemoteCall) method.invoke(c, arglist);\r\n\t\t\t\t\t\t// invio la remote call generata dal deploy\r\n\t\t\t\t\t\tObject address = returnv.send();\r\n\t\t\t\t\t\tCONTRACT_ADDRESS = ((Contract) address).getContractAddress();\r\n\r\n\t\t\t\t\t\t//System.out.println(\"Contract deployed at --> \" + CONTRACT_ADDRESS + \"<--\");\r\n\t\t\t\t\t\treturn null;\r\n\r\n\t\t\t\t\t}\r\n\t\t\t\t} else if (method.getName() == \"subscribe_as_participant\" && toExec == \"subscribe_as_participant\") {\r\n\t\t\t\t\tClass[] parameterTypes = new Class[4];\r\n\t\t\t\t\tparameterTypes[0] = String.class;\r\n\t\t\t\t\tparameterTypes[1] = Web3j.class;\r\n\t\t\t\t\tparameterTypes[2] = Credentials.class;\r\n\t\t\t\t\tparameterTypes[3] = ContractGasProvider.class;\r\n\r\n\t\t\t\t\tMethod loadContract = c.getMethod(\"load\", parameterTypes);\r\n\t\t\t\t\tContract contract = (Contract) loadContract.invoke(c, CONTRACT_ADDRESS, web3j, credentials,\r\n\t\t\t\t\t\t\tnew DefaultGasProvider());\r\n\r\n\r\n\t\t\t\t\tObject arglist[] = new Object[2];\r\n\t\t\t\t\targlist[0] = role;\r\n\t\t\t\t\targlist[1] = new BigInteger(\"0\");\r\n\t\t\t\t\tRemoteCall<TransactionReceipt> returnv1 = (RemoteCall<TransactionReceipt>) method.invoke(contract,\r\n\t\t\t\t\t\t\targlist);\r\n\t\t\t\t\tTransactionReceipt t = returnv1.send();\r\n\t\t\t\t    if (t != null) {\r\n\r\n\t\t\t\t\t\tClass[] parameter = new Class[1];\r\n\t\t\t\t\t\tparameter[0] = TransactionReceipt.class;\r\n\t\t\t\t\t\tMethod getEvent = c.getMethod(\"getInfoEvents\", parameter);\r\n\r\n\t\t\t\t\t\tList<Object> events = (List<Object>) getEvent.invoke(contract, t);\r\n\t\t\t\t\t\tfor (Object e : events) {\r\n\t\t\t\t\t\t\tField fi = e.getClass().getDeclaredField(\"next\");\r\n\t\t\t\t\t\t\t//System.out.println(fi.get(e));\r\n\t\t\t\t\t\t\tfinalName = (String) fi.get(e);\r\n\t\t\t\t\t\t\treturn finalName;\r\n\t\t\t\t\t\t\t/*for (ContractObject co : allFunctions) {\r\n\t\t\t\t\t\t\t\tif(co.getName() == finalName) {\r\n\t\t\t\t\t\t\t\t\treturn co;\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}*/\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn null;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tcatch (Exception e) {\r\n\t\t\te.printStackTrace();\r\n\t\t}\r\n\t\t\r\n\t\treturn null;\r\n\r\n\t}\r\n\r\n\tpublic String readLineByLineJava8(String filePath, boolean bin) {\r\n\t\tStringBuilder contentBuilder = new StringBuilder();\r\n\r\n\t\ttry (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {\r\n\t\t\tif(bin)\r\n\t\t\t\tstream.forEach(s -> contentBuilder.append(s));\r\n\t\t\telse\r\n\t\t\t\tstream.forEach(s -> contentBuilder.append(s).append(\"\\n\"));\r\n\t\t} catch (IOException e) {\r\n\t\t\te.printStackTrace();\r\n\t\t}\r\n\r\n\t\treturn contentBuilder.toString();\r\n\t}\r\n\t\r\n\tpublic String deploy(String bin) throws Exception {\r\n\t\t  if(pendingTransaction == true) {\r\n\t\t\t  System.out.println(\"C'è una transazione pendente\");\r\n\t\t\t  return \"ERROR\";\r\n\t\t  }\r\n\t\t \r\n\r\n\t\t//sostituire resources con compiled\r\n\t\tString binar = new String ( Files.readAllBytes( Paths.get(projectPath + \"/resources/\" + parseName(bin, \".bin\"))));\r\n\t\t\r\n\t\t\r\n\t\t  //Unlocking the account\r\n\t\t  //da scommentare PersonalUnlockAccount personalUnlockAccount = adm.personalUnlockAccount(VirtualProsAccount, \"andrea\").send();\r\n\t\t  //Getting the nonce\r\n\r\n\r\n\t\t//da scommentareEthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(\r\n\t\t//da scommentare\t\t  VirtualProsAccount, DefaultBlockParameterName.LATEST).sendAsync().get();\r\n\t\t//da scommentareBigInteger nonce = ethGetTransactionCount.getTransactionCount();\r\n\r\n\t\tSystem.out.println(\"gas price preso dinamico \" + web3j.ethGasPrice().send().getGasPrice());\r\n\t\t BigInteger GAS_PRICE = BigInteger.valueOf(10_000_000_000L);\r\n\r\n\t\tBigInteger GAS_LIMIT = BigInteger.valueOf(10_000_000L);\r\n\r\n\t\t  BigInteger blockGasLimit = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send().getBlock().getGasLimit();\r\n\r\n\t\t//da scommentareTransaction transaction1 = Transaction.createContractTransaction(\r\n//da scommentare\t\t\t        VirtualProsAccount,\r\n//da scommentare\t\t\t\t  \tnonce,\r\n//da scommentare\t\t\t        GAS_PRICE,\r\n//da scommentare\t                GAS_LIMIT,\r\n//da scommentare\t                BigInteger.ZERO,\r\n//da scommentare\t\t\t        \"0x\"+binar);\r\n\r\n\t\t //PARTE DI TESTING CON INFURA e account 0x9e80eBa685B1831f2718A248b18eA58aFD81864c\r\n\t\t//e private key 787e08ed227770a88bc41b6abc6422e199e34a2609ffde66387b4d617098fa71\r\n\t\t//rinkeby connection with pros node 0x79EEc89b0829f123b8B86955d9A847AC9886f314 key 2e10acde64c2a25def9a3ee46f21229ea5e0ed68eab7d2e4febc595a41bf4216\r\n\r\n\t\tEthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(\"0x7A224d367EB99e849dC80F3d7b9FAC9E03Fe8Be0\", DefaultBlockParameterName.LATEST).sendAsync().get();\r\n\t\tBigInteger nonce = ethGetTransactionCount.getTransactionCount();\r\n\t\tEthGetTransactionCount ethGetTransactionCount1 = web3j.ethGetTransactionCount(\"0x7A224d367EB99e849dC80F3d7b9FAC9E03Fe8Be0\", DefaultBlockParameterName.PENDING).sendAsync().get();\r\n\t\tBigInteger nonce1 = ethGetTransactionCount1.getTransactionCount();\r\n\t\tCredentials credentials = getCredentialFromPrivateKey(\"dad1db4a930242b448e57c830cdda2445ca46ebb50103ea02427141f8a0fa58f\");\r\n\t\tSystem.out.println(\"Deploy started with nonce: \" + nonce + \" e nonce pending: \" + nonce1);\r\n\r\n\r\n\t\tRawTransaction ta = RawTransaction.createContractTransaction(\r\n\t\t\t\tnonce,\r\n\t\t\t\tGAS_PRICE,\r\n\t\t\t\tGAS_LIMIT,\r\n\t\t\t\tBigInteger.valueOf(0),\r\n\t\t\t\t\"0x\" + binar\r\n\r\n\t\t);\r\n\r\n\t\t//TransactionEncoder.signMessage(ta, 11155111, credentials);577\r\n\t\tbyte[] signedMessage = TransactionEncoder.signMessage(ta, 11155111, credentials);\r\n\t\tString hexValue = Numeric.toHexString(signedMessage);\r\n\r\n\r\n\t\tlong startTime = System.nanoTime();\r\n\r\n\r\n\r\n\r\n\t\t EthSendTransaction transactionResponse = web3j.ethSendRawTransaction(hexValue).sendAsync().get();\r\n\t\t  //da scommentare EthEstimateGas estimation = web3j.ethEstimateGas(transaction1).send();\r\n\t\t//da scommentare BigInteger amountUsed = estimation.getAmountUsed();\r\n\t\t  // System.out.println(\"AMOUNT OF GAS USED: \" + amountUsed + \"AND current gas block limit(not used): \" + blockGasLimit);\r\n\t\t  //send sync\r\n\t\t//da scommentare EthSendTransaction transactionResponse = web3j.ethSendTransaction(transaction1).sendAsync().get();\r\n\t\tSystem.out.println(\"Transaction sent with reponse: \" + transactionResponse.getTransactionHash());\r\n\r\n\t\t  pendingTransaction = true;\r\n\t\t if(transactionResponse.hasError()) {\r\n\t\t \t  System.out.println(transactionResponse.getError().getData());\r\n\t\t \t  System.out.println(transactionResponse.getError().getMessage());\r\n\r\n\t\t   }\r\n\t\t   String transactionHash = transactionResponse.getTransactionHash();\r\n\t\tSystem.out.println(\"Thash: \" + transactionHash);\r\n       EthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();\r\n\t\t \r\n\t\t  //Optional<TransactionReceipt> receiptOptional = transactionReceipt.getTransactionReceipt();\r\n\t\t  for (int i = 0; i < 222220; i++) {\r\n\t            if (!transactionReceipt.getTransactionReceipt().isPresent()) {\r\n\t                //Thread.sleep(5000);\r\n\t                transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();\r\n\t            } else {\r\n\t                break;\r\n\t            }\r\n\t\t  }\r\n\t\t  TransactionReceipt transactionReceiptFinal = transactionReceipt.getTransactionReceipt().get();\r\n\t\tlong endTime = System.nanoTime();\r\n\t\tlong timeElapsed = endTime - startTime;\r\n\r\n\r\n\t\t//System.out.println(\"CONTRACT DEPLOY TIME ATOMIC: \" + timeElapsed / 1000000);\r\n\t\tSystem.out.println(transactionReceipt.getError());\r\n\t\tSystem.out.println(transactionReceipt.getRawResponse());\r\n\t\t  //System.out.println(transactionReceiptFinal.getContractAddress());\r\n\t\t  \r\n\t\t  String contractAddress = transactionReceiptFinal.getContractAddress();\r\n\t\t  System.out.println(contractAddress);\r\n\t\t  pendingTransaction = false;\r\n\t\t  //System.out.println(contractAddress);\r\n\t\t  return contractAddress;\r\n\r\n\r\n\t\t\r\n\t}\r\n\t\r\n\tprivate static String getStringFromInputStream(InputStream is) {\r\n\r\n\t\tBufferedReader br = null;\r\n\t\tStringBuilder sb = new StringBuilder();\r\n\r\n\t\tString line;\r\n\t\ttry {\r\n\r\n\t\t\tbr = new BufferedReader(new InputStreamReader(is));\r\n\t\t\twhile ((line = br.readLine()) != null) {\r\n\t\t\t\tsb.append(line);\r\n\t\t\t}\r\n\r\n\t\t} catch (IOException e) {\r\n\t\t\te.printStackTrace();\r\n\t\t} finally {\r\n\t\t\tif (br != null) {\r\n\t\t\t\ttry {\r\n\t\t\t\t\tbr.close();\r\n\t\t\t\t} catch (IOException e) {\r\n\t\t\t\t\te.printStackTrace();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn sb.toString();\r\n\r\n\t}\r\n\t\r\n\tpublic void signOffline(Parameters parameters, ContractObject contractDb, String account, String functionName) throws Exception {\r\n\t\tLinkedHashMap<String, String> hashed = contractDb.getTaskIdAndRole();\r\n\t\tHashMap<String, String> names = contractDb.getTaskIdAndName();\r\n\t\t//System.out.println(\"size di hashed: \" + hashed.size());\r\n\t\tint b = 0;\r\n\t\tint z = 0;\r\n\t\tint i = 0;\r\n\t\tfor(Map.Entry<String, String> taskId : names.entrySet()){\r\n\t\t\tif(taskId.equals(functionName)) {\r\n\t\t\t\t//System.out.println(\"task trovato : \" + contractDb.getTasks().get(i));\r\n\t\t\t\t//System.out.println(\"VALORE DI I : \" + i);\r\n\t\t\t\tz = i;\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t\ti++;\r\n\t\t}\r\n\r\n\t\t/*for(int i = 0; i < contractDb.getTasks().size(); i++) {\r\n\t\t\tif(contractDb.getTasks().get(i).equals(functionName)) {\r\n\r\n\t\t\t\tz = i;\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}*/\r\n\t\t\r\n\t\tfor(Map.Entry<String, String> params : hashed.entrySet()) {\r\n\t\t\t //System.out.println(\"valore di b \" + b + \" e di i \" + z);\r\n\t\t\tif(b == z) {\r\n\t\t\t\tfunctionName = params.getKey().split(\"\\\\(\")[0];\r\n\t\t\t\t//System.out.println(\"chiave: \" + params.getKey());\r\n\t\t\t\tbreak;\r\n\t\t\t}else {\r\n\t\t\t\tb++;\r\n\t\t\t}\r\n\t\t }\r\n\t\t\r\n\t\t//System.out.println(\"NOME NUOVO DELLA FUNZIONE: \" + functionName);\r\n\t\t\r\n\t\tBigInteger GAS_PRICE = BigInteger.valueOf(7_600_000_000L);\r\n\t\tBigInteger GAS_LIMIT = BigInteger.valueOf(6_700_000L);\r\n\r\n\t\tEthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(\r\n\t\t\t\t  account, DefaultBlockParameterName.LATEST).sendAsync().get();\r\n\t\t BigInteger nonce = ethGetTransactionCount.getTransactionCount();\r\n\t\t //System.out.println(nonce);\r\n\t\t \r\n\t\t\r\n\t\t List<Type> t = new ArrayList<Type>();\r\n\t\t for(Map.Entry<String, String> params : parameters.getParamsAndValue().entrySet()) {\r\n\t\t\t\tif(params.getKey().equals(\"uint\")) {\r\n\t\t\t\t\tint intValue = Integer.parseInt(params.getValue());\r\n\t\t\t\t\tt.add(new Uint(BigInteger.valueOf(intValue)));\r\n\t\t\t\t}else if(params.getKey().equals(\"string\")) {\r\n\t\t\t\t\tt.add(new Utf8String(params.getValue()));\r\n\t\t\t\t}else if(params.getKey().equals(\"bool\")) {\r\n\t\t\t\t\tboolean boolValue = Boolean.parseBoolean(params.getValue());\r\n\t\t\t\t\tt.add(new Bool(boolValue));\r\n\t\t\t\t}else if(params.getKey().equals(\"address\")) {\r\n\t\t\t\t\tt.add(new Address(params.getValue()));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\r\n\t\t \r\n\t\t \r\n\t\t Function function = new Function(\r\n\t\t\t\t  functionName, \r\n\t\t\t\t  t, \r\n\t\t\t\t  Collections.emptyList()\r\n\t\t\t\t  );\r\n\t\t  \r\n\t\t  \r\n\t\t String encoded = FunctionEncoder.encode(function);\r\n\t\t\r\n\t\t \r\n\t\t RawTransaction ta = RawTransaction.createTransaction(\r\n\t\t\t\t nonce, \r\n\t\t\t\t// BigInteger.valueOf(131),\r\n\t\t\t\t GAS_PRICE, \r\n\t\t\t\t GAS_LIMIT,\r\n\t\t\t\t //\"0xcc8bdb5dd918c9ec86e31b416f627ad0cc5ea22d\",\r\n\t\t\t\t contractDb.getAddress(),\r\n\t\t\t\t encoded\r\n\t\t\t\t );\r\n\r\n\t\t\tCredentials credentials = getCredentialFromPrivateKey(parameters.getPrivateKey());\r\n\t\t\tbyte[] signedMessage = TransactionEncoder.signMessage(ta, credentials);\r\n\t\t\tString hexValue = Numeric.toHexString(signedMessage);\r\n\t\t\tEthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();\r\n\t\t\t//  if(ethSendTransaction.hasError()) {\r\n\t\t\t\t  //System.out.println(ethSendTransaction.getError().getData());\r\n\t\t\t\t  //System.out.println(ethSendTransaction.getError().getMessage());}\r\n\t\t\tString transactionHash = ethSendTransaction.getTransactionHash();\r\n\t\t\tEthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();\r\n\t\t\t  \r\n\t\t\t  for (int u = 0; u < 222220; u++) {\r\n\t\t\t\t  //System.out.println(\"Wait: \" + i);\r\n\t\t            if (!transactionReceipt.getTransactionReceipt().isPresent()) {\r\n\t\t                transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();\r\n\t\t            } else {\r\n\t\t                break;\r\n\t\t            }\r\n\t\t\t  }\r\n\t\t\t  TransactionReceipt transactionReceiptFinal = transactionReceipt.getTransactionReceipt().get();\r\n\t\t\t  //System.out.println(transactionReceiptFinal.getLogs());\r\n\t\t\t  //System.out.println(transactionReceiptFinal.getLogsBloom());\r\n\t\t\t\r\n\t}\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+diff --git a/src/com/unicam/rest/ContractFunctions.java b/src/com/unicam/rest/ContractFunctions.java
+--- a/src/com/unicam/rest/ContractFunctions.java	(revision 4e67a23b3a02ea065353c2b9c81fd9d2d0bc30f0)
++++ b/src/com/unicam/rest/ContractFunctions.java	(date 1711387407994)
+@@ -72,7 +72,7 @@
+ 	public static String projectPath = System.getenv("ChorChain"); 
+ 	
+ 	//Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/080d5a8adcc244f4a289882d6063723c"));
+-	Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/7910955c9b9a44ccab34f69dc0bf3a2f"));
++	Web3j web3j = Web3j.build(new HttpService("https://polygon-mumbai.g.alchemy.com/v2/8_t0kI9ytV3Y-4-jFoyiepYlsc8gTBIZ"));
+ 	//Admin adm = Admin.build(new HttpService("http://193.205.92.133:8545"));
+ 
+ 
+@@ -283,9 +283,9 @@
+ 		//da scommentareBigInteger nonce = ethGetTransactionCount.getTransactionCount();
+ 
+ 		System.out.println("gas price preso dinamico " + web3j.ethGasPrice().send().getGasPrice());
+-		 BigInteger GAS_PRICE = BigInteger.valueOf(10_000_000_000L);
++		 BigInteger GAS_PRICE = BigInteger.valueOf(90_000_000_000L);
+ 
+-		BigInteger GAS_LIMIT = BigInteger.valueOf(10_000_000L);
++		BigInteger GAS_LIMIT = BigInteger.valueOf(30_000_000L);
+ 
+ 		  BigInteger blockGasLimit = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send().getBlock().getGasLimit();
+ 
+@@ -319,7 +319,7 @@
+ 		);
+ 
+ 		//TransactionEncoder.signMessage(ta, 11155111, credentials);577
+-		byte[] signedMessage = TransactionEncoder.signMessage(ta, 11155111, credentials);
++		byte[] signedMessage = TransactionEncoder.signMessage(ta, 80001, credentials);
+ 		String hexValue = Numeric.toHexString(signedMessage);
+ 
+ 
+Index: src/com/unicam/resources/incidentManagement.sol
+===================================================================
+diff --git a/src/com/unicam/resources/incidentManagement.sol b/src/com/unicam/resources/incidentManagement.sol
+deleted file mode 100644
+--- a/src/com/unicam/resources/incidentManagement.sol	(revision 4e67a23b3a02ea065353c2b9c81fd9d2d0bc30f0)
++++ /dev/null	(revision 4e67a23b3a02ea065353c2b9c81fd9d2d0bc30f0)
+@@ -1,197 +0,0 @@
+-pragma solidity ^0.5.3; 
+-	pragma experimental ABIEncoderV2;
+-	contract incidentManagement{
+-	event stateChanged(Element[] , StateMemory ); 
+-	mapping (string=>uint) position;
+-
+-	enum State {DISABLED, ENABLED, DONE} State s; 
+-	mapping(string => string) operator; 
+-	struct Element{
+-	string ID;
+-	State status;
+-}
+-	struct StateMemory{
+-	string problem_info;
+-string response;
+-string questions;
+-string response3rd;
+-string response2nd;
+-string response1st;
+-string solution;
+-string problem2nd;
+-string problem3rd;
+-string problem1st;
+-}
+-	Element[] elements;
+-	  StateMemory currentMemory;
+-	string[] elementsID = ["sid-EE168749-2FAC-4AD8-9F3B-CC2046AAFE4C", "sid-5e4d800a-1f6f-46ca-8d4b-2327694d4958", "sid-3f2f6541-2bd2-432c-b595-23712dbfe350", "sid-606530fb-4ecf-4219-a0d5-6341a50039da", "sid-0297A9CD-9054-431E-9E67-309F8569D4AA", "sid-C7D54A12-9C26-4719-914D-2B08A4FA1EB5", "sid-D80BE9E4-6761-4D74-A172-218FE3799D85", "sid-a07225ce-c514-462b-a681-cd452b83352e", "sid-9f328606-3234-488d-b712-ee0ef6205109", "sid-96bfe28f-2d7b-48e7-8571-55b9f9fb95e1", "sid-6c534b87-e576-419b-9c48-58ab017bca84", "sid-6D43AFF0-8DA0-40D4-95E0-32D0B31EA241", "sid-e396b27b-4f24-4f8b-887f-1b020b8d86b4", "sid-585df627-5639-408c-ae64-cfb696945195", "sid-193e65e8-a4b7-4e6d-bcca-5121de7787dc"];
+-	string[] roleList = [ "Software developer", "VIP customer", "Key Account Manager", "2nd level support agent", "1st level support agent" ]; 
+-	mapping(string=>address) roles; 
+-constructor() public{
+-    //struct instantiation
+-    for (uint i = 0; i < elementsID.length; i ++) {
+-        elements.push(Element(elementsID[i], State.DISABLED));
+-        position[elementsID[i]]=i;
+-    }
+-         
+-         //roles definition
+-         //mettere address utenti in base ai ruoli
+-	roles["Software developer"] = 0xc33d9df08d31d3a2e7ba59519783593cff46c086;
+-	roles["VIP customer"] = 0xc33d9df08d31d3a2e7ba59519783593cff46c086;
+-	roles["Key Account Manager"] = 0xc33d9df08d31d3a2e7ba59519783593cff46c086;
+-	roles["2nd level support agent"] = 0xc33d9df08d31d3a2e7ba59519783593cff46c086;
+-	roles["1st level support agent"] = 0xc33d9df08d31d3a2e7ba59519783593cff46c086;
+-         
+-         //enable the start process
+-         init();
+-    }
+-    modifier checkRole(string storage role) 
+-{ 
+-	require(msg.sender == roles[role]); 
+-	_;}
+-
+-modifier Owner(string memory task) 
+-{ 
+-	require(elements[position[task]].status==State.ENABLED);
+-	_;
+-}
+-function init() internal{
+-       bool result=true;
+-       	for(uint i=0; i<roleList.length;i++){
+-       	     if(roles[roleList[i]]==0x0000000000000000000000000000000000000000){
+-                result=false;
+-                break;
+-            }
+-       	}
+-       	if(result){
+-       	    enable("sid-EE168749-2FAC-4AD8-9F3B-CC2046AAFE4C");
+-				sid_EE168749_2FAC_4AD8_9F3B_CC2046AAFE4C();
+-       	}
+-   }
+-
+-function subscribe_as_participant(string memory _role) public {
+-        if(roles[_role]==0x0000000000000000000000000000000000000000){
+-          roles[_role]!=msg.sender;
+-        }
+-        init();
+-    }
+-function sid_EE168749_2FAC_4AD8_9F3B_CC2046AAFE4C() private {
+-	require(elements[position["sid-EE168749-2FAC-4AD8-9F3B-CC2046AAFE4C"]].status==State.ENABLED);
+-	done("sid-EE168749-2FAC-4AD8-9F3B-CC2046AAFE4C");
+-	enable("sid-5e4d800a-1f6f-46ca-8d4b-2327694d4958");  
+-	
+-}
+-
+-function sid_5e4d800a_1f6f_46ca_8d4b_2327694d4958(string memory problem_info) public checkRole(roleList[1]) {
+-	require(elements[position["sid-5e4d800a-1f6f-46ca-8d4b-2327694d4958"]].status==State.ENABLED);  
+-	done("sid-5e4d800a-1f6f-46ca-8d4b-2327694d4958");
+-currentMemory.problem_info=problem_info;
+-	enable("sid-3f2f6541-2bd2-432c-b595-23712dbfe350");
+-}
+-
+-function sid_3f2f6541_2bd2_432c_b595_23712dbfe350(string memory response) public checkRole(roleList[2]){
+-	require(elements[position["sid-3f2f6541-2bd2-432c-b595-23712dbfe350"]].status==State.ENABLED);  
+-	done("sid-3f2f6541-2bd2-432c-b595-23712dbfe350");
+-	enable("sid-606530fb-4ecf-4219-a0d5-6341a50039da");
+-currentMemory.response=response;
+-}
+-function sid_606530fb_4ecf_4219_a0d5_6341a50039da(string memory questions) public checkRole(roleList[1]){
+-	require(elements[position["sid-606530fb-4ecf-4219-a0d5-6341a50039da"]].status==State.ENABLED);
+-	done("sid-606530fb-4ecf-4219-a0d5-6341a50039da");
+-currentMemory.questions=questions;
+-	enable("sid-0297A9CD-9054-431E-9E67-309F8569D4AA");
+-sid_0297A9CD_9054_431E_9E67_309F8569D4AA(); 
+-}
+-
+-function sid_0297A9CD_9054_431E_9E67_309F8569D4AA() private {
+-	require(elements[position["sid-0297A9CD-9054-431E-9E67-309F8569D4AA"]].status==State.ENABLED);
+-	done("sid-0297A9CD-9054-431E-9E67-309F8569D4AA");
+-if(compareStrings(currentMemory.questions, "resolved")==true){enable("sid-6c534b87-e576-419b-9c48-58ab017bca84"); 
+-}if(compareStrings(currentMemory.questions, "error")==true){enable("sid-193e65e8-a4b7-4e6d-bcca-5121de7787dc"); 
+-}}
+-
+-function sid_C7D54A12_9C26_4719_914D_2B08A4FA1EB5() private {
+-	require(elements[position["sid-C7D54A12-9C26-4719-914D-2B08A4FA1EB5"]].status==State.ENABLED);
+-	done("sid-C7D54A12-9C26-4719-914D-2B08A4FA1EB5");
+-if(compareStrings(currentMemory.problem1st, "yes")==true){enable("sid-e396b27b-4f24-4f8b-887f-1b020b8d86b4"); 
+-}if(compareStrings(currentMemory.problem1st, "no")==true){enable("sid-96bfe28f-2d7b-48e7-8571-55b9f9fb95e1"); 
+-}}
+-
+-function sid_D80BE9E4_6761_4D74_A172_218FE3799D85() private {
+-	require(elements[position["sid-D80BE9E4-6761-4D74-A172-218FE3799D85"]].status==State.ENABLED);
+-	done("sid-D80BE9E4-6761-4D74-A172-218FE3799D85");
+-if(compareStrings(currentMemory.problem2nd, "yes")==true){enable("sid-585df627-5639-408c-ae64-cfb696945195"); 
+-}if(compareStrings(currentMemory.problem2nd, "no")==true){enable("sid-9f328606-3234-488d-b712-ee0ef6205109"); 
+-}}
+-
+-function sid_a07225ce_c514_462b_a681_cd452b83352e(string memory response3rd) public checkRole(roleList[0]) {
+-	require(elements[position["sid-a07225ce-c514-462b-a681-cd452b83352e"]].status==State.ENABLED);  
+-	done("sid-a07225ce-c514-462b-a681-cd452b83352e");
+-currentMemory.response3rd=response3rd;
+-	enable("sid-9f328606-3234-488d-b712-ee0ef6205109");
+-}
+-
+-function sid_9f328606_3234_488d_b712_ee0ef6205109(string memory response2nd) public checkRole(roleList[3]) {
+-	require(elements[position["sid-9f328606-3234-488d-b712-ee0ef6205109"]].status==State.ENABLED);  
+-	done("sid-9f328606-3234-488d-b712-ee0ef6205109");
+-currentMemory.response2nd=response2nd;
+-	enable("sid-96bfe28f-2d7b-48e7-8571-55b9f9fb95e1");
+-}
+-
+-function sid_96bfe28f_2d7b_48e7_8571_55b9f9fb95e1(string memory response1st) public checkRole(roleList[2]) {
+-	require(elements[position["sid-96bfe28f-2d7b-48e7-8571-55b9f9fb95e1"]].status==State.ENABLED);  
+-	done("sid-96bfe28f-2d7b-48e7-8571-55b9f9fb95e1");
+-currentMemory.response1st=response1st;
+-	enable("sid-6c534b87-e576-419b-9c48-58ab017bca84");
+-}
+-
+-function sid_6c534b87_e576_419b_9c48_58ab017bca84(string memory solution) public checkRole(roleList[2]) {
+-	require(elements[position["sid-6c534b87-e576-419b-9c48-58ab017bca84"]].status==State.ENABLED);  
+-	done("sid-6c534b87-e576-419b-9c48-58ab017bca84");
+-currentMemory.solution=solution;
+-	enable("sid-6D43AFF0-8DA0-40D4-95E0-32D0B31EA241");
+-sid_6D43AFF0_8DA0_40D4_95E0_32D0B31EA241(); 
+-}
+-
+-function sid_6D43AFF0_8DA0_40D4_95E0_32D0B31EA241() private {
+-	require(elements[position["sid-6D43AFF0-8DA0-40D4-95E0-32D0B31EA241"]].status==State.ENABLED);
+-	done("sid-6D43AFF0-8DA0-40D4-95E0-32D0B31EA241");  }
+-
+-function sid_e396b27b_4f24_4f8b_887f_1b020b8d86b4(string memory problem2nd) public checkRole(roleList[4]) {
+-	require(elements[position["sid-e396b27b-4f24-4f8b-887f-1b020b8d86b4"]].status==State.ENABLED);  
+-	done("sid-e396b27b-4f24-4f8b-887f-1b020b8d86b4");
+-currentMemory.problem2nd=problem2nd;
+-	enable("sid-D80BE9E4-6761-4D74-A172-218FE3799D85");
+-sid_D80BE9E4_6761_4D74_A172_218FE3799D85(); 
+-}
+-
+-function sid_585df627_5639_408c_ae64_cfb696945195(string memory problem3rd) public checkRole(roleList[3]) {
+-	require(elements[position["sid-585df627-5639-408c-ae64-cfb696945195"]].status==State.ENABLED);  
+-	done("sid-585df627-5639-408c-ae64-cfb696945195");
+-currentMemory.problem3rd=problem3rd;
+-	enable("sid-a07225ce-c514-462b-a681-cd452b83352e");
+-}
+-
+-function sid_193e65e8_a4b7_4e6d_bcca_5121de7787dc(string memory problem1st) public checkRole(roleList[2]) {
+-	require(elements[position["sid-193e65e8-a4b7-4e6d-bcca-5121de7787dc"]].status==State.ENABLED);  
+-	done("sid-193e65e8-a4b7-4e6d-bcca-5121de7787dc");
+-currentMemory.problem1st=problem1st;
+-	enable("sid-C7D54A12-9C26-4719-914D-2B08A4FA1EB5");
+-sid_C7D54A12_9C26_4719_914D_2B08A4FA1EB5(); 
+-}
+-
+- function enable(string memory _taskID) internal { elements[position[_taskID]].status=State.ENABLED; }
+-
+-    function disable(string memory _taskID) internal { elements[position[_taskID]].status=State.DISABLED; }
+-
+-    function done(string memory _taskID) internal { elements[position[_taskID]].status=State.DONE; } 
+-   
+-    function getCurrentState()public view  returns(Element[] memory, StateMemory memory){
+-        // emit stateChanged(elements, currentMemory);
+-        return (elements, currentMemory);
+-    }
+-    
+-    function compareStrings (string memory a, string memory b) internal pure returns (bool) { 
+-        return keccak256(abi.encode(a)) == keccak256(abi.encode(b)); 
+-    }
+-}
+\ No newline at end of file

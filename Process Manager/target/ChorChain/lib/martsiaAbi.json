@@ -1,0 +1,553 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "authority",
+        "type": "address"
+      }
+    ],
+    "name": "keyPieceMinted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "requester",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "_gid1",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "_gid2",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint64",
+        "name": "instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "keyRequestGenerated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setAuthoritiesNames",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getAuthoritiesNames",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash3",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash4",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setElementHashed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getElementHashed",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash3",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash4",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash5",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash6",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setElement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getElement",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setPublicParameters",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getPublicParameters",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setPublicKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getPublicKey",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setPublicKeyReaders",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "getPublicKeyReaders",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_messageID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setIPFSLink",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_messageID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getIPFSLink",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setUserAttributes",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "getUserAttributes",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_gid1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_gid2",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      }
+    ],
+    "name": "requestKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash1",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_hash2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "storeKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_instanceID",
+        "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "_authorityAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getKeyPiece",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  }
+]

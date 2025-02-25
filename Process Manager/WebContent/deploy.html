@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Deploy of smart contract</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
+            integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mobiscroll-angularjs@4.0.0/dist/js/mobiscroll.angularjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- graphics -->
+    <link rel="stylesheet" href="css/unicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" href="css/tooplate-style.css">
+
+    <!-- Modeler import -->
+    <link rel="stylesheet" href="css/diagram-js-preview.css"/>
+    <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn.css"/>
+    <link rel="stylesheet" href="vendor/chor-js/font/include/css/choreography.css"/>
+    <!-- Modeler end import -->
+    <!-- Sweet alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="css/querying.css">
+
+    <style>
+        .highlight:not .djs-connection .djs-visual > :nth-child(1) {
+            fill: green !important;
+        }
+
+        .highlight-overlay {
+            background-color: green;
+            /* color elements as green */
+            opacity: 0.4;
+            pointer-events: none;
+            /* no pointer events, allows clicking through onto the element */
+        }
+
+        .bjs-powered-by {
+            display: none;
+        }
+
+        .djs-palette two-column open {
+            display: none;
+        }
+
+        .set-active {
+            background: black;
+        }
+
+
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: blue;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: blue;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body id="controllerBody" ng-app="monitor" ng-controller="monitorCtrl" ng-cloak>
+<!-- MENU -->
+<nav class="navbar navbar-expand-sm  navbar-light bg-light" data-ng-init="setUser()">
+    <div class="container">
+        <!-- <a class="navbar-brand" href="index.html"></i> ChorChain</a>--->
+        <img src="ChorChain_logo.png" width="150" height="52" alt="ChorChin logo">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav" ng-if="isLogged">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a href="homePage.html" class="nav-link"><span data-hover="Home Page">Home Page</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="modeler.html" class="nav-link"><span data-hover="Modeler">Modeler</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="deploy.html" class="nav-link active"><span
+                            data-hover="Execution Page">Execution Page</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="querying.html" class="nav-link"><span data-hover="Querying">Querying</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="audit.html" class="nav-link"><span data-hover="Audit">Audit</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="personalPage.html" class="nav-link"><span data-hover="Personal Page">Personal
+								Page</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section class=" d-lg-flex justify-content-center align-items-center">
+    <!--- <h3 ng-if="!isLogged">You must log in to access this page</h3> ng-if="isLogged " --->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body" ng-cloak>
+                        <h6>Model File List</h6>
+                        <ul class="list-group models-list">
+                            <li class="list-group-item" ng-repeat="contract in instances track by $index">
+                                <!--<a ng-click="getContractParticipants(contract.id); getTask(contract.id); sub(contract.id); savePastEvents()"-->
+                                <a ng-click="getContractParticipants(contract.id); getTask(contract.id); sub(contract.id)"
+                                   class="nav-link" id="{{contract.id}}"
+                                   style="cursor:pointer">{{contract.name}}
+                                    <small class="text-muted">{{contract.id}}</small></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body" ng-cloak>
+
+                        <h5>{{actualContract.name}}</h5>
+                        <div class="col-12">
+                            <div id="canvas" style="height: 400px;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9" ng-cloak>
+                                <div class="slidecontainer">
+                                    <input class="slider" id="transactionSlider" type="range" class="no-border"
+                                           value="0" min="0" max="0"/>
+                                </div>
+                                <button type="button" style="display: none" id="js-preview"
+                                        data-value="{{actualContract.name}}"></button>
+                                <!--<div>Contract deployed: {{actualContract.address}} visible at: <a
+                                        href="https://sepolia.etherscan.io/address/{{actualContract.address}}">
+                                    etherscan.io</a></div>-->
+                                <ul class="list-group">
+                                    <li class="list-group-item my-2" ng-repeat="msg in msgs">
+                                        {{msg}}
+                                        <!--ng-repeat="msg in msgs"> ng-if="msg.includes('(')" ng-if="msg.status == 'Enabled'">-->
+                                        <!-- ng-repeat="msg in msgs" ng-if="msg.status == '1'" {{msg.name}} --->
+                                        <!---{{actualContract.taskIdAndName[msg.ID]}} {{msg.status}} {{currentRole}}--->
+                                        <div class="float-right">Status: {{msg.status}}
+
+
+                                        </div>
+                                        {{msg.role}}
+                                        {{msg.participant}}
+                                        <!-- <form class="mt-3">
+                                             ng-if="msg.show==1 && actualContract.participants[currentRole] == user.id">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Function input"
+                                                       ng-model="param">
+                                            </div>
+                                            <input type="submit" class="btn btn-primary" value="Submit"
+                                                   ng-click="launch(msg.ID, $index, contract.id, param)"
+                                                   id="submitbtn">
+                                        </form>-->
+                                        <form class="mt-3">
+                                        <!-- ng-if="msg.show==1 && actualContract.participants[currentRole] == user.id">
+                                      <div class="form-group">
+                                          <input type="text" class="form-control"
+                                                 placeholder="Martsia ask pk"
+                                                 ng-model="param">
+                                      </div>-->
+                                            <!---<input type="submit" class="btn btn-primary" value="generate_pp_pk"
+                                                   ng-click="generate_pp_pk();"
+                                                   id="submitMartsiaMessage">--->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control"
+                                                       placeholder="Martsia Function input"
+                                                       ng-model="param">
+                                            </div>
+                                            <input type="checkbox" ng-model="publicVarCheckbox" > {{publicVarCheckbox}}
+                                            <input type="submit" class="btn btn-primary" value="Cipher message to Martsia
+                                            (check for public value)"
+                                                   ng-click="cipherMessage(param, msg, publicVarCheckbox)"
+                                                   id="cipherMessage">
+
+                                            <!---<input type="submit" class="btn btn-primary" value="Ask Key to Martsia"
+                                                   ng-click="askKey()"
+                                                   id="askKey">--->
+                                            <input type="submit" class="btn btn-primary" value="Read from Martsia"
+                                                   ng-click="read(msg)"
+                                                   id="read">
+                                        </form>
+                                        <div
+                                                ng-if="msg.show==1 && actualContract.participants[currentRole] != user.id">
+                                            Waiting for the incoming message
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="col-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item" ng-repeat="msg in msgToShow track by $index"
+                                        ng-if="msg">
+                                        {{msg.fName}} <br><br>
+                                        <div ng-if="msg.value"> {{msg.name}} : {{msg.value}}</div>
+                                    </li>
+                                </ul>
+                                <ul class="list-group">
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    </div>
+
+
+    </div>
+</section>
+<div class="modal fade" role="dialog" id="auditing" ng-if="isLogged ">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="msg in msgToShow track by $index">
+                        {{msg.name}} : {{msg.value}} <br></li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="transaction in transactionHistory track by $index"
+                        ng-if="transaction.sid == actualSid || $index == actualSid">
+                        <div ng-repeat="creation in transactionHistory"
+                             ng-if="transaction.sid.includes('Start') && creation.sid.includes('Contract creation')">
+                            Contract Creation (event {{$index + 1}})<br>
+                            Transaction hash : <a href="https://sepolia.etherscan.io/tx/{{transaction.hash}}">
+                            {{transaction.hash}} </a><br>
+                            Sent from : {{creation.from}} <br>
+                            Transaction gas limit : {{creation.gas}} <br>
+                            Transaction gas price : {{creation.gasPrice}} <br>
+                            Gas used by the transaction : {{creation.gasUsed}} <br>
+                            Block mine time :{{creation.time}}
+                        </div>
+                        <br>
+                        Event {{$index + 1}} <br>
+                        Transaction hash : <a href="https://sepolia.etherscan.io/tx/{{transaction.hash}}">
+                        {{transaction.hash}} </a><br>
+                        Sent from : {{transaction.from}} <br>
+                        Transaction gas limit fp: {{transaction.gas}} <br>
+                        Transaction gas price : {{transaction.gasPrice}} <br>
+                        Gas used by the transaction : {{transaction.gasUsed}} <br>
+                        Block mine time :{{transaction.time}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="lib/app.js"></script>
+<script src="lib/controller.js"></script>
+<script src="lib/service.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+<script src="lib/appmodeler.js"></script>
+
+</body>
+
+
+<script>
+    $(document).on("click", ".nav-link", function () {
+        $("#js-preview").trigger("click");
+    });
+
+    var accountInterval = setInterval(function () {
+        $('.djs-group').unbind().dblclick(function (e) {
+            e.stopPropagation();
+            taskid = e.currentTarget.childNodes[0].dataset.elementId;
+            var task = e.currentTarget.childNodes[0].dataset.elementId;
+            //message data reading for chorchain base
+            //angular.element(document.getElementById('controllerBody')).scope().selectTransactionToShow(task);
+            //message data reading for martsia
+            angular.element(document.getElementById('controllerBody')).scope().readMartsiaMessage(task);
+        });
+    }, 100);
+
+
+    function setTabActive(contractid) {
+        tablinks = document.getElementsByClassName("list-group-item");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace("bg-grey", "");
+        }
+        document.getElementById(contractid).parentNode.classList.add('bg-grey');
+    }
+
+    var slider = document.getElementById("transactionSlider");
+
+    slider.oninput = function () {
+        const parsedValue = angular.element(document.getElementById('controllerBody')).scope().parsingSliderInput(slider.value);
+        angular.element(document.getElementById('controllerBody')).scope().selectTransactionToShow(parsedValue);
+    }
+
+    var app = angular.module('monitor', ['ngCookies', 'mobiscroll-form']);
+
+    app.controller("monitorCtrl", function ($scope, $http, $cookies, $window) {
+
+            $scope.publicVarCheckbox = false;
+            $scope.user = {};
+            $scope.sendParams = {};
+            $scope.instances = {};
+            $scope.actualInstance = {};
+            //$scope.tasks = {};
+            $scope.actualContract = {};
+            $scope.myContract = {};
+            $scope.stateContract = {};
+            $scope.inputs = {};
+            $scope.memory = {};
+            $scope.msgs = null;
+            $scope.singleMemory = null;
+            $scope.index = null;
+            //$scope.valueNames = {};
+            $scope.currentRole = "";
+            $scope.activeSid = "";
+            $scope.transactionHistory = [{}];
+            $scope.msgToShow = [{}];
+            $scope.transactionToShow = [{hash: "", from: "", gas: "", gasPrice: "", time: "", blockNumber: "", sid: ""}];
+            $scope.actualSid = "";
+            $scope.totalGas = [];
+            $scope.eventSid = [];
+            $scope.isLogged = false;
+            $scope.steps = 50;
+
+
+        $scope.launch = async function (task, $index, refresh, parameter) {
+                $("#submitbtn").prop("disabled", true);
+                //var am = amount;
+
+                let params = parameter;
+                //let name = $scope.actualContract.tasks[$index];
+                let name = $scope.actualContract.taskIdAndName[task];
+
+
+                if (name.includes("payment")) {
+
+                    let complete = task + '()';
+                    let replaced = complete.replace(/-/g, '_');
+
+                    let parArray = [];
+
+                    let newAmount = web3.utils.toWei(params, 'ether');
+                    let paymentStart = new Date();
+                    $scope.myContract.methods[replaced].apply(this, parArray).send({
+                        chainId: 4,
+                        from: $scope.user.address,
+                        value: newAmount,
+                        //gas: 200000,
+                    }).then(function (error, receipt) {
+                        let paymentEnd = new Date();
+                        let paymentDiff = paymentEnd - paymentStart; //in ms
+                        //console.log("Message execution time: "+ paymentDiff);
+                        $scope.payment = false;
+                        removehighlightmsg($scope.activeSid);
+                        if (error) {
+                            $("#submitbtn").prop("disabled", false);
+                        }
+                    });
+
+                } else {
+                    //console.log("name: " + name + " task: " + task);
+                    var n1 = name.split('\(');
+                    //var n2 = n1.split(',');
+                    var n3 = n1[1].split(' ');
+
+                    var complete = task + '(';
+
+                    for (var i in n3) {
+
+                        if (n3[i] == 'uint' || n3[i] == 'string' || n3[i] == 'bool') {
+                            if (n3[i] == 'uint') {
+                                n3[i] = 'uint256';
+                            }
+                            complete += n3[i] + ' , ';
+
+                        }
+                    }
+                    var addPar = complete.split(' ');
+
+                    addPar.pop();
+                    addPar.pop();
+
+                    complete = "";
+                    for (i in addPar) {
+                        complete += addPar[i];
+                    }
+                    complete += ')';
+                    //console.log(complete);
+                    var replaced = complete.replace(/-/g, '_');
+                    //console.log(replaced);
+                    for (var method in $scope.myContract.methods) {
+                        //console.log(method);
+                        if (method == replaced) {
+                            //await unlock();
+                            var parArray = [];
+                            if (parameter.includes(',')) {
+                                //var a = parameter;
+                                //parArray = parameter.split('\,');
+                                var splittedParams;
+                                if (parameter.includes(', ')) {
+                                    splittedParams = parameter.split('\, ');
+                                } else {
+                                    splittedParams = parameter.split('\,');
+                                }
+
+                                for (var p in splittedParams) {
+                                    if (splittedParams[p].includes("true")) {
+                                        splittedParams[p] = true;
+                                        //console.log(typeof parameter);
+                                    } else if (splittedParams[p].includes("false")) {
+                                        splittedParams[p] = false;
+                                    }
+                                    parArray = splittedParams;
+                                }
+                            } else {
+                                if (parameter.includes("true")) {
+                                    parameter = true;
+                                    //console.log(typeof parameter);
+                                } else if (parameter.includes("false")) {
+                                    parameter = false;
+                                }
+                                parArray.push(parameter);
+                            }
+                            //console.log(parArray);
+
+                            try {
+
+                                //console.log("no payment");
+                                let startTime = new Date();
+                                $scope.myContract.methods[method].apply(this, parArray).send({
+                                    chainId: 4,
+                                    from: $scope.user.address,
+                                    //gas: 200000,
+                                }).then(function (error, receipt) {
+                                    let endTime = new Date();
+                                    let timeDiff = endTime - startTime; //in ms
+                                    console.log("Message execution time: " + timeDiff);
+                                    removehighlightmsg($scope.activeSid);
+                                    if (error) {
+                                        $("#submitbtn").prop("disabled", false);
+                                    }
+
+                                });
+
+                            } catch (e) {
+                                Swal.fire(
+                                    'Bad input!',
+                                    'You inserted a wrong type value!',
+                                    'error'
+                                );
+                                $("#submitbtn").prop("disabled", false);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            $scope.getUserContracts = function () {
+                $http.post("rest/getCont/" + $cookies.get('UserId')).then(function (response) {
+                    $scope.instances = response.data;
+                    //console.log(response.data);
+                });
+            }
+
+            $scope.getSingleMem = function () {
+                $scope.singleMemory = $scope.memory[$scope.index];
+            }
+
+            $scope.getContractParticipants = function (id) {
+                $http.post("rest/getPart/" + id).then(function (response) {
+                    //console.log(response.data);
+                    $scope.actualContract.participants = response.data;
+                });
+            }
+
+
+
+
+
+            $scope.getTask = async function (id) {
+                setTabActive(id);
+                //$scope.msgs = {};
+                $scope.memory = null;
+                let martsiaId = "";
+                for (var i in $scope.instances) {
+                    if ($scope.instances[i].id == id) {
+
+                        $scope.actualInstance = $scope.instances[i];
+                        $scope.actualContract = $scope.instances[i].deployedContract;
+                        $scope.actualContract.name = $scope.instances[i].name;
+                        //$scope.tasks = $scope.actualContract.taskIdAndName;
+                        //$scope.valueNames = $scope.actualContract.varNames;
+                        console.log($scope.actualContract);
+                        martsiaId = $scope.instances[i].martsiaId;
+                        console.log(martsiaId);
+                        // $scope.process_instance_id = $scope.actualContract.id;
+                        //$scope.msgs = $scope.actualContract.taskIdAndName;
+                        break;
+                    }
+                }
+                //$scope.stateAbi = JSON.parse();
+                $scope.stateContract = new web3.eth.Contract($scope.stateAbi, "0xd266b9Cf9dF90128c6E180A543A09d0F67D49D42");
+                //$scope.stateContract = new web3.eth.Contract($scope.stateAbi, "0x10fB8d358C32a8AE6F884B8277154063942DCe9e");
+                $scope.msgs = [{}];
+                const taskIdAndMartsiaId = JSON.parse($cookies.get('taskIdAndMartsiaId'))
+                for (const msg in taskIdAndMartsiaId) {
+                    console.log(msg);
+                    console.log($scope.actualContract);
+                    const m = await $scope.stateContract.methods.getInstanceElement(martsiaId, taskIdAndMartsiaId[msg]).call()
+                    console.log(m)
+                    if (m.state == 1 || m.state == 2) {
+                        highlightmsg(msg);
+                    }
+                    const element = {
+                        name: $scope.actualContract.taskIdAndName[msg],
+                        chorChainId: msg,
+                        martsiaId: taskIdAndMartsiaId[msg],
+                        status: Number(m.state),
+                        participant: m.senderParticipant,
+                        role: $scope.actualContract.taskIdAndRole[msg]
+                    };
+                    $scope.$apply(function (receipt) {
+
+                        $scope.msgs.push(element);
+
+                    })
+                    /*.then(function (receipt) {
+                    //$scope.$apply(function (recepit) {
+                    //$scope.msgs[msg] = receipt;
+                    $scope.msgs =  $scope.actualContract.taskIdAndName;
+                    //$scope.memory = receipt[1];
+                    //$scope.setRoleActive();
+                    console.log($scope.msgs);
+                    if (receipt.state == 1 || receipt.state == 2) {
+                        highlightmsg(msg);
+                    }
+
+                });*/
+                    //})
+                }
+
+
+            }
+
+
+        $scope.setUser = function () {
+                if ($cookies.get('UserId') != null) {
+                    $scope.isLogged = true;
+                    $http.post("rest/getUserInfo/" + $cookies.get('UserId')).then(function (response) {
+                        $scope.user = response.data;
+                    });
+                } else {
+                    $scope.isLogged = false;
+                }
+            }
+
+
+            /* rimosso per chorsia
+            async function getPastEvents() {
+                return await $scope.myContract.getPastEvents('functionDone', {
+                    fromBlock: 0,
+                    toBlock: 'latest'
+                });
+            }*/
+
+            /* rimosso per chorsia
+            $scope.savePastEvents = async function () {
+                $scope.eventSid = [];
+                const pastEvents = await getPastEvents();
+                for (const event of pastEvents) {
+                    $scope.eventSid.push(event);
+                }
+                const length = $scope.eventSid.length;
+                document.getElementsByClassName("slider")[0].max = length - 1;
+            }*/
+
+
+            $scope.getPast = function () {
+                $scope.transactionHistory = [{}];
+                $scope.totalGas = [];
+                $scope.eventSid = [];
+                $scope.myContract.getPastEvents('functionDone', {
+                    fromBlock: 0,
+                    toBlock: 'latest'
+                }, (error, result) => {
+                })
+                    .then((result) => {
+                        var events = result;
+
+                        var callBackCount = 0;
+                        for (var ev in events) {
+                            $scope.eventSid.push(events[ev].returnValues[0]);
+                            var hash = events[ev].transactionHash;
+                            /*web3.eth.getTransaction(hash).then(function (resultTransaction) {
+                                var transac = {
+                                    hash: resultTransaction.hash,
+                                    from: resultTransaction.from, gas: resultTransaction.gas, gasUsed: 0, gasPrice: resultTransaction.gasPrice,
+                                    time: "", blockNumber: resultTransaction.blockNumber, sid: ""
+                                };*/
+
+                            /*web3.eth.getBlock(resultTransaction.blockNumber).then(function (result) {
+                                var time = result.timestamp;
+                                var date = new Date(time * 1000);
+                                transac.time = date;
+                                transac.sid = eventSid[callBackCount];
+                                callBackCount++;
+                                $scope.$apply(function (receipt) {
+                                    $scope.transactionHistory.push(transac);
+                                });
+                            });					});*/
+
+                            /*web3.eth.getTransactionReceipt(hash).then(function (receipt) {
+                                $scope.totalGas.push(receipt.gasUsed);
+                                console.log($scope.totalGas);
+                                console.log($scope.transactionHistory);
+                            });*/
+                        }
+                        //$scope.transactionHistory.shift();
+                    });
+            }
+
+            $scope.gasCalculation = function () {
+                for (var t in $scope.transactionHistory) {
+                    $scope.transactionHistory[t].gasUsed = $scope.totalGas[t];
+                }
+            }
+
+
+            /*$scope.getTransactionTime = function(){
+                $scope.transactionHistory.pop();
+                for(var i in $scope.transactionHistory) {
+                        web3.eth.getBlock($scope.transactionHistory[i].blockNumber).then(function (result) {
+                            console.log(result);
+                            var time = result.timestamp;
+                            var date = new Date(time);
+                                $scope.transactionHistory[i].time = date;
+                        });
+                }
+            }*/
+
+            $scope.parsingSliderInput = function (sliderValue) {
+                return $scope.eventSid[sliderValue].returnValues[0];
+            }
+
+            //First part takes the clicked object id and shows the sent variable
+            /*$scope.selectTransactionToShow = function (messageId) {
+                $scope.$apply(function () {
+                    $scope.actualSid = messageId;
+                });
+                $scope.msgToShow = [{fName: "", name: "", value: ""}];
+                $scope.transactionToShow = [{
+                    hash: "",
+                    from: "",
+                    gas: "",
+                    gasPrice: "",
+                    time: "",
+                    blockNumber: "",
+                    sid: ""
+                }];
+                for (const i in $scope.msgs) {
+
+                    if ($scope.msgs[i].ID == messageId) {
+                        const functionParams = $scope.tasks[messageId];
+                        if (!functionParams.includes("(")) {
+                            $scope.$apply(function () {
+                                const completeToShow = {"fName": functionParams, "name": "", "value": ""};
+                                $scope.msgToShow.push(completeToShow);
+                            });
+                            break;
+                        }
+                        const parSplit = functionParams.split("(");
+                        const noPar = parSplit[1].replace('\)', '');
+                        if (noPar.includes(",")) {
+                            const virgSplit = noPar.split(',');
+                            for (const i in virgSplit) {
+                                let onlyName = [];
+                                const index = virgSplit[i];
+                                onlyName = index.split(" ");
+                                for (const e in onlyName) {
+                                    if (onlyName[e] == "") {
+                                        onlyName.splice(e, 1);
+                                    }
+                                }
+                                $scope.$apply(function () {
+                                    const completeToShow = {
+                                        "fName": functionParams,
+                                        "name": index,
+                                        "value": $scope.memory[onlyName[1]]
+                                    };
+                                    $scope.msgToShow.push(completeToShow);
+
+                                });
+                            }
+                        } else {
+                            const onlyName = noPar.split(" ");
+                            $scope.$apply(function () {
+                                const completeToShow = {
+                                    "fName": functionParams,
+                                    "name": noPar,
+                                    "value": $scope.memory[onlyName[1]]
+                                };
+                                $scope.msgToShow.push(completeToShow);
+                            });
+                        }
+                    } else if (messageId.includes("creation")) {
+                        $scope.$apply(function () {
+                            const completeToShow = {"fName": messageId, "name": "", "value": ""};
+                            $scope.msgToShow.push(completeToShow);
+                        });
+                        break;
+                    }
+                }
+                $scope.$apply(function (scop) {
+                    $scope.msgToShow.shift();
+                });
+
+            }*/
+
+
+            /*$scope.setRoleActive = function () {
+                //$scope.payment = false;
+                var activeSid = {};
+                for (var i in $scope.msgs) {
+                    if ($scope.msgs[i].status == 1) {
+                        $scope.msgs[i].show = 1;
+                        activeSid = $scope.msgs[i].ID;
+                        $scope.activeSid = activeSid;
+                        $scope.msgs[i].status = "Enabled";
+
+                        removehighlightmsg(activeSid);
+                        highlightmsg(activeSid);
+                        //console.log($scope.actualContract);
+                        $scope.currentRole = $scope.actualContract.taskIdAndRole[activeSid];
+                    } else if ($scope.msgs[i].status == 0) {
+                        $scope.msgs[i].status = "Disabled";
+                    } else if ($scope.msgs[i].status == 2) {
+                        activeSid = $scope.msgs[i].ID;
+                        removehighlightmsg(activeSid);
+                        highlightmsg(activeSid);
+                        $scope.msgs[i].status = "Done";
+                    }
+                }
+
+            }*/
+
+            $scope.addMeta = function () {
+                $window.addEventListener("load", function () {
+                    if (typeof web3 !== "undefined") {
+                        web3 = new Web3(web3.currentProvider);
+                        $scope.martsiaContract = new web3.eth.Contract($scope.martsiaAbi, "0xb4b1F31C51F70B1A76EE0e8d300ECbc75d0ceaa4");
+
+                        //console.log(web3);
+                        //web3.eth.getAccounts().then(console.log);
+                    } else {
+                        console.log("No web3? You should consider trying MetaMask!");
+                    }
+
+                });
+            }
+
+
+            $scope.sub = function (refresh) {
+                /*for (var type in $scope.abi) {
+                    if ($scope.abi[type].name == "functionDone") {
+                        $scope.inputs = $scope.abi[type].inputs;
+                    }
+                }*/
+                console.log("listening...")
+                $scope.martsiaContract.events.functionDone((error, result) => {
+                    /*const eventObj = web3.eth.abi.decodeLog(
+                        $scope.inputs,
+                        result.data,
+                        result.topics
+                    )
+                    $scope.actualContract = null;
+                    $scope.getTask(refresh);
+                    $scope.savePastEvents();*/
+                    $scope.getTask(refresh);
+
+                });
+
+            }
+
+
+            $scope.addMeta();
+            $scope.getUserContracts();
+            $scope.setUser();
+
+            $scope.getXml = function (filename) {
+                $http.post("rest/getXml/" + filename).then(function (response) {
+                    $scope.model = response.data;
+                });
+            }
+
+            $scope.getFunctionParams = function (task, parameter) {
+                let name = $scope.actualContract.taskIdAndName[task];
+                var n1 = name.split('\(');
+                var n3 = n1[1].split(' ');
+                var complete = task + '(';
+                for (var i in n3) {
+                    if (n3[i] == 'uint' || n3[i] == 'string' || n3[i] == 'bool') {
+                        if (n3[i] == 'uint') {
+                            n3[i] = 'uint256';
+                        }
+                        complete += n3[i] + ' , ';
+                    }
+                }
+                var addPar = complete.split(' ');
+                addPar.pop();
+                addPar.pop();
+                complete = "";
+                for (i in addPar) {
+                    complete += addPar[i];
+                }
+                complete += ')';
+                var replaced = complete.replace(/-/g, '_');
+                for (var method in $scope.myContract.methods) {
+                    if (method == replaced) {
+                        var parArray = [];
+                        if (parameter.includes(',')) {
+                            var splittedParams;
+                            if (parameter.includes(', ')) {
+                                splittedParams = parameter.split('\, ');
+                            } else {
+                                splittedParams = parameter.split('\,');
+                            }
+                            parArray = splittedParams;
+                        } else {
+                            parArray.push(parameter);
+                        }
+                        return parArray;
+                    }
+                }
+
+
+                /*for (var p in splittedParams) {
+                            if (splittedParams[p].includes("true")) {
+                                splittedParams[p] = true;
+                                //console.log(typeof parameter);
+                            } else if (splittedParams[p].includes("false")) {
+                                splittedParams[p] = false;
+                            }
+                            parArray = splittedParams;
+                        }*/
+
+                /*else {
+                            if (parameter.includes("true")) {
+                                parameter = true;
+                                //console.log(typeof parameter);
+                            } else if (parameter.includes("false")) {
+                                parameter = false;
+                            }
+                            parArray.push(parameter);
+                        }*/
+
+
+            }
+
+            //STEP 0 test - settings
+            /*$scope.settings = async function (){
+                const input = {
+                    'processid': 1234,
+                    'authorities': {
+                        'UT': {
+                            '0x4acE2dd86F380E245dE13110b70C1cAfC24312e3': "publicKey",
+                            'a19a20dc764c3ff85b0367ae0b071f60e6b918abfdcbb028a43645e04d7865eb': "privateKey"
+                        },
+                        'OU': {
+                            '0xA88C254eE06e9f4eC4e3d3709E2900f99b8e6e1F': "publicKey",
+                            '52a98bd8fca5ee9cb5687e650599ab1e10b00051da1168038ac95972541ef600': "privateKey"
+                        }
+                    },
+                    'actors': {
+                        'DiCaprio': {
+                            '0x4acE2dd86F380E245dE13110b70C1cAfC24312e3': "publicKey",
+                            'a19a20dc764c3ff85b0367ae0b071f60e6b918abfdcbb028a43645e04d7865eb': "privateKey"
+                        },
+                        'DeNiro': {
+                            '0xA88C254eE06e9f4eC4e3d3709E2900f99b8e6e1F': "publicKey",
+                            '52a98bd8fca5ee9cb5687e650599ab1e10b00051da1168038ac95972541ef600': "privateKey"
+                        }
+                    },
+                    'chain': "DEV"
+                };
+
+                const postPk = await $http.post("http://localhost:8080/settings/", json = input);
+                console.log(postPk);
+            }*/
+
+
+        //STEP old
+            /*$scope.generate_pp_pk = async function () {
+                //$scope.actualInstance.martsiaId = 16328871453153125945;
+
+                console.log($scope.actualInstance);
+                console.log($cookies.get('UserId'));
+                let requesterRole = "";
+                for (const role in $scope.actualContract.participants) {
+                    if ($scope.actualContract.participants[role] == $cookies.get('UserId')) {
+                        requesterRole = role;
+                    }
+                }
+                input = {
+                    'process_id': $scope.actualInstance.martsiaId,
+                    'requester': requesterRole
+                }
+                console.log("1. generate pp pk " + $scope.actualInstance.martsiaId);
+                console.log("1. generate pp pk " + requesterRole);
+                console.log(input);
+                const postPk = await $http.post("http://localhost:8080/dataOwner/generate_pp_pk/", json = input);
+                console.log(postPk);
+            }*/
+
+            //STEP1
+            $scope.cipherMessage = async function (inputValue, msg, public) {
+                //const link = await $scope.stateContract.methods.getInstancePolicy($scope.actualInstance.martsiaId).call();
+                //retrieves the message id of the selected message
+                let messageId;
+                for (const task in $scope.actualContract.taskIdAndName) {
+                    if ($scope.actualContract.taskIdAndName[task] == msg.name) {
+                        messageId = task;
+                    }
+                }
+                //parse message name to extract parameters name
+                //const splitted1 = msg.name.split(",");
+                //const splitted2 = splitted1[1].split(")");
+                const splitted3 = msg.name.split(",");
+                let entries = [];
+                //parse parameters inserted by the user
+                let parameters = [];
+                if (msg.name.includes(",")) {
+                    parameters = msg.name.split(",");
+                } else {
+                    parameters.push(msg.name);
+                }
+
+                //generate entires and message payload
+                for (let i = 0; i < splitted3.length; i++) {
+                    entries.push(splitted3[i]);
+                }
+                let message = {};
+                for (let i = 0; i < entries.length; i++) {
+                    message[entries[i]] = parameters[i];
+                }
+
+
+                /*const policy = ['(' + $scope.actualInstance.martsiaId + '@AUTH1 and ' + $scope.actualInstance.martsiaId + '@AUTH2 ' +
+                'and ' + $scope.actualInstance.martsiaId + '@AUTH3 and ' + $scope.actualInstance.martsiaId + '@AUTH4) ' +
+                'and (Customer@UT or Insurer@UT)']
+                let requesterRole = "";
+                for (const role in $scope.actualContract.participants) {
+                    // policyRoles += role + "@UT";
+                    if ($scope.actualContract.participants[role] == $cookies.get('UserId')) {
+                        requesterRole = role;
+                    }
+                }*/
+                //todo MANAGE MULTIPLE INPUTS?
+                let publicVarNames = []
+                let publicValues = []
+                if(public){
+                    console.log("sto mettendo public")
+                    publicVarNames.push(web3.utils.asciiToHex(msg.name))
+                    publicValues.push(web3.utils.asciiToHex(inputValue))
+                }
+
+                input = {
+                    'actor': $scope.user.address,
+                    'process_id': $scope.actualInstance.martsiaId,
+                    'message': btoa(inputValue),
+                    'message_id': msg.martsiaId
+                }
+
+                const postCipher = await $http.post("http://localhost:8080//encrypt/", json = input);
+                let martsiaContractInputs = [];
+
+                martsiaContractInputs[0] = web3.utils.asciiToHex(postCipher.data.data[0].replace("b'", "").replace("'", ""));
+                martsiaContractInputs[1] = web3.utils.asciiToHex(postCipher.data.data[1].replace("b'", "").replace("'", ""));
+
+                const martsiaContractMethod = postCipher.data.method;
+                console.log(martsiaContractMethod);
+                console.log(martsiaContractInputs[0]);
+                await $scope.martsiaContract.methods[martsiaContractMethod]($scope.actualInstance.martsiaId, msg.martsiaId,
+                    martsiaContractInputs[0], martsiaContractInputs[1], publicVarNames, publicValues).send({
+                    from: $scope.user.address
+                }).then(function (receipt) {
+                    console.log(receipt);
+                });
+
+            }
+
+            /*$scope.askKey = async function () {
+                input = {
+                    'private_key': '7bcc561ab9d013d18d904b9af1c59439eabc5df6c6f8cb76365e016b6508a906',
+                    'reader_address': $scope.user.address,
+                    'process_id': $scope.actualInstance.martsiaId,
+                    'gid': $scope.user.address,
+                    'fromBlock': 0
+                }
+                console.log(input);
+                const postCipher = await $http.post("http://localhost:8080/getkey/askkey/", json = input);
+                console.log(postCipher);
+
+                let martsiaContractInputs = [];
+
+                martsiaContractInputs[0] = web3.utils.asciiToHex(postCipher.data.data[0].replace("b'", "").replace("'", ""));
+                martsiaContractInputs[1] = web3.utils.asciiToHex(postCipher.data.data[1].replace("b'", "").replace("'", ""));
+                martsiaContractInputs[2] = postCipher.data.data[2];
+
+                const martsiaContractMethod = postCipher.data.method;
+
+                await $scope.martsiaContract.methods[martsiaContractMethod](martsiaContractInputs[0],
+                    martsiaContractInputs[1], martsiaContractInputs[2]).send({
+                    from: $scope.user.address
+                }).then(function (receipt) {
+                    console.log(receipt);
+                });
+
+                const listenKey = await $http.post("http://localhost:8080/getkey/listen", json = input);
+                console.log(listenKey);
+            }*/
+
+
+            $scope.read = async function (msg) {
+                let messageId;
+                for (const task in $scope.actualContract.taskIdAndName) {
+                    if ($scope.actualContract.taskIdAndName[task] == msg.name) {
+                        messageId = task;
+                    }
+                }
+                input = {
+                    'process_id': $scope.actualInstance.martsiaId,
+                    'message_id': msg.martsiaId, // todo $scope.actualContract.taskIdAndMartsiaId[messageId],
+                    //'gid': $scope.user.address,
+                    'actor': $scope.user.address
+                }
+
+                const decryptCheck = await $http.post("http://localhost:8080/decrypt_check", json = input);
+                console.log(decryptCheck);
+                if(decryptCheck.status===200){
+                    await $scope.martsiaContract.methods.notifyAuthorities($scope.actualInstance.martsiaId,
+                        decryptCheck.data.authorities_list).send({
+                        from: $scope.user.address
+                    })
+
+                    input2 = {
+                        'process_id': $scope.actualInstance.martsiaId,
+                        'message_id': msg.martsiaId, // todo $scope.actualContract.taskIdAndMartsiaId[messageId],
+                        //'gid': $scope.user.address,
+                        'actor': $scope.user.address,
+                        'list_auth': decryptCheck.data.authorities_list,
+                        'starting_block': await web3.eth.getBlockNumber()
+                    }
+                    const decryptWait = await $http.post("http://localhost:8080/decrypt_wait", json = input2);
+                    console.log(decryptWait.data);
+                    console.log(atob(decryptWait.data));
+                }else if(decryptCheck.status===202){
+                    console.log(atob(decryptCheck.data));
+                }
+            }
+
+            $scope.readMartsiaMessage = function (messageId) {
+                $scope.msgToShow = [{
+                    fName: "a martsia function",
+                    name: "a martsia param name",
+                    value: "a martsia param value"
+                }];
+                console.log($scope.msgToShow);
+                //process id, reader address, gid
+                //reader process id, message id, slice id, gid, key generate
+                /*service.readMartsiaMessage(...).then(function (response) {
+                    $scope.... = response.data;
+                });*/
+            }
+            $scope.stateAbi = [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "martsiaAddress",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": false,
+                            "internalType": "uint64",
+                            "name": "",
+                            "type": "uint64"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint64",
+                            "name": "",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "functionDone",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "elementToExecute",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "changeStatus",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "msgToExecute",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "checkEventBased",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "msgToExecute",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicvarNames",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicVarValues",
+                            "type": "bytes32[]"
+                        }
+                    ],
+                    "name": "cipher",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64[]",
+                            "name": "elementWithConditions",
+                            "type": "uint64[]"
+                        },
+                        {
+                            "internalType": "uint64[]",
+                            "name": "elementWithPublicVar",
+                            "type": "uint64[]"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicVars",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "enum StateContract.Operator[]",
+                            "name": "operators",
+                            "type": "uint8[]"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "values",
+                            "type": "bytes32[]"
+                        }
+                    ],
+                    "name": "createConditions",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "element",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "varName",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "getAllowedVar",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "element",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getCondition",
+                    "outputs": [
+                        {
+                            "components": [
+                                {
+                                    "internalType": "bytes32",
+                                    "name": "publicVar",
+                                    "type": "bytes32"
+                                },
+                                {
+                                    "internalType": "enum StateContract.Operator",
+                                    "name": "op",
+                                    "type": "uint8"
+                                },
+                                {
+                                    "internalType": "bytes32",
+                                    "name": "value",
+                                    "type": "bytes32"
+                                }
+                            ],
+                            "internalType": "struct StateContract.Condition",
+                            "name": "",
+                            "type": "tuple"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_element",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getInstanceElement",
+                    "outputs": [
+                        {
+                            "components": [
+                                {
+                                    "internalType": "enum StateContract.ElementState",
+                                    "name": "state",
+                                    "type": "uint8"
+                                },
+                                {
+                                    "internalType": "enum StateContract.ElementType",
+                                    "name": "elementType",
+                                    "type": "uint8"
+                                },
+                                {
+                                    "internalType": "bytes32",
+                                    "name": "role",
+                                    "type": "bytes32"
+                                },
+                                {
+                                    "internalType": "uint64[]",
+                                    "name": "next",
+                                    "type": "uint64[]"
+                                },
+                                {
+                                    "internalType": "uint64[]",
+                                    "name": "previous",
+                                    "type": "uint64[]"
+                                }
+                            ],
+                            "internalType": "struct StateContract.Element",
+                            "name": "",
+                            "type": "tuple"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getInstancePolicy",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "msgToExecute",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "getMartsiaChecks",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "_roles",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "address[]",
+                            "name": "users",
+                            "type": "address[]"
+                        },
+                        {
+                            "internalType": "uint64[]",
+                            "name": "elements",
+                            "type": "uint64[]"
+                        },
+                        {
+                            "internalType": "uint64[][]",
+                            "name": "nextElements",
+                            "type": "uint64[][]"
+                        },
+                        {
+                            "internalType": "uint64[][]",
+                            "name": "previousElements",
+                            "type": "uint64[][]"
+                        },
+                        {
+                            "internalType": "enum StateContract.ElementType[]",
+                            "name": "types",
+                            "type": "uint8[]"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "policy1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "policy2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "instantiateProcess",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "msgToExecute",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicVarNames",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicVarValues",
+                            "type": "bytes32[]"
+                        }
+                    ],
+                    "name": "setPublicvariables",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                }
+            ]
+
+
+            $scope.martsiaAbi = [
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "uint64",
+                            "name": "process_id",
+                            "type": "uint64"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "address[]",
+                            "name": "authorities",
+                            "type": "address[]"
+                        }
+                    ],
+                    "name": "AuthoritiesNotified",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": false,
+                            "internalType": "uint64",
+                            "name": "",
+                            "type": "uint64"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint64",
+                            "name": "",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "functionDone",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getAuthoritiesNames",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getElement",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getElementHashed",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        },
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_messageID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getIPFSLink",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getPublicKey",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "getPublicKeyReaders",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "_address",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getPublicParameters",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        }
+                    ],
+                    "name": "getUserAttributes",
+                    "outputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "address[]",
+                            "name": "_authorities",
+                            "type": "address[]"
+                        }
+                    ],
+                    "name": "notifyAuthorities",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setAuthoritiesNames",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash3",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash4",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash5",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash6",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setElement",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash3",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash4",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setElementHashed",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "instanceId",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "uint64",
+                            "name": "_messageID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicvarNames",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "publicVarValues",
+                            "type": "bytes32[]"
+                        }
+                    ],
+                    "name": "setIPFSLink",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setPublicKey",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setPublicKeyReaders",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setPublicParameters",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "setStateAddress",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint64",
+                            "name": "_instanceID",
+                            "type": "uint64"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash1",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "_hash2",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "name": "setUserAttributes",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                }
+            ]
+
+        }
+    );
+
+
+
+
+</script>
+
+</html>

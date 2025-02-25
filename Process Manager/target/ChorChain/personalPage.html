@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Chorchain | Personal Page</title>
+
+    <script src="lib/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.6/dist/web3.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/abi-decoder@1.2.0/dist/abi-decoder.js" crossorigin="anonymous"></script>
+
+    <!-- Sweet alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+
+    <!-- graphics -->
+    <link rel="stylesheet" href="css/unicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" href="css/tooplate-style.css">
+
+    <link rel="stylesheet" href="css/querying.css">
+
+</head>
+
+<body ng-app="querying" ng-controller="personalPageController" ng-cloak>
+
+    <!-- MENU -->
+    <nav class="navbar navbar-expand-sm navbar-light bg-light" data-ng-init="initializeUser()">
+        <div class="container">
+
+            <img src="ChorChain_logo.png" width="150" height="52" alt="ChorChain logo">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="homePage.html" class="nav-link"><span data-hover="Home Page">Home Page</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="modeler.html" class="nav-link"><span data-hover="Modeler">Modeler</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="deploy.html" class="nav-link"><span data-hover="Execution Page">Execution
+                                Page</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="querying.html" class="nav-link"><span data-hover="Querying">Querying</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="audit.html" class="nav-link"><span data-hover="Audit">Audit</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="personalPage.html" class="nav-link active"><span data-hover="Personal Page">Personal
+                                Page</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+    <div class="container-fluid" style="padding-top: 16px;">
+
+        <h3 ng-if="showNotLoggedInMessage">You must log in to access this page</h3>
+
+        <div ng-if="!showNotLoggedInMessage" ng-cloak>
+
+            <div class="row">
+
+                <div class="col-lg-2" ng-show="models" ng-cloak>
+                    <h5 mb-3>Your models</h5>
+                    <ul class="list-group models-list">
+                        <li class="list-group-item" style="cursor:pointer" ng-repeat="model in models">
+                            <a ng-click="selectModel(model)" class="nav-link">{{model.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-lg-7" ng-if="selectedModel">
+                    <h5>{{selectedModel.name}}</h5>
+
+                    <div class="mb-3">
+                        <div>Model instances: {{selectedModel.totalInstances}}</div>
+                        <div>Completed instances: {{selectedModel.completedInstances}}
+                            ({{selectedModel.completedInstancesPercentage}}%)</div>
+                    </div>
+
+
+                    <div class="mb-3" style="display: flex; flex-direction: row; justify-content: space-between;">
+
+                        <div
+                            ng-if="(selectedModel.userRoles && selectedModel.userRoles.length > 0) || (selectedModel.userOptionalRoles && selectedModel.userOptionalRoles.length > 0)">
+                            <div>Your roles</div>
+                            <div>
+                                <span ng-repeat="role in selectedModel.userRoles">
+                                    <span>{{role}} (Mandatory)</span>
+                                    <span
+                                        ng-if="role != selectedModel.userRoles[selectedModel.userRoles.length - 1]">-</span>
+                                </span>
+                                <span ng-repeat="role in selectedModel.userOptionalRoles">
+                                    <span>{{role}} (Optional)</span>
+                                    <span
+                                        ng-if="role != selectedModel.userOptionalRoles[selectedModel.userOptionalRoles.length - 1]">-</span>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="selectedModel.maxFee || selectedModel.minFee">
+                            <div style="text-align: end;">Fee (Ether)</div>
+                            <small>
+                                <span ng-if="selectedModel.maxFee">Max. {{selectedModel.maxFee.toFixed(10)}}</span>
+                                <span ng-if="selectedModel.minFee" class="ml-3">Min. {{selectedModel.minFee.toFixed(10)}}</span>
+                                <span ng-if="selectedModel.averageFee" class="ml-3">Av. {{selectedModel.averageFee.toFixed(10)}}</span>
+                            </small>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="mb-3" style="display: flex; flex-direction: row; justify-content: space-between;">
+
+                        <div ng-if="selectedModel.maxExecutionTime || selectedModel.minExecutionTime">
+                            <div>Execution time</div>
+                            <small>
+                                <span ng-if="selectedModel.maxExecutionTime">Max. {{selectedModel.maxExecutionTime}}s</span>
+                                <span ng-if="selectedModel.minExecutionTime" class="ml-3">Min. {{selectedModel.minExecutionTime}}s</span>
+                                <span ng-if="selectedModel.avgExecutionTime" class="ml-3">Av. {{selectedModel.avgExecutionTime}}s</span>
+                            </small>
+                        </div>
+
+                        <div ng-if="selectedModel.maxGasUsed || selectedModel.minGasUsed">
+                            <div style="text-align: end;">Gas used</div>
+                            <small>
+                                <span ng-if="selectedModel.maxGasUsed">Max. {{selectedModel.maxGasUsed}}</span>
+                                <span ng-if="selectedModel.minGasUsed" class="ml-3">Min. {{selectedModel.minGasUsed}}</span>
+                                <span ng-if="selectedModel.avgGasUsed" class="ml-3">Av. {{selectedModel.avgGasUsed}}</span>
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <b class="mb-2">Instances</b>
+                    <div ng-repeat="instance in selectedModel.instances" class="card card-body mb-3">
+                        <div class="instance-title mb-3">
+                            <img class="icon" src="resources/icons/ic_completed.png"
+                                ng-if="instance.deployedContract && instance.deployedContract.isCompleted" />
+                            <img class="icon" src="resources/icons/ic_processing.png"
+                                ng-if="!instance.deployedContract ||!instance.deployedContract.isCompleted" />
+                            <div class="ml-2"><b>{{instance.id}}</b></div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <div>Execution time: {{instance.executionTime}}s</div>
+                                <div>Total gas used: {{instance.totalGasUsed}}</div>
+                                <div>Total fee: {{instance.totalFee.toFixed(10)}} Ether</div>
+                            </div>
+                            <div
+                                ng-if="(instance.userRoles && instance.userRoles.length > 0) || (instance.userOptionalRoles && instance.userOptionalRoles.length > 0)">
+                                <div>Your roles</div>
+                                <div>
+                                    <span ng-repeat="role in instance.userRoles">
+                                        <span>{{role}} (Mandatory)</span>
+                                        <span ng-if="role != instance.userRoles[instance.userRoles.length - 1]">-</span>
+                                    </span>
+                                    <span ng-repeat="role in instance.userOptionalRoles">
+                                        <span>{{role}} (Optional)</span>
+                                        <span
+                                            ng-if="role != instance.userOptionalRoles[instance.userOptionalRoles.length - 1]">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Spinner overlay -->
+    <div class="spinner-container" ng-if="isRetrievingData">
+        <div class="spinner"></div>
+        <div>Retrieving data...</div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+
+
+    <script src="lib/querying/graphql-client-service.js"></script>
+    <script src="lib/audit/personal-page-controller.js"></script>
+    <script src="lib/app.js"></script>
+
+</body>
+
+</html>

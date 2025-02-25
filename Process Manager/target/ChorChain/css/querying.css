@@ -1,0 +1,172 @@
+.query-btn {
+	position: fixed;
+	right: 32px;
+	bottom: 24px;
+}
+
+.top-spacing {
+	margin-top: 8px;
+}
+
+.top-spacing:first-of-type {
+	margin-top: 0;
+}
+
+
+/* Error dialog */
+
+.spinner-container,
+.dialog-container {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0; left: 0;
+	z-index: 1501;
+	background-color: rgba(1, 1, 1, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.dialog-container .dialog {
+	width: 70%;
+	max-width: 500px;
+	background-color: white;
+	border-radius: 8px;
+}
+
+.dialog-container .expandable-dialog {
+	max-width: 1000px !important;
+}
+
+.dialog-container .dialog .dialog-title {
+	height: 57px;
+	width: 100%;
+	border-bottom: 1px solid lightgray;
+	text-transform: uppercase;
+	padding: 16px;
+	font-size: large;
+	font-weight: bold;
+}
+
+.dialog-container .dialog .dialog-actions,
+.dialog-container .dialog .dialog-content {
+	width: 100%;
+	padding: 16px;
+}
+
+.dialog-container .dialog .dialog-content {
+	max-height: 50vh;
+}
+
+.dialog-container .dialog .dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.dialog-container .dialog .dialog-actions .btn {
+	margin-left: 8px;
+}
+
+
+/* Spinner */
+
+.spinner-container {
+	color: white;
+	flex-direction: column;
+}
+
+.spinner {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	margin: 8px;
+	border: 3px solid rgba(255,255,255,.3);
+	border-radius: 50%;
+	border-top-color: #fff;
+	animation: spin 1s ease-in-out infinite;
+	-webkit-animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+	to { -webkit-transform: rotate(360deg); }
+  }
+  @-webkit-keyframes spin {
+	to { -webkit-transform: rotate(360deg); }
+  }
+
+
+
+/* Auditing instances */
+.instance-title {
+	display: flex;
+	align-items: center;
+}
+
+.instance-title .icon {
+	flex: 30px 0 0;
+	height: 30px;
+}
+
+.link {
+	color: #ffc200 !important;
+	text-decoration: underline !important;
+}
+
+.link:hover {
+	cursor: pointer;
+}
+
+.transaction-item {
+	max-width: 100%;
+	overflow: hidden;
+	font-size: smaller;
+	padding: 8px 0;
+	word-wrap: break-word;
+	border-bottom: 1px solid lightgray;
+}
+
+
+
+
+/* Roles table */
+
+.subscription-table tr td,
+.subscription-table tr th {
+	padding: 4px 8px;
+	border: 1px solid lightgray;
+}
+
+.messages-link {
+	text-align: right;
+	font-size: small;
+}
+
+.messages-link:hover {
+	cursor: pointer;
+}
+
+
+
+.models-list {
+	max-height: calc(100vh - 132px);
+	overflow-y: scroll;
+}
+
+.instances-list {
+	max-height: calc(100vh - 252px);
+	overflow-y: scroll;
+}
+
+.roles-panel {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.roles-panel div {
+	margin-left: 12px;
+}
+
+.roles-panel div:first-of-type {
+	margin-left: 0;
+}

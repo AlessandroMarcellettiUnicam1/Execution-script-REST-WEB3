@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+  <meta charset="ISO-8859-1">
+  <title>Main page</title>
+  <script src="lib/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
+    integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+
+  <!-- graphics -->
+  <link rel="stylesheet" href="css/unicons.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <!-- MAIN STYLE -->
+  <link rel="stylesheet" href="css/tooplate-style.css">
+
+  <!-- Modeler import -->
+  <link rel="stylesheet" href="css/diagram-js-preview.css" />
+  <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn.css" />
+  <link rel="stylesheet" href="vendor/chor-js/font/include/css/choreography.css" />
+  <link rel="stylesheet" href="css/querying.css">
+
+  <!-- Modeler end import -->
+
+  <style>
+    .bjs-powered-by {
+      display: none;
+    }
+
+    .djs-direct-editing-content {
+      display: none;
+    }
+  </style>
+
+
+</head>
+
+<body ng-app="homePage" ng-controller="controller" ng-cloak>
+  <!-- MENU -->
+  <nav class="navbar navbar-expand-sm  navbar-light bg-light" data-ng-init="setUser()">
+    <div class="container">
+      <!-- <a class="navbar-brand" href="index.html"></i> ChorChain</a>--->
+      <img src="ChorChain_logo.png" width="150" height="52" alt="ChorChin logo">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav" ng-if="isLogged">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a href="homePage.html" class="nav-link active"><span data-hover="Home Page">Home Page</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="modeler.html" class="nav-link"><span data-hover="Modeler">Modeler</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deploy.html" class="nav-link"><span data-hover="Execution Page">Execution Page</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="querying.html" class="nav-link"><span data-hover="Querying">Querying</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="audit.html" class="nav-link"><span data-hover="Audit">Audit</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="personalPage.html" class="nav-link"><span data-hover="Personal Page">Personal Page</span></a>
+          </li>
+        </ul>
+        <!--  
+        <ul class="navbar-nav ml-lg-auto">
+          <div class="ml-lg-4">
+            <div class="color-mode d-lg-flex justify-content-center align-items-center">
+              <i class="color-mode-icon"></i>
+              Color mode
+            </div>
+          </div>
+        </ul>
+        -->
+      </div>
+    </div>
+  </nav>
+
+  <section class=" d-lg-flex justify-content-center align-items-center" ng-cloak>
+    <h3 ng-if="!isLogged">You must log in to access this page</h3>
+    <div class="container-fluid" ng-if="isLogged" >
+      <div class="row" data-ng-init="getModels()">
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group flex-wrap" role="group">
+                  <button class="btn custom-btn custom-btn-bg custom-btn-link " type="button" data-toggle="collapse"
+                    data-target="#collapseUpload" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="fas fa-upload"></i> Upload model
+                  </button>
+                  <button class="btn custom-btn  custom-btn-link" type="button" data-toggle="collapse"
+                    data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="fas fa-search"></i> Search
+                  </button>
+
+                </div>
+              </div>
+              <div class="collapse" id="collapseUpload">
+                <div class="card card-body">
+                  <form action="rest/upload" method="POST" enctype="multipart/form-data" class="text-center p-3">
+                    <label for="uplaodModel">
+                      <h6>Upload a new model</h6>
+                    </label>
+                    <div class="custom-file mb-3">
+                      <input type="file" class="custom-file-input" id="customFile" name="fileName" accept=".bpmn">
+                      <label class="custom-file-label" id="customFileLabel" for="customFile">
+
+                      </label>
+                      <input type="hidden" name="cookieId" value="{{cookieId}}">
+                    </div>
+                    <input type="submit" value="Publish" class="btn custom-btn custom-btn-bg custom-btn-link">
+                  </form>
+                </div>
+              </div>
+
+              <div class="collapse" id="collapseSearch">
+                <div class="card card-body">
+                  <form class="text-center p-3">
+                    <div class="form-group">
+                      <label for="searchModel">
+                        <h6>Search a model </h6>
+                      </label>
+                      <input type="text" class="form-control" ng-model="searchText" id="searchModel" name="role"
+                        style="width:100%;">
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" ng-cloak>
+              <h6>Model File List</h6>
+              <ul class="list-group models-list">
+                <li class="list-group-item" style="cursor:pointer" ng-repeat="model in models | filter:searchText ">
+                  <a ng-click="setModel(model)" class="nav-link "> <i class="fas fa-file"></i>
+                    {{model.name}}</a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="card-body" ng-if="model != null">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-7" ng-cloak>
+                  <h5>{{model.name}}</h5>
+                  Uploaded by: {{model.uploadedBy}}<br>
+                  <!-- Maximum number of participants: {{model.maxNumber}}<br>--->
+                  All roles: <span ng-repeat="role in model.roles">{{role}} - </span><br>
+                </div>
+                <div class="col-lg-4">
+                  <div class="btn-group-vertical">
+                    <button type="button" class="btn custom-btn-dark custom-btn-bg custom-btn-link" data-toggle="modal"
+                      data-target="#mymodal">Create
+                      instance</button>
+                    <button data-toggle="modal" data-target="#modalPreview" class="btn btn-success">See
+                      model preview</button>
+
+                    <form>
+                      <!-- <select class="custom-select" ng-model="searchRole">
+	                        <option ng-repeat="role in model.roles track by $index" value="{{role}}">{{role}}
+	                        </option>
+	                      </select>--->
+                      <input type="text" class="form-control" ng-model="searchRole" id="searchRole" name="role">
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="alert custom-alert-yellow mt-3 alert-dismissible fade show" ng-if="msg != null">
+                {{msg}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="alert custom-alert-yellow mt-3" ng-if="model.instances.length == 0">
+                There are no instances for this model
+              </div>
+              <div ng-repeat="instance in model.instances | filter:searchRole">
+                <div class="card  my-2"
+                  ng-if="instance.visibleAt == 0 || instance.visibleAt.indexOf(user.address) > -1">
+                  <h5 class="card-header ">n° {{instance.id}} - <small>created By: {{instance.createdBy}}</small>
+                    <span ng-show="instance.visibleAt.indexOf(user.address) > -1" class="float-right"><i
+                        style="color: #ffc200" class="fa fa-lock"></i> </span>
+                    <!---<button data-toggle="modal" data-target="#policiesTable" class="btn btn-success">See
+                      policies</button>--->
+                  </h5>
+                  <div class="card-body">
+                    <p class="card-text">
+
+                      Free roles in the instance: <span ng-repeat="fr in instance.freeRoles">{{fr}} </span><span
+                        ng-show="instance.freeRoles.length < 1" class="text-danger">There are no free mandatory
+                        roles</span>
+                      <br>
+                      Actual number of subscribed users: {{instance.actualNumber}}
+                      (Max:{{instance.maxNumber}})
+                    </p>
+                    <!---<button ng-click="generateMartsiaInstance(model, instance.id, instance.martsiaId)" class="btn btn-success">
+														Complete instance {{instance.martsiaId}}
+													</button>-->
+                    <button ng-if="instance.actualNumber == instance.maxNumber" data-toggle="modal" data-target="#policiesTable" class="btn btn-success"
+                            ng-click="generateMartsiaInstance(model, instance.id, instance.martsiaId, instance)">
+					      Complete instance {{instance.martsiaId}}
+                    </button>
+
+                    <!---<div ng-if="instance.actualNumber == instance.maxNumber && instance.done==false"
+                         data-ng-init="startExecuteMartsia(model, instance, user)" >--->
+                      <!-- <div class="spinner-border text-success" role="status">
+                        <span class="">deploying...</span>
+                      </div>--><!----<button ng-click="settingMartsia(model, instance, user)" class="btn btn-success">
+                      Setting for {{instance.name}}
+                    </button>
+                      <button ng-click="startExecuteMartsia(model, instance, user)" class="btn btn-success">
+                        Execute {{instance.name}}
+                      </button>--->
+                    </div>
+
+                    <div class="input-group col-12" ng-if="instance.actualNumber < instance.maxNumber">
+                      <select class="custom-select" ng-model="roletosubscribe">
+                        <option ng-repeat="role in instance.freeRoles track by $index" value="{{role}}">{{role}}
+                        </option>
+                      </select>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary"
+                          ng-click="subscribe(model, instance, roletosubscribe, user.address)" type="button">Subscribe</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="instance.done==true" class="card-body">
+                    <div class="alert alert-light" role="alert" ng-if="instance.freeRolesOptional.length > 0">
+                      <h5 class="alert-heading">Instance already deployed</h5>
+                      <p>Want to subscribe? Insert one optional role: <span
+                          ng-repeat="r in instance.freeRolesOptional">{{r}} </span></p>
+                      <hr>
+                      <div class="input-group col-12">
+                        <select class="custom-select" ng-model="roletosubscribe">
+                          <option ng-repeat="role in instance.freeRolesOptional track by $index" value="{{role}}">
+                            {{role}}</option>
+                        </select>
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary"
+                            ng-click="optionalSubscribe(instance.id, roletosubscribe)" type="button">Optional
+                            subscribe</button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal preview -->
+  <div id="modalPreview" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content" style="height:570px;">
+        <div class="modal-header">
+          <h4 class="modal-title">Model Preview</h4>
+          <h6>{{model.name}}</h6>
+        </div>
+
+        <div class="modal-body" style="height:100%;">
+          <div class="content with-diagram" id="js-drop-zone" style="weight:100%;height:72%;">
+
+            <div id="canvas" data-ng-init="attach()" style="height:400px;border:solid;">
+
+
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" style="display:none;" class="btn btn-default" id="js-preview"
+            data-value="{{model.name}}">Trigger</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end modal preview -->
+  <!-- Modal set roles -->
+  <!-- The Modal -->
+  <div class="modal fade" id="policiesTable" >
+    <div class="modal-dialog modal-lg" >
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h4 class="modal-title" >Define policies</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <table>
+          <thead>
+          <th>Message</th>
+          <th>Role</th>
+          </thead>
+          <tbody>
+          <tr ng-repeat="(key, value) in martsiaInstance.policy">
+            <td><input type="text" ng-model="key" /></td>
+            <td ng-repeat="reader in martsiaInstance.policy[key] track by $index">
+              <input type="text" ng-model="martsiaInstance.policy[key][$index]" /></td>
+            <td>
+              <button ng-click="addReader(key)">Add reader</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="modal-footer">
+          <!---<button ng-click="setPolicies()" class="btn custom-btn-yellow my-2"
+                  data-dismiss="modal">Set policies</button>--->
+          <button ng-click="readPolicies(model, instance)" class="btn custom-btn-yellow my-2" data-dismiss="modal">
+            Complete instance {{instance.martsiaId}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="mymodal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create new instance</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Select the optional roles
+                  </h5>
+                  <p class="card-text text-danger">The roles not
+                    selected are considered MANDATORY</p>
+
+                  <div ng-repeat="role in model.roles">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" name="selectedRoles[]" ng-checked="selection.indexOf(role) > -1"
+                        ng-click="toggleSelection(role)" value="{{role}}" class="custom-control-input" id="{{role}}">
+                      <label class="custom-control-label" for="{{role}}">{{role}}</label>
+                    </div>
+                  </div>
+                  <div ng-if="selectedRoles.length >= model.roles.length">
+                    <small>You cannot select all the roles as
+                      optional</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Set visibility</h5>
+                  <p class="card-text">Entering the addresses, the
+                    instance will become private and will be visible
+                    only to those addresses.</p>
+                  <div ng-repeat="field in visibleAtFields">
+                    <div class="col-auto">
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            {{ $index + 1 }}.</div>
+                        </div>
+                        <input ng-model="field.address" type="text" class="form-control">
+                        <div class="input-group-append">
+                          <a class="input-group-text text-danger pointer" ng-click="removeField(field)">X</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent text-right">
+                  <button class="btn custom-btn-dark btn-sm" ng-click="addField()">Add Address</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button ng-disabled="selectedRoles.length >= model.roles.length"
+            ng-click="createInstance(model, visibleAtFields);" id="submitForm" class="btn custom-btn-yellow my-2"
+            data-dismiss="modal">Create instances</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+  <script src="lib/controller.js"></script>
+  <script src="lib/service.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+  <script src="lib/app.js"></script>
+  <script src="lib/appmodeler.js"></script>
+
+</body>
+
+
+
+<script>
+  function nextChar(c) {
+    var i = (parseInt(c, 36) + 1) % 36;
+    return (!i * 10 + i).toString(36);
+  }
+
+  function add() {
+    var new_chq_no = nextChar($('#total_chq').val());
+    var new_input = "<input type='text'  ng-model='new." + new_chq_no + "'>";
+    $('#groupvisibleat').append(new_input);
+    $('#total_chq').val(new_chq_no)
+  }
+
+
+  $('#modalPreview').on('shown.bs.modal', function (e) {
+    document.querySelector('.viewport').setAttribute("transform", "matrix(1,0,0,1,-240,-117)");
+
+    setTimeout(function () {
+      var removeBlock = document.querySelector('.viewport');
+      removeBlock.classList.remove('viewport');
+      removeBlock.classList.add('viewport');
+    }, 100);
+
+    $("#js-preview").trigger('click');
+
+  })
+</script>
+
+<script>
+  $("#close").click(function () {
+
+  });
+</script>
+
+<script>
+  $("#customFile").change(function () {
+    $("#customFileLabel").text(this.files[0].name);
+  });
+</script>
+
+</html>
