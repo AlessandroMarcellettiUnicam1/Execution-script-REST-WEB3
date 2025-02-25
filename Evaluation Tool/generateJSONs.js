@@ -26,8 +26,14 @@ const argv = yargs(hideBin(process.argv))
     })
     .option('f', {
         alias: 'input',
-        type: 'string',
+        type: 'path',
         description: 'Input file to load',
+        demandOption: false
+    })
+    .option('v', {
+        alias: 'parallel1',
+        type: 'number',
+        description: 'First test for the parallel gateway',
         demandOption: false
     })
     .help()
@@ -555,7 +561,6 @@ function modifyEncrypterRoles(roleMapping, encrypter, encryptors_Number) {
 function duplicateRequests(originalRequests1, count, from_where) {
     // Deep clone the original requests to avoid mutation
     let requests1 = JSON.parse(JSON.stringify(originalRequests1));
-    let requests2 = JSON.parse(JSON.stringify(originalRequests1));
     // Precompute element type map for original requests1
     const originalElementTypes = {};
     const next_From_Where = originalRequests1.nextElements[originalRequests1.elements.indexOf(from_where)][0];
@@ -632,24 +637,26 @@ function duplicateRequests(originalRequests1, count, from_where) {
         const resultIdNew = idMap.get(resultIdOriginal);
         if (startElementNew) copyStartElements.push(startElementNew);
         if (resultIdNew) copyResultIds.push(resultIdNew);
-        // Process requests2
-        const newElementWithConditions = originalRequests1.elementWithConditions.map(id => {
-            if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
-                return parseInt(id.toString() + suffix, 10);
-            }
-            return id;
-        });
-        requests2.elementWithConditions.push(...newElementWithConditions);
-        const newElementWithPublicVar = originalRequests1.elementWithPublicVar.map(id => {
-            if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
-                return parseInt(id.toString() + suffix, 10);
-            }
-            return id;
-        });
-        requests2.elementWithPublicVar.push(...newElementWithPublicVar);
-        requests2.publicVariables.push(...originalRequests1.publicVariables);
-        requests2.operators.push(...originalRequests1.operators);
-        requests2.values.push(...originalRequests1.values);
+        // Process requests1
+        if (requests1.elementWithConditions) {
+            const newElementWithConditions = originalRequests1.elementWithConditions.map(id => {
+                if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
+                    return parseInt(id.toString() + suffix, 10);
+                }
+                return id;
+            });
+            requests1.elementWithConditions.push(...newElementWithConditions);
+            const newElementWithPublicVar = originalRequests1.elementWithPublicVar.map(id => {
+                if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
+                    return parseInt(id.toString() + suffix, 10);
+                }
+                return id;
+            });
+            requests1.elementWithPublicVar.push(...newElementWithPublicVar);
+            requests1.publicVariables.push(...originalRequests1.publicVariables);
+            requests1.operators.push(...originalRequests1.operators);
+            requests1.values.push(...originalRequests1.values);
+        }
     }
     // Update original resultId (371747) to point to first copy's start element
     const originalResultIdIndex = requests1.elements.indexOf(from_where);
@@ -686,7 +693,38 @@ function duplicateRequests(originalRequests1, count, from_where) {
             requests1.PreviousElements[idx] = innerArray.filter(item => item !== element_Type_2);
         }
     });
-    return { requests1, requests2 };
+    return requests1;
+}
+
+
+// Function to duplicate parallel test 1
+function parallelTest1(originalData, n) {
+    // Create a deep copy of the original data to avoid mutation
+    const data = JSON.parse(JSON.stringify(originalData));
+    for (let i = 0; i < n; i++) {
+        const elements = data.elements;
+        const currentLastValue = elements[elements.length - 1];
+        const currentLastIndex = elements.length - 1;
+        // Update the type of the current last element to 5
+        data.types[currentLastIndex] = 5;
+        // Create new element values
+        const newElement1 = currentLastValue + 1;
+        const newElement2 = currentLastValue + 2;
+        // Add new elements to the elements array
+        data.elements.push(newElement1, newElement2);
+        // Update nextElements for the current last element
+        data.nextElements[currentLastIndex] = [newElement1, newElement2];
+        // Add new nextElements entries for the new elements
+        data.nextElements.push([], []);
+        // Add PreviousElements entries for the new elements
+        data.PreviousElements.push([currentLastValue], [currentLastValue]);
+        // Update other arrays
+        data.encrypter.push("internal", "internal");
+        data.nameElements.push("", "");
+        data.messageElements.push("", "");
+        data.types.push(8, 8);
+    }
+    return data;
 }
 
 
@@ -695,9 +733,10 @@ function main() {
 
     // INPUT:
     const input_path = argv.f ?? './data/input_1.json';     // './data/input_1.json' default
-    const encryptors_Number = argv.e ?? 3;                  // 3 default
-    const message_Duplication = argv.d ?? 1;            // 1 default
-    const looping = argv.l ?? 0;                        // 0 default
+    const encryptors_Number = argv.e ?? 3;            // 3 default
+    const message_Duplication = argv.d ?? 1;                            // 1 default
+    const looping = argv.l ?? 0;                                        // 0 default
+    const testParallel1 = argv.v ?? 0;                                  // 0 default
 
 
     createOrClearJson('data/rest_inputs.json');
@@ -735,10 +774,11 @@ function main() {
     allSubscriptionsGeneration(mandatoryToLower, optionaltoLower);
     // It can also be called with translation1Generation and translation2Generation
     translationsGeneration();
-    // last duplicateRequests input (from_where) is the last message with type 1 from where the new loop should start)
-    const loops = duplicateRequests(requests, looping, 371747)
-    requests = loops.requests1;
-    let requests2 = loops.requests2;
+    // last duplicateRequests input (from_where) is the last message with type 1 from where the new loop should start
+    if (looping !== 0) {
+        requests = duplicateRequests(requests, looping, 371747)
+    }
+    requests = parallelTest1(requests, testParallel1);
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
     );
@@ -757,7 +797,7 @@ function main() {
     // Generation of the JSON encryption objects
     for (let index = 0; index < requests.encrypter.length; index++) {
         if (requests.encrypter[index].toLowerCase() !== "internal") {
-            encryptionsGeneration(addresses[index], requests.messageElements[0], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === addresses[index])?.role, requests.nameElements[index]);
+            encryptionsGeneration(addresses[index], requests.messageElements[index], requests.elements[index], require('./data/users_info.json').find(obj => obj.address === addresses[index])?.role, requests.nameElements[index]);
             appendToFile('data/messages_data.json', JSON.stringify({
                 message_id: requests.elements[index],
                 element: requests.nameElements[index]
@@ -788,22 +828,24 @@ function main() {
         decrypt_checkGeneration(message_id, address, element);
         decrypt_waitGeneration(message_id, address, element)
     }
-    setInstanceConditionsGeneration(requests2.elementWithConditions, requests2.elementWithPublicVar, requests2.publicVariables, requests2.operators, requests2.values);
-    const jsonData = JSON.parse(fs.readFileSync('data/blockchain_inputs.json', 'utf8'));
-    requests2.operators.forEach((operator, index) => {
-        const exists = jsonData.some(obj =>
-            obj.name.includes("execute_message") && obj.params.message_id === requests2.elementWithConditions[index]
-        );
-        if (operator === 1 && exists) {
-            const result = jsonData.find(obj => obj.name.includes("execute_message") && obj.params.message_id === requests2.elementWithPublicVar[index]);
-            result.params.publicVarNames = [requests2.publicVariables[index]];
-            result.params.publicValues = [requests2.values[index]];
-        }
-        else if (operator !== 1) {
-            throw new Error("OPERATOR IS NOT 1!");
-        }
-    });
-    fs.writeFileSync('data/blockchain_inputs.json', JSON.stringify(jsonData, null, 2), 'utf8');
+    // If there are exclusive gateways
+    if (requests.elementWithConditions) {
+        setInstanceConditionsGeneration(requests.elementWithConditions, requests.elementWithPublicVar, requests.publicVariables, requests.operators, requests.values);
+        const jsonData = JSON.parse(fs.readFileSync('data/blockchain_inputs.json', 'utf8'));
+        requests.operators.forEach((operator, index) => {
+            const exists = jsonData.some(obj =>
+                obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithConditions[index]
+            );
+            if (operator === 1 && exists) {
+                const result = jsonData.find(obj => obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithPublicVar[index]);
+                result.params.publicVarNames = [requests.publicVariables[index]];
+                result.params.publicValues = [requests.values[index]];
+            } else if (operator !== 1) {
+                throw new Error("OPERATOR IS NOT 1!");
+            }
+        });
+        fs.writeFileSync('data/blockchain_inputs.json', JSON.stringify(jsonData, null, 2), 'utf8');
+    }
 }
 
 

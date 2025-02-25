@@ -94,108 +94,9 @@
       "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
       "process_id": 0,
       "message": "MjUuMTAuMjAxNg",
-      "message_id": 666
+      "message_id": 2
     },
     "name": "encrypt_message_appointment"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 263543
-    },
-    "name": "encrypt_message_type"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 550751
-    },
-    "name": "encrypt_message_accepted"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 715574
-    },
-    "name": "encrypt_message_certificationId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 437568
-    },
-    "name": "encrypt_message_temperature"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 371747
-    },
-    "name": "encrypt_message_resultId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 961687
-    },
-    "name": "encrypt_message_report"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 128802
-    },
-    "name": "encrypt_message_requestId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 149350
-    },
-    "name": "encrypt_message_appointmentId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/encrypt/",
-    "data": {
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "process_id": 0,
-      "message": "MjUuMTAuMjAxNg",
-      "message_id": 169042
-    },
-    "name": "encrypt_message_registration"
   },
   {
     "method": "POST",
@@ -217,16 +118,7 @@
       },
       "process_id": 0,
       "policy": {
-        "666": "PATIENT@AUTH2",
-        "128802": "RADIOLOGY@AUTH1",
-        "149350": "RADIOLOGY@AUTH1",
-        "169042": "PATIENT@AUTH2",
-        "263543": "RADIOLOGY@AUTH1",
-        "371747": "INSURANCE@AUTH3",
-        "437568": "RADIOLOGY@AUTH1",
-        "550751": "WARD@AUTH4",
-        "715574": "RADIOLOGY@AUTH1",
-        "961687": "WARD@AUTH4"
+        "2": "PATIENT@AUTH2"
       }
     },
     "name": "attributesCertification"
@@ -236,7 +128,7 @@
     "endpoint": "http://172.31.83.251:8888/decrypt_check",
     "data": {
       "process_id": 0,
-      "message_id": 666,
+      "message_id": 2,
       "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a"
     },
     "name": "decrypt_check_appointment"
@@ -246,7 +138,7 @@
     "endpoint": "http://172.31.83.251:8888/decrypt_wait",
     "data": {
       "process_id": 0,
-      "message_id": 666,
+      "message_id": 2,
       "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
       "list_auth": [
         "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
@@ -257,248 +149,5 @@
       "starting_block": 0
     },
     "name": "decrypt_wait_appointment"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 128802,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB"
-    },
-    "name": "decrypt_check_requestId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 128802,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_requestId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 149350,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB"
-    },
-    "name": "decrypt_check_appointmentId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 149350,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_appointmentId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 169042,
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a"
-    },
-    "name": "decrypt_check_registration"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 169042,
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_registration"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 263543,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB"
-    },
-    "name": "decrypt_check_type"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 263543,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_type"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 371747,
-      "actor": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5"
-    },
-    "name": "decrypt_check_resultId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 371747,
-      "actor": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_resultId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 437568,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB"
-    },
-    "name": "decrypt_check_temperature"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 437568,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_temperature"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 550751,
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258"
-    },
-    "name": "decrypt_check_accepted"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 550751,
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_accepted"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 715574,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB"
-    },
-    "name": "decrypt_check_certificationId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 715574,
-      "actor": "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_certificationId"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_check",
-    "data": {
-      "process_id": 0,
-      "message_id": 961687,
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258"
-    },
-    "name": "decrypt_check_report"
-  },
-  {
-    "method": "POST",
-    "endpoint": "http://172.31.83.251:8888/decrypt_wait",
-    "data": {
-      "process_id": 0,
-      "message_id": 961687,
-      "actor": "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
-      "list_auth": [
-        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
-        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
-        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
-        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
-      ],
-      "starting_block": 0
-    },
-    "name": "decrypt_wait_report"
   }
 ]

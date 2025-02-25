@@ -72,7 +72,7 @@ def actual_decryption(remaining, public_parameters, user_sk):
     v2 = groupObj.serialize(v2)
     #print("v2_2:",v2)
     decryptedFile = cryptocode.decrypt(remaining['EncryptedFile'], str(v2))
-    print("decrypted data:", decryptedFile)
+    print("decrypted data length:", len(decryptedFile))
     return decryptedFile
 
 

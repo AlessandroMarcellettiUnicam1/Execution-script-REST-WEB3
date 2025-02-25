@@ -9,6 +9,7 @@ parser.add_argument('-n', type=int, default=1, required=False, help="Number of i
 parser.add_argument('-t1', action='store_true', help="Perform test 1")
 parser.add_argument('-t2', action='store_true', help="Perform test 2")
 parser.add_argument('-t3', action='store_true', help="Perform test 3")
+parser.add_argument('-t4', action='store_true', help="Perform test 4")
 args = parser.parse_args()
 
 success_count = 0
@@ -47,6 +48,17 @@ def run_iteration(iteration: int):
         print(f'{chr(9728)}  Number of loops {loop} {chr(9728)}')
         JSON_process = subprocess.Popen(
             ["node", "generateJSONs.js", "-l", str(loop)],
+            cwd=os.path.join(os.path.dirname(__file__), "Evaluation Tool"),
+            stdout=sys.stdout,
+            stderr=subprocess.STDOUT,
+            text=True
+        )
+        JSON_process.wait()
+    elif args.t4:
+        # Start generateJSONs.js
+        print(f'{chr(9728)}  Number of parallel loops {loop} {chr(9728)}')    
+        JSON_process = subprocess.Popen(
+            ["node", "generateJSONs.js", "-f", "./data/input_2.json", "-v", str(loop)],
             cwd=os.path.join(os.path.dirname(__file__), "Evaluation Tool"),
             stdout=sys.stdout,
             stderr=subprocess.STDOUT,
@@ -114,6 +126,15 @@ elif args.t2:
                 time.sleep(3)
         duplication += 1
 elif args.t3:
+    loop = 0
+    while loop < 10:
+        for i in range(1, total_iterations + 1):
+            run_iteration(i)
+            if i < total_iterations:
+                print("Cooling down...")
+                time.sleep(3)
+        loop += 1
+elif args.t4:
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):

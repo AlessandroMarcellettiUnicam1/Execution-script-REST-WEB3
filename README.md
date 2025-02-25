@@ -51,4 +51,5 @@ Python tests (tested in PowerShell):
 		2.1 "python auto.py -t1"
 		2.2 "python auto.py -t2"
 		2.3 "python auto.py -t3"
+        2.4 "python auto.py -t4"
 	Following the execution of the scripts, PowerShell crashes:D
