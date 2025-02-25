@@ -24,6 +24,12 @@ const argv = yargs(hideBin(process.argv))
         description: 'Number of times to loop the process',
         demandOption: false
     })
+    .option('f', {
+        alias: 'input',
+        type: 'string',
+        description: 'Input file to load',
+        demandOption: false
+    })
     .help()
     .argv;
 
@@ -505,6 +511,7 @@ function getUserWalletInfo(index) {
 
 // Function to randomly encrypt the messages
 function modifyEncrypterRoles(roleMapping, encrypter, encryptors_Number) {
+    delete roleMapping['0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5'];
     if (encryptors_Number === 2) {
         delete roleMapping['0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258'];
         encrypter = encrypter.map(role =>
@@ -539,15 +546,16 @@ function modifyEncrypterRoles(roleMapping, encrypter, encryptors_Number) {
     if (encryptors_Number === 2) {
         roleMapping[getUserWalletInfo(0).address] = ["WARD@AUTH4"];
     }
+    roleMapping[getUserWalletInfo(3).address] = ["INSURANCE@AUTH3"];
     return encrypter;
 }
 
 
 // Function to duplicate setInstanceConditions and instantiateProcess
-function duplicateRequests(originalRequests1, originalRequests2, count, from_where) {
+function duplicateRequests(originalRequests1, count, from_where) {
     // Deep clone the original requests to avoid mutation
     let requests1 = JSON.parse(JSON.stringify(originalRequests1));
-    let requests2 = JSON.parse(JSON.stringify(originalRequests2));
+    let requests2 = JSON.parse(JSON.stringify(originalRequests1));
     // Precompute element type map for original requests1
     const originalElementTypes = {};
     const next_From_Where = originalRequests1.nextElements[originalRequests1.elements.indexOf(from_where)][0];
@@ -625,23 +633,23 @@ function duplicateRequests(originalRequests1, originalRequests2, count, from_whe
         if (startElementNew) copyStartElements.push(startElementNew);
         if (resultIdNew) copyResultIds.push(resultIdNew);
         // Process requests2
-        const newElementWithConditions = originalRequests2.elementWithConditions.map(id => {
+        const newElementWithConditions = originalRequests1.elementWithConditions.map(id => {
             if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
                 return parseInt(id.toString() + suffix, 10);
             }
             return id;
         });
         requests2.elementWithConditions.push(...newElementWithConditions);
-        const newElementWithPublicVar = originalRequests2.elementWithPublicVar.map(id => {
+        const newElementWithPublicVar = originalRequests1.elementWithPublicVar.map(id => {
             if (originalElementTypes[id] !== 2 && id !== next_From_Where) {
                 return parseInt(id.toString() + suffix, 10);
             }
             return id;
         });
         requests2.elementWithPublicVar.push(...newElementWithPublicVar);
-        requests2.publicVariables.push(...originalRequests2.publicVariables);
-        requests2.operators.push(...originalRequests2.operators);
-        requests2.values.push(...originalRequests2.values);
+        requests2.publicVariables.push(...originalRequests1.publicVariables);
+        requests2.operators.push(...originalRequests1.operators);
+        requests2.values.push(...originalRequests1.values);
     }
     // Update original resultId (371747) to point to first copy's start element
     const originalResultIdIndex = requests1.elements.indexOf(from_where);
@@ -682,52 +690,32 @@ function duplicateRequests(originalRequests1, originalRequests2, count, from_whe
 }
 
 
-// The values to modify are the "requests" and the "userID" (cached value from frontend).
 function main() {
-    // Create or clear the files and initialize them as empty JSON arrays
+
+
+    // INPUT:
+    const input_path = argv.f ?? './data/input_1.json';     // './data/input_1.json' default
+    const encryptors_Number = argv.e ?? 3;                  // 3 default
+    const message_Duplication = argv.d ?? 1;            // 1 default
+    const looping = argv.l ?? 0;                        // 0 default
+
+
     createOrClearJson('data/rest_inputs.json');
     createOrClearJson('data/blockchain_inputs.json');
     createOrClearJson('data/messages_data.json');
-    let requests;
-    let requests_Roles = {};
-    let looping;
-    let encryptors_Number;
-    let message_Duplication;
-    let requests2;
-
-
-// #####################################################################################################################################################
-
-
-    // 1.
-    global.userID = "67bdf978cb740a55348ba38d";
-    requests = {
-        name: "xRaysConfetty"
-    }
-
+    const data = fs.readFileSync(input_path, 'utf8');
+    let requests = JSON.parse(data);
+    global.userID = requests.userID;
     saveModelGeneration(requests.name);
-
-
-// #####################################################################################################################################################
-
-
-    // 2.
-    requests = {
-            modelID: "67bdfa50cb740a55348ba392",
-            optional: ["null"],
-            visibleAt: ["null"],
-    };
-    encryptors_Number = argv.e ?? 3;    // 3 default
-    message_Duplication = argv.d ?? 1;  // 1 default
-    looping = argv.l ?? 0;             // 0 default
-
     // THE ACTOR NAMES NEED TO BE UPPERCASE
+    let requests_Roles = {};
     requests_Roles[getUserWalletInfo(0).address] = ["WARD@AUTH4"];
     requests_Roles[getUserWalletInfo(1).address] = ["RADIOLOGY@AUTH1"];
     requests_Roles[getUserWalletInfo(2).address] = ["PATIENT@AUTH2"];
+    requests_Roles[getUserWalletInfo(3).address] = ["INSURANCE@AUTH3"];
     if (encryptors_Number > 3) {
         for (let i = 0; i < encryptors_Number - 3; i++) {
-            const userIndex = 3 + i; // Start from index 3
+            const userIndex = 4 + i; // Start from index 4
             const testUser = `TESTUSER${i + 1}`;
             const randomAuth = Math.floor(Math.random() * 4) + 1; // Random number between 1 and 4
             requests_Roles[getUserWalletInfo(userIndex).address] = [`${testUser}@AUTH${randomAuth}`];
@@ -747,72 +735,18 @@ function main() {
     allSubscriptionsGeneration(mandatoryToLower, optionaltoLower);
     // It can also be called with translation1Generation and translation2Generation
     translationsGeneration();
-
-
-// #####################################################################################################################################################
-
-
-    // 3.
-    requests = {
-        encrypter: [
-            "Radiology",
-            "internal",
-            "Patient",
-            "internal",
-            "internal",
-            "Ward",
-            "internal",
-            "Patient",
-            "Patient",
-            "Ward",
-            "Radiology",
-            "internal",
-            "Radiology",
-            "internal",
-            "Patient",
-            "Radiology",
-            "internal",
-            "internal",
-        ],
-        elements: [666, 332730, 263543, 860669, 13889, 550751, 441483, 715574, 437568, 371747, 961687, 229775, 128802, 755150, 149350, 169042, 879917, 68120],
-        nextElements: [[441483], [263543], [860669], [128802], [666, 860669], [13889], [715574, 437568], [755150], [755150], [229775], [371747],
-            [], [550751], [149350], [169042], [879917], [961687, 68120], []],
-        PreviousElements: [[13889], [], [332730], [263543, 13889], [550751], [128802], [666], [441483], [441483], [961687], [879917], [371747], [860669], [715574, 437568], [755150], [149350], [169042], [879917]],
-        types: [1, 2, 1, 4, 3, 1, 5, 1, 1, 1, 1, 8, 1, 6, 1, 1, 3, 8],
-        nameElements : ["appointment", "", "type", "", "", "accepted", "", "certificationId", "temperature", "resultId", "report", "",
-            "requestId", "", "appointmentId", "registration", "", ""],
-        messageElements: ["MjUuMTAuMjAxNg", "", "MjUuMTAuMjAxNg", "", "","MjUuMTAuMjAxNg","",
-            "MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","MjUuMTAuMjAxNg","", "MjUuMTAuMjAxNg","","MjUuMTAuMjAxNg",
-            "MjUuMTAuMjAxNg","",""],
-        // The actor names need to be UPPERCASE!
-        policy: {
-            "263543": "RADIOLOGY@AUTH1",
-            "550751": "WARD@AUTH4",
-            "961687": "WARD@AUTH4",
-            "128802": "RADIOLOGY@AUTH1",
-            "371747": "PATIENT@AUTH2",
-            "715574": "RADIOLOGY@AUTH1",
-            "437568": "RADIOLOGY@AUTH1",
-            "169042": "PATIENT@AUTH2",
-            "149350": "RADIOLOGY@AUTH1",
-            "666": "PATIENT@AUTH2",
-        }
-    };
-    requests2 = {
-        elementWithConditions: [666, 860669, 961687, 68120],
-        elementWithPublicVar: [550751, 550751, 169042, 169042],
-        publicVariables: ["0x6163636570746564000000000000000000000000000000000000000000000000", "0x6163636570746564000000000000000000000000000000000000000000000000", "0x726567697374726174696f6e0000000000000000000000000000000000000000", "0x726567697374726174696f6e0000000000000000000000000000000000000000"],
-        operators: [1, 1, 1, 1],
-        values: ["0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000", "0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000"]
-    };
-
-    const loops = duplicateRequests(requests, requests2, looping, 371747)
+    // last duplicateRequests input (from_where) is the last message with type 1 from where the new loop should start)
+    const loops = duplicateRequests(requests, looping, 371747)
     requests = loops.requests1;
-    requests2 = loops.requests2;
+    let requests2 = loops.requests2;
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
     );
-    console.log(requests.messageElements);
+    for (let i = 0; i < requests.messageElements.length; i++) {
+        if (requests.messageElements[i].length !== 0) {
+            console.log(`${requests.nameElements[i]} length: ${requests.messageElements[i].length}`);
+        }
+    }
     injectElements(requests, 0, requests_Roles)
     if (encryptors_Number !== 3) {
         requests.encrypter = modifyEncrypterRoles(requests_Roles, requests.encrypter, encryptors_Number);
@@ -870,8 +804,6 @@ function main() {
         }
     });
     fs.writeFileSync('data/blockchain_inputs.json', JSON.stringify(jsonData, null, 2), 'utf8');
-
-
 }
 
 

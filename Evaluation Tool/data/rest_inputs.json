@@ -16,7 +16,8 @@
       "mandatory": [
         "Ward",
         "Radiology",
-        "Patient"
+        "Patient",
+        "Insurance"
       ],
       "visibleAt": [
         "null"
@@ -62,6 +63,19 @@
     "method": "POST",
     "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/patient/67bdf978cb740a55348ba38d/{instanceId}",
     "name": "subscribe_patient"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://172.31.83.251:8888/certification/generate_rsa_key_pair",
+    "data": {
+      "actor": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5"
+    },
+    "name": "generateKeyPair_insurance"
+  },
+  {
+    "method": "POST",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/insurance/67bdf978cb740a55348ba38d/{instanceId}",
+    "name": "subscribe_insurance"
   },
   {
     "method": "POST",
@@ -196,6 +210,9 @@
         ],
         "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a": [
           "PATIENT@AUTH2"
+        ],
+        "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5": [
+          "INSURANCE@AUTH3"
         ]
       },
       "process_id": 0,
@@ -205,7 +222,7 @@
         "149350": "RADIOLOGY@AUTH1",
         "169042": "PATIENT@AUTH2",
         "263543": "RADIOLOGY@AUTH1",
-        "371747": "PATIENT@AUTH2",
+        "371747": "INSURANCE@AUTH3",
         "437568": "RADIOLOGY@AUTH1",
         "550751": "WARD@AUTH4",
         "715574": "RADIOLOGY@AUTH1",
@@ -355,7 +372,7 @@
     "data": {
       "process_id": 0,
       "message_id": 371747,
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a"
+      "actor": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5"
     },
     "name": "decrypt_check_resultId"
   },
@@ -365,7 +382,7 @@
     "data": {
       "process_id": 0,
       "message_id": 371747,
-      "actor": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+      "actor": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5",
       "list_auth": [
         "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
         "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",

@@ -30,6 +30,16 @@
     "name": "publicKeyReaders_patient"
   },
   {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "insurance",
+    "name": "publicKeyReaders_insurance"
+  },
+  {
     "contractInfo": "stateContract",
     "functionName": "instantiateProcess",
     "params": {
@@ -423,6 +433,21 @@
     },
     "role": "patient",
     "name": "ask_auth_key_patient"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "insurance",
+    "name": "ask_auth_key_insurance"
   },
   {
     "contractInfo": "stateContract",

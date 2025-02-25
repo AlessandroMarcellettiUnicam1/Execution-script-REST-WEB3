@@ -13,5 +13,10 @@
     "role": "patient",
     "address": "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
     "privateKey": "0xc0df5489a93d9d82a624a789e70fd00fa2c15b4187102a4494d4a2b65b243531"
+  },
+  {
+    "role": "insurance",
+    "address": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5",
+    "privateKey": "0xb1f87da1bf859936ce7baebc40a8cd309c13eaef22769538510e6ea0a5b64a61"
   }
 ]

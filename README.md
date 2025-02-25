@@ -32,7 +32,7 @@ docker exec -it martsia_ethereum_container bash
 Reset:
 	1. Connect and drop all the databases in MongoDBCompass
 	2. Start the server
-	3. Register and login to the Website, copy the cached value from inspect element to "global.userID" in \Evaluation Tool\generateJSONs.js
+	3. Register and login to the Website, copy the cached value from inspect element to "userID" in \Evaluation Tool\generateJSONs.js
 	4. Start Ganache with:
 		- Seed (ACCOUNTS & KEYS): "control pulse code indoor off imitate uncover lesson fragile isolate fault blast";
 		- Hostname (SERVER): "0.0.0.0";
