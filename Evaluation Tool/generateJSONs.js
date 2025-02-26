@@ -36,6 +36,12 @@ const argv = yargs(hideBin(process.argv))
         description: 'First test for the parallel gateway',
         demandOption: false
     })
+    .option('w', {
+        alias: 'parallel2',
+        type: 'number',
+        description: 'Second test for the parallel gateway',
+        demandOption: false
+    })
     .help()
     .argv;
 
@@ -727,6 +733,68 @@ function parallelTest1(originalData, n) {
     return data;
 }
 
+function parallelTest2(requests, value) {
+    // Calculate new_Elements
+    const originalElementsLength = requests.elements.length;
+    const new_Elements = Array.from({ length: originalElementsLength + value * 2 }, (_, i) => i + 1);
+    // Calculate new_Encrypter
+    const new_Encrypter = [...requests.encrypter];
+    for (let e = 0; e < value * 2; e++) {
+        new_Encrypter.push("internal");
+    }
+    // Calculate new_nextElements
+    const newNextElements = [];
+    for (let e = 1; e < originalElementsLength + value * 2; e++) {
+        newNextElements.push([e + 1]);
+    }
+    newNextElements.push([]);
+    let toggle = 1;
+    for (let e = 0; e < value; e++) {
+        const index = toggle + 1;
+        newNextElements[index].push(new_Elements.length - toggle);
+        toggle += 1;
+    }
+    // Calculate new_PreviousElements
+    const newPreviousElements = [];
+    for (let e = 1; e < new_Elements.length; e++) {
+        newPreviousElements.push([e]);
+    }
+    newPreviousElements.unshift([]);
+    toggle = -2;
+    let starting = 3;
+    for (let e = 0; e < value; e++) {
+        const index = newPreviousElements.length + toggle;
+        newPreviousElements[index].unshift(starting);
+        toggle -= 1;
+        starting += 1;
+    }
+    // Calculate new_Types
+    const new_Types = [...requests.types];
+    for (let e = 0; e < value; e++) {
+        new_Types.splice(2, 0, 5);
+        new_Types.splice(new_Types.length - 1, 0, 6);
+    }
+    // Calculate new_NameElements
+    const new_NameElements = [...requests.nameElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_NameElements.push("");
+    }
+    // Calculate new_messageElements
+    const new_messageElements = [...requests.messageElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_messageElements.push("");
+    }
+    // Update requests object
+    requests.encrypter = new_Encrypter;
+    requests.elements = new_Elements;
+    requests.nextElements = newNextElements;
+    requests.PreviousElements = newPreviousElements;
+    requests.types = new_Types;
+    requests.nameElements = new_NameElements;
+    requests.messageElements = new_messageElements;
+    return requests;
+}
+
 
 function main() {
 
@@ -737,6 +805,7 @@ function main() {
     const message_Duplication = argv.d ?? 1;                            // 1 default
     const looping = argv.l ?? 0;                                        // 0 default
     const testParallel1 = argv.v ?? 0;                                  // 0 default
+    const testParallel2 = argv.w ?? 0;                                  // 0 default
 
 
     createOrClearJson('data/rest_inputs.json');
@@ -779,6 +848,7 @@ function main() {
         requests = duplicateRequests(requests, looping, 371747)
     }
     requests = parallelTest1(requests, testParallel1);
+    requests = parallelTest2(requests, testParallel2);
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
     );

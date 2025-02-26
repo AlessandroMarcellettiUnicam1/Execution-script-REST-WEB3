@@ -6,10 +6,11 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Run the API and Node.js script with specified iterations.")
 parser.add_argument('-n', type=int, default=1, required=False, help="Number of iterations to run the process")
-parser.add_argument('-t1', action='store_true', help="Perform test 1")
-parser.add_argument('-t2', action='store_true', help="Perform test 2")
-parser.add_argument('-t3', action='store_true', help="Perform test 3")
-parser.add_argument('-t4', action='store_true', help="Perform test 4")
+parser.add_argument('-t1', action='store_true', help="Perform encryptors tests")
+parser.add_argument('-t2', action='store_true', help="Perform message size tests")
+parser.add_argument('-t3', action='store_true', help="Perform looping tests")
+parser.add_argument('-t4', action='store_true', help="Perform first parallel tests")
+parser.add_argument('-t5', action='store_true', help="Perform second parallel tests")
 args = parser.parse_args()
 
 success_count = 0
@@ -65,7 +66,17 @@ def run_iteration(iteration: int):
             text=True
         )
         JSON_process.wait()
-    
+    elif args.t5:
+        # Start generateJSONs.js
+        print(f'{chr(9728)}  Number of parallel loops {loop} {chr(9728)}')    
+        JSON_process = subprocess.Popen(
+            ["node", "generateJSONs.js", "-f", "./data/input_3.json", "-w", str(loop)],
+            cwd=os.path.join(os.path.dirname(__file__), "Evaluation Tool"),
+            stdout=sys.stdout,
+            stderr=subprocess.STDOUT,
+            text=True
+        )
+        JSON_process.wait()
     # Start API
     api_process = subprocess.Popen(
         ["wsl", "docker", "exec", "-w", "/MARTSIA-KoB-API/src/", "-it", "martsia_ethereum_container",
@@ -135,6 +146,15 @@ elif args.t3:
                 time.sleep(3)
         loop += 1
 elif args.t4:
+    loop = 0
+    while loop < 10:
+        for i in range(1, total_iterations + 1):
+            run_iteration(i)
+            if i < total_iterations:
+                print("Cooling down...")
+                time.sleep(3)
+        loop += 1
+elif args.t5:
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):
