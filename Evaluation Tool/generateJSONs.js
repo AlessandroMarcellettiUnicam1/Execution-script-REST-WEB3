@@ -815,8 +815,8 @@ function main() {
     let requests = JSON.parse(data);
     global.userID = requests.userID;
     saveModelGeneration(requests.name);
-    // THE ACTOR NAMES NEED TO BE UPPERCASE
     let requests_Roles = {};
+    // THE ACTOR NAMES NEED TO BE UPPERCASE
     requests_Roles[getUserWalletInfo(0).address] = ["WARD@AUTH4"];
     requests_Roles[getUserWalletInfo(1).address] = ["RADIOLOGY@AUTH1"];
     requests_Roles[getUserWalletInfo(2).address] = ["PATIENT@AUTH2"];
@@ -847,8 +847,12 @@ function main() {
     if (looping !== 0) {
         requests = duplicateRequests(requests, looping, 371747)
     }
-    requests = parallelTest1(requests, testParallel1);
-    requests = parallelTest2(requests, testParallel2);
+    if (testParallel1 !== 0) {
+        requests = parallelTest1(requests, testParallel1);
+    }
+    if (testParallel2 !== 0) {
+        requests = parallelTest2(requests, testParallel2);
+    }
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
     );
