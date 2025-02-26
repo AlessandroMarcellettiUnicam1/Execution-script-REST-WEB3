@@ -42,6 +42,12 @@ const argv = yargs(hideBin(process.argv))
         description: 'Second test for the parallel gateway',
         demandOption: false
     })
+    .option('x', {
+        alias: 'exclusive1',
+        type: 'number',
+        description: 'First test for the exclusive gateway',
+        demandOption: false
+    })
     .help()
     .argv;
 
@@ -733,6 +739,8 @@ function parallelTest1(originalData, n) {
     return data;
 }
 
+
+// Function to duplicate parallel test 2
 function parallelTest2(requests, value) {
     // Calculate new_Elements
     const originalElementsLength = requests.elements.length;
@@ -796,16 +804,102 @@ function parallelTest2(requests, value) {
 }
 
 
+// Function to duplicate exclusive test 1
+function exclusiveTest1(requests, value) {
+    // Create deep copies of arrays
+    let new_Encrypter = [...requests.encrypter];
+    for (let e = 0; e < value * 2; e++) {
+        new_Encrypter.push("internal");
+    }
+    let new_Elements = [...requests.elements];
+    for (let e = 0; e < value * 2; e++) {
+        new_Elements.push(Math.max(...new_Elements) + 1);
+    }
+    let new_nextElements = requests.nextElements.map(arr => [...arr]);
+    for (let e = 0; e < value * 2; e++) {
+        new_nextElements.push([]);
+    }
+    let val = 2;
+    for (let e = 0; e < value; e++) {
+        new_nextElements[val + 2].push(4 + val);
+        new_nextElements[val + 2].push(5 + val);
+        val += 2;
+    }
+    let new_PreviousElements = requests.PreviousElements.map(arr => [...arr]);
+    const originalMaxElement = Math.max(...requests.elements);
+    let valPrev = 0;
+    for (let e = 0; e < value; e++) {
+        new_PreviousElements.push([originalMaxElement + valPrev]);
+        new_PreviousElements.push([originalMaxElement + valPrev]);
+        valPrev += 2;
+    }
+    let new_Types = [2, 1];
+    for (let e = 0; e < value + 1; e++) {
+        new_Types.push(3);
+        new_Types.push(8);
+    }
+    new_Types.push(8);
+    let new_NameElements = [...requests.nameElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_NameElements.push("");
+    }
+    let new_MessageElements = [...requests.messageElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_MessageElements.push("");
+    }
+    let new_ElementWithConditions = [...requests.elementWithConditions];
+    let valCond = 6;
+    for (let e = 0; e < value * 2; e++) {
+        new_ElementWithConditions.push(valCond++);
+    }
+    let new_ElementWithPublicVar = [...requests.elementWithPublicVar];
+    for (let e = 0; e < value * 2; e++) {
+        new_ElementWithPublicVar.push(2);
+    }
+    let new_PublicVariables = [...requests.publicVariables];
+    for (let e = 0; e < value * 2; e++) {
+        new_PublicVariables.push("0x6100000000000000000000000000000000000000000000000000000000000000");
+    }
+    let new_Operators = [...requests.operators];
+    for (let e = 0; e < value * 2; e++) {
+        new_Operators.push(1);
+    }
+    let new_Values = [...requests.values];
+    for (let e = 0; e < value; e++) {
+        new_Values.push("0x3000000000000000000000000000000000000000000000000000000000000000");
+        new_Values.push("0x3100000000000000000000000000000000000000000000000000000000000000");
+    }
+    // Update the requests object
+    requests.encrypter = new_Encrypter;
+    requests.elements = new_Elements;
+    requests.nextElements = new_nextElements;
+    requests.PreviousElements = new_PreviousElements;
+    requests.types = new_Types;
+    requests.nameElements = new_NameElements;
+    requests.messageElements = new_MessageElements;
+    requests.elementWithConditions = new_ElementWithConditions;
+    requests.elementWithPublicVar = new_ElementWithPublicVar;
+    requests.publicVariables = new_PublicVariables;
+    requests.operators = new_Operators;
+    requests.values = new_Values;
+    return requests;
+}
+
+
 function main() {
 
 
     // INPUT:
-    const input_path = argv.f ?? './data/input_1.json';     // './data/input_1.json' default
-    const encryptors_Number = argv.e ?? 3;            // 3 default
+    const input_path = argv.f ?? './data/input_1.json';                     // './data/input_1.json' default
+    const encryptors_Number = argv.e ?? 3;                                  // 3 default
     const message_Duplication = argv.d ?? 1;                            // 1 default
     const looping = argv.l ?? 0;                                        // 0 default
     const testParallel1 = argv.v ?? 0;                                  // 0 default
-    const testParallel2 = argv.w ?? 0;                                  // 0 default
+    const testParallel2 = argv.w ?? 0;                              // 0 default
+    const testExclusive1 = argv.x ?? 0;                                     // 0 default
+    const modelID  = "67bf3d21cb740a310cdb4770";
+    global.userID = "67bf3c12cb740a310cdb476b";
+
 
 
     createOrClearJson('data/rest_inputs.json');
@@ -813,7 +907,7 @@ function main() {
     createOrClearJson('data/messages_data.json');
     const data = fs.readFileSync(input_path, 'utf8');
     let requests = JSON.parse(data);
-    global.userID = requests.userID;
+    requests["modelID"] = modelID;
     saveModelGeneration(requests.name);
     let requests_Roles = {};
     // THE ACTOR NAMES NEED TO BE UPPERCASE
@@ -852,6 +946,9 @@ function main() {
     }
     if (testParallel2 !== 0) {
         requests = parallelTest2(requests, testParallel2);
+    }
+    if (testExclusive1 !== 0) {
+        requests = exclusiveTest1(requests, testExclusive1);
     }
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
@@ -904,13 +1001,14 @@ function main() {
     }
     // If there are exclusive gateways
     if (requests.elementWithConditions) {
+
         setInstanceConditionsGeneration(requests.elementWithConditions, requests.elementWithPublicVar, requests.publicVariables, requests.operators, requests.values);
         const jsonData = JSON.parse(fs.readFileSync('data/blockchain_inputs.json', 'utf8'));
         requests.operators.forEach((operator, index) => {
             const exists = jsonData.some(obj =>
                 obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithConditions[index]
             );
-            if (operator === 1 && exists) {
+            if ((operator === 1 && exists) || (input_path === './data/input_4.json') || (input_path === './data/input_5.json')) {
                 const result = jsonData.find(obj => obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithPublicVar[index]);
                 result.params.publicVarNames = [requests.publicVariables[index]];
                 result.params.publicValues = [requests.values[index]];
@@ -920,6 +1018,7 @@ function main() {
         });
         fs.writeFileSync('data/blockchain_inputs.json', JSON.stringify(jsonData, null, 2), 'utf8');
     }
+    //console.log(requests)
 }
 
 

@@ -32,7 +32,7 @@ docker exec -it martsia_ethereum_container bash
 Reset:
 	1. Connect and drop all the databases in MongoDBCompass
 	2. Start the server
-	3. Register and login to the Website, copy the cached value from inspect element to "userID" in \Evaluation Tool\generateJSONs.js
+	3. Register and login to the Website, copy the cached value from inspect element to "global.userID" in \Evaluation Tool\generateJSONs.js
 	4. Start Ganache with:
 		- Seed (ACCOUNTS & KEYS): "control pulse code indoor off imitate uncover lesson fragile isolate fault blast";
 		- Hostname (SERVER): "0.0.0.0";
@@ -42,13 +42,15 @@ Reset:
 	5. ("ipconfig" and get the IPv4 address, change the "DEFAULT" values in "sh default.sh").
 	6. Start the API (above) and IPFS (above)
 	7. Run Smart contract deployment (above)
-	8. Execucute generateJSONs.js and the main.js one time (there will be errors, it's okay). Following that, terminate the API with CTRL+C. Now, reload the databases in MongoDBCompass (View -> Reload data), copy the database model _id (ChorChain -> Model) into the "modelID" in generateJSONs.js
-	9. Execute again the API with "python3 api.py". Run generateJSONs.js and the main.js. All bueno!
+	8. Execucute generateJSONs.js and the main.js one time (there will be errors, it's okay). Following that, terminate the API with CTRL+c. Now, reload the databases in MongoDBCompass (View -> Reload data), copy the database model _id (ChorChain -> Model) into the "const modelID" in \Evaluation Tool\generateJSONs.js
+	9. Execute again the API with "python3 api.py". Run \Evaluation Tool\generateJSONs.js and the \Evaluation Tool\main.js. All bueno!
 
 Python tests (tested in PowerShell):
-	1. If you have the API opened, close it (CTRL+C).
+	1. If you have the API opened, close it (CTRL+c).
 	2. Inside \CONFETTY run:
 		2.1 "python auto.py -t1"
 		2.2 "python auto.py -t2"
 		2.3 "python auto.py -t3"
+		2.4 "python auto.py -t4"
+		2.5 "python auto.py -t5"
 	Following the execution of the scripts, PowerShell crashes:D

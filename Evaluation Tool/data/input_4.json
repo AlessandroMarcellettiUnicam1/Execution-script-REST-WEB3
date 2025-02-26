@@ -1,0 +1,42 @@
+
+{
+    "name": "xRaysConfetty",
+    "optional": ["null"],
+    "visibleAt": ["null"],
+
+
+
+    "encrypter": [
+        "internal", "Patient", "internal", "internal", "internal"
+    ],
+    "elements": [1, 2, 3, 4, 5],
+    "nextElements": [
+        [2], [3], [4, 5], [], []
+    ],
+    "PreviousElements": [
+        [], [1], [2], [3], [3]
+    ],
+    "types": [2, 1, 3, 8, 8],
+    "nameElements": [
+        "", "appointmentId", "", "", ""
+    ],
+    "policy": {
+        "2": "RADIOLOGY@AUTH1"
+    },
+    "messageElements": ["", "MQ==", "", "", ""],
+
+
+    
+    "elementWithConditions": [4, 5],
+    "elementWithPublicVar": [2, 2],
+    "publicVariables": [
+        "0x6100000000000000000000000000000000000000000000000000000000000000",
+        "0x6100000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "operators": [1, 1],
+    "values": [
+        "0x3000000000000000000000000000000000000000000000000000000000000000",
+        "0x3100000000000000000000000000000000000000000000000000000000000000"
+    ]
+}
+
