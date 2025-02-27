@@ -74,7 +74,7 @@ docker exec -it martsia_ethereum_container bash
    Then, run `\Evaluation Tool\generateJSONs.js` and `\Evaluation Tool\main.js`. Everything should be working as expected!
 
 ### Python Tests (Tested in PowerShell)
-
+> **Note:** These scripts should be executed after the Reset Instructions!
 1. **Ensure the API is closed** (if it's running, terminate with `CTRL+c`).
 2. **Inside the `\CONFETTY` directory, execute the following commands:**
    1. `python auto.py -t1`
@@ -82,5 +82,7 @@ docker exec -it martsia_ethereum_container bash
    3. `python auto.py -t3`
    4. `python auto.py -t4`
    5. `python auto.py -t5`
+   6. `python auto.py -t6`
+   7. `python auto.py -t7`
 
 > **Note:** After running these scripts, PowerShell might crash. This is a known issue.
