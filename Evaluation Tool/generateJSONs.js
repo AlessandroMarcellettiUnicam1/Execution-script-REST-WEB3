@@ -48,6 +48,12 @@ const argv = yargs(hideBin(process.argv))
         description: 'First test for the exclusive gateway',
         demandOption: false
     })
+    .option('y', {
+        alias: 'exclusive2',
+        type: 'number',
+        description: 'Second test for the exclusive gateway',
+        demandOption: false
+    })
     .help()
     .argv;
 
@@ -886,7 +892,108 @@ function exclusiveTest1(requests, value) {
 }
 
 
+// Function to duplicate exclusive test 2
+function exclusiveTest2(requests, value) {
+    let new_Encrypter = [...requests.encrypter];
+    for (let e = 0; e < value * 2; e++) {
+        new_Encrypter.push("internal");
+    }
+    let new_Elements = [...requests.elements];
+    for (let e = 0; e < value * 2; e++) {
+        new_Elements.push(Math.max(...new_Elements) + 1);
+    }
+    let new_NextElements = [];
+    for (let e = 2; e <= new_Elements.length; e++) {
+        new_NextElements.push([e]);
+    }
+    new_NextElements.push([]);
+    let val = 1;
+    for (let e = 0; e < value; e++) {
+        new_NextElements[val + 1].push(new_Elements.length - val);
+        val += 1;
+    }
+    let new_PreviousElements = [];
+    for (let e = 1; e < new_Elements.length; e++) {
+        new_PreviousElements.push([e]);
+    }
+    new_PreviousElements.unshift([]);
+    val = 3;
+    for (let e = 0; e < value; e++) {
+        const idx = new_PreviousElements.length - (val - 1);
+        new_PreviousElements[idx].unshift(val);
+        val += 1;
+    }
+    let new_Types = [2, 1];
+    for (let e = 0; e < value + 1; e++) {
+        new_Types.push(3);
+    }
+    for (let e = 0; e < value + 1; e++) {
+        new_Types.push(4);
+    }
+    new_Types.push(8);
+    let new_NameElements = [...requests.nameElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_NameElements.push("");
+    }
+    let new_MessageElements = [...requests.messageElements];
+    for (let e = 0; e < value * 2; e++) {
+        new_MessageElements.push("");
+    }
+    let new_ElementWithConditions = [];
+    let tempVal = 4;
+    for (let e = 0; e < value; e++) {
+        new_ElementWithConditions.push(tempVal);
+        tempVal++;
+    }
+    for (let e = 0; e < 3; e++) {
+        new_ElementWithConditions.push(tempVal);
+    }
+    tempVal++;
+    let check = 0;
+    for (let e = 0; e < value * 2; e++) {
+        new_ElementWithConditions.push(tempVal);
+        check++;
+        if (check === 2) {
+            check = 0;
+            tempVal++;
+        }
+    }
+    new_ElementWithConditions.reverse();
+    let new_ElementWithPublicVar = new Array(new_ElementWithConditions.length).fill(2);
+    let new_PublicVariables = new Array(new_ElementWithConditions.length).fill(
+        "0x6100000000000000000000000000000000000000000000000000000000000000"
+    );
+    let new_Operators = new Array(new_ElementWithConditions.length).fill(1);
+    let new_Values = [];
+    for (let e = 0; e < value; e++) {
+        new_Values.push("0x3100000000000000000000000000000000000000000000000000000000000000");
+    }
+    new_Values.push("0x3000000000000000000000000000000000000000000000000000000000000000");
+    new_Values.push("0x3200000000000000000000000000000000000000000000000000000000000000");
+    new_Values.push("0x3100000000000000000000000000000000000000000000000000000000000000");
+    for (let e = 0; e < value; e++) {
+        new_Values.push("0x3000000000000000000000000000000000000000000000000000000000000000");
+        new_Values.push("0x3200000000000000000000000000000000000000000000000000000000000000");
+    }
+    new_Values.reverse();
+    requests.encrypter = new_Encrypter;
+    requests.elements = new_Elements;
+    requests.nextElements = new_NextElements;
+    requests.PreviousElements = new_PreviousElements;
+    requests.types = new_Types;
+    requests.nameElements = new_NameElements;
+    requests.messageElements = new_MessageElements;
+    requests.elementWithConditions = new_ElementWithConditions;
+    requests.elementWithPublicVar = new_ElementWithPublicVar;
+    requests.publicVariables = new_PublicVariables;
+    requests.operators = new_Operators;
+    requests.values = new_Values;
+    return requests;
+}
+
+
 function main() {
+
 
 
     // INPUT:
@@ -897,6 +1004,7 @@ function main() {
     const testParallel1 = argv.v ?? 0;                                  // 0 default
     const testParallel2 = argv.w ?? 0;                              // 0 default
     const testExclusive1 = argv.x ?? 0;                                     // 0 default
+    const testExclusive2 = argv.y ?? 0;                                     // 0 default
     const modelID  = "67bf3d21cb740a310cdb4770";
     global.userID = "67bf3c12cb740a310cdb476b";
 
@@ -923,7 +1031,6 @@ function main() {
             requests_Roles[getUserWalletInfo(userIndex).address] = [`${testUser}@AUTH${randomAuth}`];
         }
     }
-    console.log(requests_Roles);
     const mandatory_Extracted = Object.values(requests_Roles)
         .map(roleArray => roleArray[0].split('@')[0].toLowerCase())
         .map(role => role.charAt(0).toUpperCase() + role.slice(1));
@@ -950,19 +1057,17 @@ function main() {
     if (testExclusive1 !== 0) {
         requests = exclusiveTest1(requests, testExclusive1);
     }
+    if (testExclusive2 !== 0) {
+        requests = exclusiveTest2(requests, testExclusive2);
+    }
     requests.messageElements = requests.messageElements.map(item =>
         item !== "" ? item.repeat(message_Duplication) : item
     );
-    for (let i = 0; i < requests.messageElements.length; i++) {
-        if (requests.messageElements[i].length !== 0) {
-            console.log(`${requests.nameElements[i]} length: ${requests.messageElements[i].length}`);
-        }
-    }
     injectElements(requests, 0, requests_Roles)
     if (encryptors_Number !== 3) {
         requests.encrypter = modifyEncrypterRoles(requests_Roles, requests.encrypter, encryptors_Number);
     }
-    console.log( requests.encrypter);
+
     const addresses = transformEncrypterToAddresses(requests.encrypter, requests_Roles);
     instantiateProcessGeneration(requests.encrypter.map(stringToHex32), transformEncrypterToAddresses(requests.encrypter, requests_Roles), requests.elements, requests.nextElements, requests.PreviousElements, requests.types);
     // Generation of the JSON encryption objects
@@ -1019,6 +1124,14 @@ function main() {
         fs.writeFileSync('data/blockchain_inputs.json', JSON.stringify(jsonData, null, 2), 'utf8');
     }
     //console.log(requests)
+    console.log(requests_Roles);
+    for (let i = 0; i < requests.messageElements.length; i++) {
+        if (requests.messageElements[i].length !== 0) {
+            console.log(`${requests.nameElements[i]} length: ${requests.messageElements[i].length}`);
+        }
+    }
+    console.log(requests.encrypter);
+    console.log(requests.nextElements);
 }
 
 
