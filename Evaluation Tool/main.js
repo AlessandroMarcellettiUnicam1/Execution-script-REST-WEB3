@@ -34,7 +34,16 @@ let martsiaId = 0;
 let rsaKey = [];
 let readingPolicies = [];
 let encryptedIpfsLinks = [];
+// ABIs of the two contracts
+const contractABI1 = JSON.parse(fs.readFileSync("../Confidentiality\ Manager/blockchain/build/contracts/StateContract.json", 'utf8')).abi;
+const contractABI2 = JSON.parse(fs.readFileSync("../Confidentiality\ Manager/blockchain/build/contracts/ConfidentialContract.json", 'utf8')).abi;
+// Addresses of the two contracts
+const contractAddress1 = fs.readFileSync("../Confidentiality\ Manager/src/.env", 'utf8').match(/CONTRACT_ADDRESS_CHORCHAIN="(0x[a-fA-F0-9]{40})"/)?.[1] || 'Not found';
+const contractAddress2 = fs.readFileSync("../Confidentiality\ Manager/src/.env", 'utf8').match(/CONTRACT_ADDRESS_MARTSIA="(0x[a-fA-F0-9]{40})"/)?.[1] || 'Not found';
 
+// Create contract instances for both contracts
+const contract1 = new web3.eth.Contract(contractABI1, contractAddress1);
+const contract2 = new web3.eth.Contract(contractABI2, contractAddress2);
 
 function columnNumberToLetter(columnNumber) {
     let columnLetter = '';
@@ -540,11 +549,23 @@ async function ensureExcelFileAndSheet(filePath, sheetName) {
             right: { style: 'thin', color: { argb: '000000' } }
         }
     };
-    // Initialize header values
-    const cellValues = {
-        'A1': 'Type',
-        'B1': 'Function/Endpoint',
-    };
+    let cellValues;
+    if (filePath === "timings.xlsx") {
+        // Initialize header values
+        cellValues = {
+            'A1': 'Type',
+            'B1': 'Function/Endpoint',
+        };
+    }
+    else {
+        // Initialize header values
+        cellValues = {
+            'A1': 'From',
+            'B1': 'To',
+            'C1': 'Function',
+            'D1': 'Gas'
+        };
+    }
     // Apply values and styles
     Object.keys(cellValues).forEach(cell => {
         worksheet.getCell(cell).value = cellValues[cell];
@@ -587,27 +608,149 @@ const Order = [
 ];
 
 
+async function checkTransactionsFromBlock(startBlockNumber) {
+    const addressMapping = {
+        "0x7364cc4e7f136a16a7c38de7205b7a5b18f17258": "WARD",
+        "0xa5b6b3729cf8f377ef6f97d87c49661b36ed02bb": "RADIOLOGY",
+        "0xb885e5701a3a4714799ee906f4aa7c297f16d90a": "PATIENT",
+        "0xaa799c5cf973b4efe8386d4acefdaa2bf8e76ab3": "TESTUSER1",
+        "0x73f1328cc53cfd14cce641551e578139ce04a293": "TESTUSER2",
+        "0x75fc6be3aa26608c4dec9521b816d58d7bef35ca": "TESTUSER3",
+        "0x010e9fedc469b54cf8cd8b63c677252323985d3f": "TESTUSER4",
+        "0x2121b11a6d041b86eefcf93497c565d189483358": "TESTUSER5",
+        "0x16e4dcbf2aad0cf2d06eda4125e75750de14a757": "TESTUSER6",
+        "0x75df910245250795d7c2749f02f5d57f7bb04563": "TESTUSER7",
+        "0x0882271d553738ab2b238f7a95fa7ce0de171ef5": "INSURANCE",
+        "0x990b35b0946844c93a5ccdb2cf2e1bcce775b973": "AUTHORITY1",
+        "0xf7a75671d5c56e470ef40306a0ca1e8decd7fbf7": "AUTHORITY2",
+        "0x76dd4d87d2147a076b065342d7610fe3a55cd248": "AUTHORITY3",
+        "0x3ca857e3e6c6d7f68944c6fe7eba6fe28d5ba1aa": "AUTHORITY4",
+        "0x4f21892f99a0bec105a6c130c7b0d5613c117a11": "CERTIFIER",
+    };
+    addressMapping[contractAddress1.toLowerCase()] = "StateContract";
+    addressMapping[contractAddress2.toLowerCase()] = "ConfidentialContract";
+    // Helper function to generate function selector map from ABI
+    const createFunctionMap = (abi) => {
+        const map = {};
+        abi.forEach(item => {
+            if (item.type === 'function') {
+                const signature = `${item.name}(${item.inputs.map(i => i.type).join(',')})`;
+                const selector = web3.utils.sha3(signature).slice(0, 10); // Use sha3 instead of keccak256 in older versions
+                map[selector] = item;
+            }
+        });
+        return map;
+    };
+    try {
+        const latestBlock = await web3.eth.getBlockNumber();
+        // Initialize function maps for both contracts
+        const contract1Map = createFunctionMap(contract1.options.jsonInterface);
+        const contract2Map = createFunctionMap(contract2.options.jsonInterface);
+        for (let blockNumber = startBlockNumber; blockNumber <= latestBlock; blockNumber++) {
+            const block = await web3.eth.getBlock(blockNumber, true);
+            if (!block.transactions) continue;
+            for (const tx of block.transactions) {
+                const receipt = await web3.eth.getTransactionReceipt(tx.hash);
+                console.log(`From: ${addressMapping[tx.from]}`);
+                const from = addressMapping[tx.from];
+                console.log(`To: ${addressMapping[tx.to]}`);
+                const to = addressMapping[tx.to];
+                console.log(`Gas Used: ${receipt.gasUsed}`);
+                const gas = receipt.gasUsed;
+                let function0 = "-"
+                if (!tx.to) continue;
+                const contractMap = tx.to.toLowerCase() === contractAddress1.toLowerCase() ? contract1Map
+                    : tx.to.toLowerCase() === contractAddress2.toLowerCase() ? contract2Map
+                        : null;
+                if (!contractMap || tx.input.length < 10) {
+                    console.log('--------------------------');
+                } else {
+                    const selector = tx.input.slice(0, 10);
+                    const func = contractMap[selector];
+                    if (!func) {
+                        console.log('Unknown function selector:', selector);
+                        console.log('--------------------------');
+                        continue;
+                    }
+                    try {
+                        // Use decodeParameters for older web3 versions
+                        const decoded = web3.eth.abi.decodeParameters(
+                            func.inputs,
+                            '0x' + tx.input.slice(10) // Remove selector from input data
+                        );
+                        console.log(`Function: ${func.name}`);
+                        function0 = func.name;
+                    } catch (e) {
+                        console.log('Decoding error:', e.message);
+                    }
+                }
+                console.log('--------------------------');
+                if (executionNumber !== 1) {
+                    const greenStyle = {
+                        fill: {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: '90EE90' } // Light green color
+                        },
+                        border: ['top', 'left', 'bottom', 'right'].reduce((acc, side) => {
+                            acc[side] = { style: 'thin', color: { argb: '000000' } };
+                            return acc;
+                        }, {})
+                    };
+                    // Define headers and their corresponding columns
+                    const headers = ['From', 'To', 'Function', 'Gas'];
+                    headers.forEach((header, index) => {
+                        const cell = columnNumberToLetter(executionNumber + index) + "1";
+                        worksheet2.getCell(cell).value = header;
+                        worksheet2.getCell(cell).style = greenStyle;
+                    });
+                }
+                writeToFirstEmptyCell(worksheet2, columnNumberToLetter(executionNumber), from);
+                writeToFirstEmptyCell(worksheet2, columnNumberToLetter(executionNumber+1), to);
+                writeToFirstEmptyCell(worksheet2, columnNumberToLetter(executionNumber+2), function0);
+                writeToFirstEmptyCell(worksheet2, columnNumberToLetter(executionNumber+3), Number(gas));
+            }
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+
 // Main function to execute all calls in custom order for 1 iteration
 async function main() {
     global.testType = argv.t ?? 0;
     global.executionNumber = argv.n ?? 0;
     global.worksheet = "";
+    global.worksheet2 = "";
     let workbook;
+    let workbook2;
     if (testType !== 0 && executionNumber === 1) {
-        const result = await ensureExcelFileAndSheet('output.xlsx', testType).catch(err => console.error(err));
-        workbook = result.workbook;
-        global.worksheet = result.worksheet;
+        const result_Time = await ensureExcelFileAndSheet('timings.xlsx', testType).catch(err => console.error(err));
+        const result_Cost = await ensureExcelFileAndSheet('costs.xlsx', testType).catch(err => console.error(err));
+        workbook = result_Time.workbook;
+        workbook2 = result_Cost.workbook;
+        global.worksheet = result_Time.worksheet;
+        global.worksheet2 = result_Cost.worksheet;
     } else if (testType !== 0) {
-        const wb = await new ExcelJS.Workbook().xlsx.readFile('output.xlsx');
+        const wb = await new ExcelJS.Workbook().xlsx.readFile('timings.xlsx');
+        const wb2 = await new ExcelJS.Workbook().xlsx.readFile('costs.xlsx');
         workbook = wb;
+        workbook2 = wb2;
         global.worksheet = wb.getWorksheet(testType);
+        global.worksheet2 = wb2.getWorksheet(testType);
     }
     global.askDone = new Set();
     console.log(`--- Starting ---`);
+    const blockNumber = await web3.eth.getBlockNumber();
     await Execute(Order);
+    if (testType !== 0 && executionNumber % 5 === 1) {
+        await checkTransactionsFromBlock(blockNumber + BigInt(1));
+    }
     console.log(`--- Finished ---`);
     if (global.worksheet !== "") {
-        await workbook.xlsx.writeFile('output.xlsx');  // Save the modified workbook
+        await workbook.xlsx.writeFile('timings.xlsx');  // Save the modified workbook
+        await workbook2.xlsx.writeFile('costs.xlsx');  // Save the modified workbook
     }
 }
 

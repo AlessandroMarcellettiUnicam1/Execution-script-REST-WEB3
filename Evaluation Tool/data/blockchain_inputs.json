@@ -40,47 +40,117 @@
     "name": "publicKeyReaders_insurance"
   },
   {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser1",
+    "name": "publicKeyReaders_testuser1"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser2",
+    "name": "publicKeyReaders_testuser2"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser3",
+    "name": "publicKeyReaders_testuser3"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser4",
+    "name": "publicKeyReaders_testuser4"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser5",
+    "name": "publicKeyReaders_testuser5"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser6",
+    "name": "publicKeyReaders_testuser6"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "setPublicKeyReaders",
+    "params": {
+      "ipfs_link_1": 0,
+      "ipfs_link_2": 0
+    },
+    "role": "testuser7",
+    "name": "publicKeyReaders_testuser7"
+  },
+  {
     "contractInfo": "stateContract",
     "functionName": "instantiateProcess",
     "params": {
       "process_id": 0,
       "roles": [
-        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
-        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
         "0x50617469656e7400000000000000000000000000000000000000000000000000",
+        "0x696e7465726e616c000000000000000000000000000000000000000000000000",
+        "0x5465737475736572370000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
         "0x5761726400000000000000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-        "0x50617469656e7400000000000000000000000000000000000000000000000000",
-        "0x50617469656e7400000000000000000000000000000000000000000000000000",
-        "0x5761726400000000000000000000000000000000000000000000000000000000",
         "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x5465737475736572360000000000000000000000000000000000000000000000",
+        "0x5465737475736572330000000000000000000000000000000000000000000000",
+        "0x5465737475736572320000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x5465737475736572310000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
-        "0x50617469656e7400000000000000000000000000000000000000000000000000",
-        "0x526164696f6c6f67790000000000000000000000000000000000000000000000",
+        "0x5465737475736572350000000000000000000000000000000000000000000000",
+        "0x5465737475736572340000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000",
         "0x696e7465726e616c000000000000000000000000000000000000000000000000"
       ],
       "users": [
-        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
-        "0x0000000000000000000000000000000000000000",
         "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
+        "0x0000000000000000000000000000000000000000",
+        "0x75DF910245250795D7c2749f02F5D57F7bb04563",
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
         "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
         "0x0000000000000000000000000000000000000000",
-        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-        "0x7364cc4E7F136a16a7c38DE7205B7A5b18f17258",
         "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x16E4DCBF2aAd0Cf2D06eda4125e75750DE14A757",
+        "0x75fc6be3Aa26608C4dEc9521b816D58D7bEf35Ca",
+        "0x73f1328Cc53cfd14Cce641551e578139Ce04a293",
         "0x0000000000000000000000000000000000000000",
-        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0xaA799c5cF973b4efe8386D4AcEfdAa2BF8e76Ab3",
         "0x0000000000000000000000000000000000000000",
-        "0xb885E5701a3A4714799eE906f4Aa7C297f16D90a",
-        "0xa5B6B3729Cf8f377EF6F97d87C49661b36Ed02bB",
+        "0x2121B11A6D041b86eEfCF93497C565d189483358",
+        "0x010e9fedC469B54cF8cd8b63c677252323985d3f",
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000"
       ],
@@ -252,7 +322,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "radiology",
+    "role": "patient",
     "name": "execute_message_appointment"
   },
   {
@@ -266,7 +336,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "patient",
+    "role": "testuser7",
     "name": "execute_message_type"
   },
   {
@@ -298,7 +368,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "patient",
+    "role": "radiology",
     "name": "execute_message_certificationId"
   },
   {
@@ -312,7 +382,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "patient",
+    "role": "testuser6",
     "name": "execute_message_temperature"
   },
   {
@@ -326,7 +396,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "ward",
+    "role": "testuser3",
     "name": "execute_message_resultId"
   },
   {
@@ -340,7 +410,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "radiology",
+    "role": "testuser2",
     "name": "execute_message_report"
   },
   {
@@ -354,7 +424,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "radiology",
+    "role": "testuser1",
     "name": "execute_message_requestId"
   },
   {
@@ -368,7 +438,7 @@
       "publicVarNames": [],
       "publicValues": []
     },
-    "role": "patient",
+    "role": "testuser5",
     "name": "execute_message_appointmentId"
   },
   {
@@ -386,7 +456,7 @@
         "0x7472756500000000000000000000000000000000000000000000000000000000"
       ]
     },
-    "role": "radiology",
+    "role": "testuser4",
     "name": "execute_message_registration"
   },
   {
@@ -433,6 +503,111 @@
     },
     "role": "patient",
     "name": "ask_auth_key_patient"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser1",
+    "name": "ask_auth_key_testuser1"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser2",
+    "name": "ask_auth_key_testuser2"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser3",
+    "name": "ask_auth_key_testuser3"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser4",
+    "name": "ask_auth_key_testuser4"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser5",
+    "name": "ask_auth_key_testuser5"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser6",
+    "name": "ask_auth_key_testuser6"
+  },
+  {
+    "contractInfo": "confidentialContract",
+    "functionName": "notifyAuthorities",
+    "params": {
+      "process_id": 0,
+      "list_auth": [
+        "0x990B35b0946844c93A5cCdB2Cf2E1bCCE775b973",
+        "0xf7a75671d5c56e470Ef40306A0ca1E8dECd7FbF7",
+        "0x76Dd4d87d2147a076B065342D7610Fe3A55Cd248",
+        "0x3ca857e3e6C6d7F68944C6FE7EBa6fE28D5ba1aa"
+      ]
+    },
+    "role": "testuser7",
+    "name": "ask_auth_key_testuser7"
   },
   {
     "contractInfo": "confidentialContract",

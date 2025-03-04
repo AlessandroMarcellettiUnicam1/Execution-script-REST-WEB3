@@ -18,5 +18,40 @@
     "role": "insurance",
     "address": "0x0882271d553738aB2b238F7a95fa7Ce0DE171EF5",
     "privateKey": "0xb1f87da1bf859936ce7baebc40a8cd309c13eaef22769538510e6ea0a5b64a61"
+  },
+  {
+    "role": "testuser1",
+    "address": "0xaA799c5cF973b4efe8386D4AcEfdAa2BF8e76Ab3",
+    "privateKey": "0x79b5e533324a3a7273616c4586959d9fc78723c1036e86ca1a9c3aaaef6953e2"
+  },
+  {
+    "role": "testuser2",
+    "address": "0x73f1328Cc53cfd14Cce641551e578139Ce04a293",
+    "privateKey": "0xfc332ff560e7010de667f83d2df0e2bc6f067511dee41a3ab1d67831072bccc9"
+  },
+  {
+    "role": "testuser3",
+    "address": "0x75fc6be3Aa26608C4dEc9521b816D58D7bEf35Ca",
+    "privateKey": "0x1f9840efe9aabc4ccda816bec2fb0a3e0f400cd2c1b1745e1f92b48754a101e1"
+  },
+  {
+    "role": "testuser4",
+    "address": "0x010e9fedC469B54cF8cd8b63c677252323985d3f",
+    "privateKey": "0x7e1c3c80d3fbf9803a449f51f15338abce3df503335aa8013099783fc2c5cd06"
+  },
+  {
+    "role": "testuser5",
+    "address": "0x2121B11A6D041b86eEfCF93497C565d189483358",
+    "privateKey": "0x8fb9795fa874d377ea51a4fbf0b2df3b786eb8a9c6e49f62803ff6865e0a839e"
+  },
+  {
+    "role": "testuser6",
+    "address": "0x16E4DCBF2aAd0Cf2D06eda4125e75750DE14A757",
+    "privateKey": "0x32d3d8baa224025e0c176f9d8587dc7ca36bff41919f82d54f0420d3a0bc6e1e"
+  },
+  {
+    "role": "testuser7",
+    "address": "0x75DF910245250795D7c2749f02F5D57F7bb04563",
+    "privateKey": "0x3a28c30d1416b5727ab449d5d5e5410a4ac1baf6338cce7655af0d93db2b0ebd"
   }
 ]
