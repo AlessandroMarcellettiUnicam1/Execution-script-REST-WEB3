@@ -1,15 +1,15 @@
 [
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/xRaysConfetty/67bf3c12cb740a310cdb476b",
+    "endpoint": "http://localhost:8081/ChorChain/rest/saveModel/xRaysConfetty/67c621d5cb740acdb0352a6d",
     "data": "XML_CONTENT_PLACEHOLDER",
     "name": "saveModel"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/createInstance/67bf3c12cb740a310cdb476b",
+    "endpoint": "http://localhost:8081/ChorChain/rest/createInstance/67c621d5cb740acdb0352a6d",
     "data": {
-      "modelID": "67bf3d21cb740a310cdb4770",
+      "modelID": "67c62225cb740acdb0352a72",
       "optional": [
         "null"
       ],
@@ -35,7 +35,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/ward/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/ward/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "subscribe_ward"
   },
   {
@@ -48,7 +48,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/radiology/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/radiology/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "subscribe_radiology"
   },
   {
@@ -61,7 +61,7 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/patient/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/patient/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "subscribe_patient"
   },
   {
@@ -74,17 +74,17 @@
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/insurance/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/subscribe/insurance/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "subscribe_insurance"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/deploy/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/deploy/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "translation1"
   },
   {
     "method": "POST",
-    "endpoint": "http://localhost:8081/ChorChain/rest/generateMartsiaInstance/67bf3c12cb740a310cdb476b/{instanceId}",
+    "endpoint": "http://localhost:8081/ChorChain/rest/generateMartsiaInstance/67c621d5cb740acdb0352a6d/{instanceId}",
     "name": "translation2"
   },
   {

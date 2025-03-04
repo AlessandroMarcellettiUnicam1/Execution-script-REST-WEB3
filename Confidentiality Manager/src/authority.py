@@ -34,11 +34,7 @@ class Authority:
         f.seek(0)
         file_to_str = f.read()
         hash_file = api.add_json(file_to_str)
-        start = time.time()
-        block_int.send_authority_names(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file)
-        end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre 1:", int(total))
+        block_int.send_authority_names(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file, self.authority_number)
         self.__x__.execute("INSERT OR IGNORE INTO authority_names VALUES (?,?,?)", (str(process_instance_id), hash_file, file_to_str))
         self.__conn__.commit()
 
@@ -46,11 +42,7 @@ class Authority:
         g1_1 = groupObj.random(G1)
         g2_1 = groupObj.random(G2)
         (h1_1, h2_1) = mpc_setup.commit(groupObj, g1_1, g2_1)
-        start = time.time()
-        block_int.sendHashedElements(self.authority_address, self.__authority_private_key__, process_instance_id, (h1_1, h2_1))
-        end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre 2:", int(total))
+        block_int.sendHashedElements(self.authority_address, self.__authority_private_key__, process_instance_id, (h1_1, h2_1), self.authority_number)
         self.__x__.execute("INSERT OR IGNORE INTO h_values VALUES (?,?,?)", (str(process_instance_id), h1_1, h2_1))
         self.__conn__.commit()
         g1_1_bytes = groupObj.serialize(g1_1)
@@ -64,11 +56,7 @@ class Authority:
         g1_1_bytes = result[0][1]
         g2_1_bytes = result[0][2]
         # if we want to save gas, we can put the values in an IPFS file and store its link instead of the values in plain
-        start = time.time()
-        block_int.sendElements(self.authority_address, self.__authority_private_key__, process_instance_id, (g1_1_bytes, g2_1_bytes))
-        end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre 3:", int(total))
+        block_int.sendElements(self.authority_address, self.__authority_private_key__, process_instance_id, (g1_1_bytes, g2_1_bytes), self.authority_number)
 
     def generate_public_parameters(self, groupObj, maabe, api, process_instance_id):
         hashes1 = []
@@ -98,11 +86,7 @@ class Authority:
         hash_file = api.add_json(file_to_str)
         self.__x__.execute("INSERT OR IGNORE INTO public_parameters VALUES (?,?,?)", (str(process_instance_id), hash_file, file_to_str))
         self.__conn__.commit()
-        start = time.time()
-        block_int.send_parameters_link(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file)
-        end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre 4:", int(total))
+        block_int.send_parameters_link(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file, self.authority_number)
         return True
 
     def retrieve_public_parameters(self, process_instance_id):
@@ -129,11 +113,7 @@ class Authority:
         self.__conn__.commit()
         self.__x__.execute("INSERT OR IGNORE INTO public_keys VALUES (?,?,?)", (str(process_instance_id), hash_file, pk1_bytes))
         self.__conn__.commit()
-        start = time.time()
-        block_int.send_publicKey_link(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file)
-        end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre 5:", int(total))
+        block_int.send_publicKey_link(self.authority_address, self.__authority_private_key__, process_instance_id, hash_file, self.authority_number)
 
 def main():
     groupObj = PairingGroup('SS512')
@@ -162,7 +142,7 @@ def main():
         # 0.4
         #print(f"Phase 0.4 Authority {authority_number}")
         while not authority.generate_public_parameters(groupObj, maabe, api, process_instance_id):
-            time.sleep(1)
+            time.sleep(0.1)
             #print("---sottrarre sleep:", int(1 * 10 ** 3))
         # 0.5
         #print(f"Phase 0.5 Authority {authority_number}")

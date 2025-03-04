@@ -6,8 +6,6 @@ import block_int
 import ipfshttpclient
 import json
 from maabe_class import *
-from datetime import datetime
-import random
 import sqlite3
 from env_manager import authorities_names_and_addresses
 import time

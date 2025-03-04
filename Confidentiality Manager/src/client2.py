@@ -72,7 +72,7 @@ def transactions_monitoring(latest_block):
                     first = True
             # Wait for 0.2 second before retrying
             #print("----levare 5: ", 5)
-            time.sleep(5)
+            time.sleep(0.1)
 
 
 

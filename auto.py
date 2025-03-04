@@ -5,7 +5,7 @@ import time
 import argparse
 
 parser = argparse.ArgumentParser(description="Run the API and Node.js script with specified iterations.")
-parser.add_argument('-n', type=int, default=1, required=False, help="Number of iterations to run the process")
+parser.add_argument('-n', type=int, default=5, required=False, help="Number of iterations to run the process")
 parser.add_argument('-t1', action='store_true', help="Perform encryptors tests")
 parser.add_argument('-t2', action='store_true', help="Perform message size tests")
 parser.add_argument('-t3', action='store_true', help="Perform looping tests")
@@ -116,7 +116,7 @@ def run_iteration(iteration: int):
     # Start Node.js
     node_success = False
     node_process = subprocess.Popen(
-        ["node", "main.js"],
+        ["node", "main.js", "-t", str(caseName), "-n", str(success_count+1)],
         cwd=os.path.join(os.path.dirname(__file__), "Evaluation Tool"),
         stdout=sys.stdout,
         stderr=subprocess.STDOUT,
@@ -141,8 +141,10 @@ def run_iteration(iteration: int):
         success_count += 1
     return node_success
 
+caseName = "baseCase"
 
 if args.t1:
+    caseName = "t1"
     encrypters = 2
     while encrypters < 11:
         for i in range(1, total_iterations + 1):
@@ -152,6 +154,7 @@ if args.t1:
                 time.sleep(3)
         encrypters += 1
 elif args.t2:
+    caseName = "t2"
     duplication = 1
     while duplication < 10:
         for i in range(1, total_iterations + 1):
@@ -161,6 +164,7 @@ elif args.t2:
                 time.sleep(3)
         duplication += 1
 elif args.t3:
+    caseName = "t3"
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):
@@ -170,6 +174,7 @@ elif args.t3:
                 time.sleep(3)
         loop += 1
 elif args.t4:
+    caseName = "t4"
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):
@@ -179,6 +184,7 @@ elif args.t4:
                 time.sleep(3)
         loop += 1
 elif args.t5:
+    caseName = "t5"
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):
@@ -188,6 +194,7 @@ elif args.t5:
                 time.sleep(3)
         loop += 1
 elif args.t6:
+    caseName = "t6"
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):
@@ -197,6 +204,7 @@ elif args.t6:
                 time.sleep(3)
         loop += 1
 elif args.t7:
+    caseName = "t7"
     loop = 0
     while loop < 10:
         for i in range(1, total_iterations + 1):

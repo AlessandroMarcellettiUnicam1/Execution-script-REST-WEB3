@@ -58,8 +58,8 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
         start = time.time()
         send_ipfs_link(web3, reader_address, process_instance_id, hash_file)
         end = time.time()
-        total = (end - start) * 10 ** 3
-        #print("----sottrarre send ipfs:", int(total))
+        with open('removing_time_Auth'+ str(authority_number) +'.txt', 'w') as f:
+            f.write(str(start*1000) + " " + str(end*1000) + "\n")
 
 
 def check_block_exists(web3, block_number):

@@ -1,9 +1,5 @@
-import os
 import sqlite3
-import json
-from decouple import config
 from env_manager import authorities_addresses_and_names_separated
-import block_int
 
 
 def client_main(process_id, actor_address):

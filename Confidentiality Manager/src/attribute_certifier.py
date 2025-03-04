@@ -4,7 +4,6 @@ from decouple import config
 import io
 import sqlite3
 import ipfshttpclient
-import time
 from env_manager import authorities_names, authorities_names_and_addresses
 
 
@@ -36,10 +35,7 @@ def generate_attributes(roles, process_instance_id):
     
     attribute_certifier_address = config('CERTIFIER_ADDRESS')
     private_key = config('CERTIFIER_PRIVATEKEY')
-    start = time.time()
     block_int.send_users_attributes(attribute_certifier_address, private_key, process_instance_id, hash_file)
-    end = time.time()
-    total = (end - start) * 10 ** 3
     #print("----sottrarre attributes:", int(total))
 
 

@@ -11,7 +11,6 @@ import attribute_certifier
 import data_owner
 import client
 import reader
-import time
 
 import os
 import subprocess
@@ -151,7 +150,6 @@ def attributes_certification_and_authorities():
         temporal = temporal + str(process_instance_id) + '@' + authority_name + ' and '
     access_policy[file_name] = ('(' + temporal[:-5] + ') and ' + policy)
     """
-    start = time.time()
     process_id = request.json.get('process_id')
     roles = request.json.get('roles')
     policies = request.json.get('policy')
@@ -193,8 +191,6 @@ def attributes_certification_and_authorities():
             preexec_fn=os.setsid
         )
         processes.append(p)  # Track these as well for cleanup if needed
-    end = time.time()
-    total = (end - start) * 10 ** 3
     #total_without_bc = total - blockchainTime
     return jsonify(response_data), 200
 
