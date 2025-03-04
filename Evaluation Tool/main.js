@@ -635,7 +635,7 @@ async function checkTransactionsFromBlock(startBlockNumber) {
         abi.forEach(item => {
             if (item.type === 'function') {
                 const signature = `${item.name}(${item.inputs.map(i => i.type).join(',')})`;
-                const selector = web3.utils.sha3(signature).slice(0, 10); // Use sha3 instead of keccak256 in older versions
+                const selector = web3.utils.sha3(signature).slice(0, 10);
                 map[selector] = item;
             }
         });
