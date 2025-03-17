@@ -590,7 +590,7 @@ async function ensureExcelFileAndSheet(filePath, sheetName) {
         }
     };
     let cellValues;
-    if (filePath === "timings.xlsx") {
+    if (filePath === "./table_Output/timings.xlsx") {
         // Initialize header values
         cellValues = {
             'A1': 'Type',
@@ -756,15 +756,15 @@ async function main() {
     let workbook;
     let workbook2;
     if (testType !== 0 && executionNumber === 1) {
-        const result_Time = await ensureExcelFileAndSheet('timings.xlsx', testType).catch(err => console.error(err));
-        const result_Cost = await ensureExcelFileAndSheet('costs.xlsx', testType).catch(err => console.error(err));
+        const result_Time = await ensureExcelFileAndSheet('./table_Output/timings.xlsx', testType).catch(err => console.error(err));
+        const result_Cost = await ensureExcelFileAndSheet('./table_Output/costs.xlsx', testType).catch(err => console.error(err));
         workbook = result_Time.workbook;
         workbook2 = result_Cost.workbook;
         global.worksheet = result_Time.worksheet;
         global.worksheet2 = result_Cost.worksheet;
     } else if (testType !== 0) {
-        const wb = await new ExcelJS.Workbook().xlsx.readFile('timings.xlsx');
-        const wb2 = await new ExcelJS.Workbook().xlsx.readFile('costs.xlsx');
+        const wb = await new ExcelJS.Workbook().xlsx.readFile('./table_Output/timings.xlsx');
+        const wb2 = await new ExcelJS.Workbook().xlsx.readFile('./table_Output/costs.xlsx');
         workbook = wb;
         workbook2 = wb2;
         global.worksheet = wb.getWorksheet(testType);
@@ -779,8 +779,8 @@ async function main() {
     }
     console.log(`--- Finished ---`);
     if (global.worksheet !== "") {
-        await workbook.xlsx.writeFile('timings.xlsx');  // Save the modified workbook
-        await workbook2.xlsx.writeFile('costs.xlsx');  // Save the modified workbook
+        await workbook.xlsx.writeFile('./table_Output/timings.xlsx');  // Save the modified workbook
+        await workbook2.xlsx.writeFile('./table_Output/costs.xlsx');  // Save the modified workbook
     }
 }
 

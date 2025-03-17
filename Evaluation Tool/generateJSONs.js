@@ -126,7 +126,6 @@ function userInfoGeneration(mandatory, optional) {
             privateKey: wallet.getPrivateKeyString()
         };
     }
-
     // Combine mandatory and optional users
     const allUsers = [...mandatory, ...optional.filter(name => name !== "null")];
     // Generate the user info for each name
@@ -468,7 +467,7 @@ function transformEncrypterToAddresses(encrypter, requests_Roles) {
 }
 
 
-// Function to inject new a message
+// Function to inject a new message
 function injectElement(data, insertAfter, newElement, requests_Roles) {
     const indexAfter = data.elements.indexOf(insertAfter);
     if (indexAfter === -1) {
@@ -523,10 +522,8 @@ function getUserWalletInfo(index) {
     const mnemonic = "control pulse code indoor off imitate uncover lesson fragile isolate fault blast";
     const seed = bip39.mnemonicToSeedSync(mnemonic);
     const hdWallet = hdkey.fromMasterSeed(seed);
-
     const derivationPath = `m/44'/60'/0'/0/${index + 5}`; // Adjusted index
     const wallet = hdWallet.derivePath(derivationPath).getWallet();
-
     return {
         address: Web3.utils.toChecksumAddress(wallet.getAddressString()),
         privateKey: wallet.getPrivateKeyString()
@@ -1022,8 +1019,11 @@ function fetchUserIdSync() {
 
 function main() {
 
+
+
+
     // INPUT:
-    const input_path = argv.f ?? './data/input_1.json';                         // './data/input_1.json' default
+    const input_path = argv.f ?? './data/input/input_1_X-ray.json';                   // './data/input/input_1_X-ray.json' default
     const encryptors_Number = argv.e ?? 3;                                      // 3 default
     const message_Duplication = argv.d ?? 1;                                // 1 default
     const looping = argv.l ?? 0;                                            // 0 default
@@ -1032,18 +1032,20 @@ function main() {
     const testExclusive1 = argv.x ?? 0;                                     // 0 default
     const testExclusive2 = argv.y ?? 0;                                     // 0 default
 
+
+
     const new_Model = './data/model.xml';
-    fs.copyFileSync('./data/models/healthcare.xml', new_Model);
-    if (input_path === './data/input_2.json') {
+    fs.copyFileSync('./data/models/x-ray.xml', new_Model);
+    if (input_path === './data/input/input_Parallel_Split.json') {
         fs.copyFileSync('./data/models/t4_0.xml', new_Model);
     }
-    else if (input_path === './data/input_3.json') {
+    else if (input_path === './data/input/input_Parallel_Split_Join.json') {
         fs.copyFileSync('./data/models/t5_0.xml', new_Model);
     }
-    else if (input_path === './data/input_4.json') {
+    else if (input_path === './data/input/input_Exclusive_Split.json') {
         fs.copyFileSync('./data/models/t6_0.xml', new_Model);
     }
-    else if (input_path === './data/input_5.json') {
+    else if (input_path === './data/input/input_Exclusive_Split_Join.json') {
         fs.copyFileSync('./data/models/t7_0.xml', new_Model);
     }
     global.userID = fetchUserIdSync();
@@ -1109,7 +1111,6 @@ function main() {
         fs.copyFileSync('./data/models/t1_' + encryptors_Number + '.xml', new_Model);
         requests.encrypter = modifyEncrypterRoles(requests_Roles, requests.encrypter, encryptors_Number);
     }
-
     const addresses = transformEncrypterToAddresses(requests.encrypter, requests_Roles);
     instantiateProcessGeneration(requests.encrypter.map(stringToHex32), transformEncrypterToAddresses(requests.encrypter, requests_Roles), requests.elements, requests.nextElements, requests.PreviousElements, requests.types);
     // Generation of the JSON encryption objects
@@ -1148,14 +1149,13 @@ function main() {
     }
     // If there are exclusive gateways
     if (requests.elementWithConditions) {
-
         setInstanceConditionsGeneration(requests.elementWithConditions, requests.elementWithPublicVar, requests.publicVariables, requests.operators, requests.values);
         const jsonData = JSON.parse(fs.readFileSync('data/blockchain_inputs.json', 'utf8'));
         requests.operators.forEach((operator, index) => {
             const exists = jsonData.some(obj =>
                 obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithConditions[index]
             );
-            if ((operator === 1 && exists) || (input_path === './data/input_4.json') || (input_path === './data/input_5.json')) {
+            if ((operator === 1 && exists) || (input_path === './data/input/input_Exclusive_Split.json') || (input_path === './data/input/input_Exclusive_Split_Join.json')) {
                 const result = jsonData.find(obj => obj.name.includes("execute_message") && obj.params.message_id === requests.elementWithPublicVar[index]);
                 result.params.publicVarNames = [requests.publicVariables[index]];
                 result.params.publicValues = [requests.values[index]];
@@ -1174,18 +1174,15 @@ function main() {
     }
     console.log(requests.encrypter);
     console.log(requests.nextElements);
-
-
     const new_Ordering = './data/ordering.txt';
-    if (input_path === './data/input_1_Incident.json') {
-        fs.copyFileSync('./data/ordering_Incident.txt', new_Ordering);
+    if (input_path === './data/input/input_1_Incident.json') {
+        fs.copyFileSync('./data/additional_Ordering/ordering_Incident.txt', new_Ordering);
         fs.copyFileSync('./data/models/incident.xml', new_Model);
     }
-    else if (input_path === './data/input_1_Retail.json') {
-        fs.copyFileSync('./data/ordering_Retail.txt', new_Ordering);
+    else if (input_path === './data/input/input_1_Retail.json') {
+        fs.copyFileSync('./data/additional_Ordering/ordering_Retail.txt', new_Ordering);
         fs.copyFileSync('./data/models/retail.xml', new_Model);
     }
-
 }
 
 
