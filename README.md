@@ -31,7 +31,7 @@ The CONFETTY Evaluation Tool runs a series of tests that analyze gas costs and e
 ## Initial Setup and Reset
 
 1. **Database Cleanup:**  
-   Connect to MongoDBCompass and drop all ChorChain databases.  
+   Connect to MongoDBCompass and create a ChorChain database. If it exists, drop all the ChorChain databases.  
    **Note:** The `admin` database cannot be deleted.
 
 2. **Start the Server:**  
@@ -46,11 +46,9 @@ The CONFETTY Evaluation Tool runs a series of tests that analyze gas costs and e
    Configure Ganache with the following options:
    - **Hostname (SERVER):** `0.0.0.0`
    - **Total accounts to generate (ACCOUNT & KEYS):** `20`
-   - **Seed (ACCOUNTS & KEYS):**  
-     `control pulse code indoor off imitate uncover lesson fragile isolate fault blast`
+   - **Seed (ACCOUNTS & KEYS):** `control pulse code indoor off imitate uncover lesson fragile isolate fault blast`
    - **Gas limit (CHAIN):** `35700000`
-   - **Output logs to file (ADVANCED):**  
-     Select the `Ganache_Temp_Logs` folder inside the `\CONFETTY\Evaluation Tool` directory.
+   - **Output logs to file (ADVANCED):** Select the `Ganache_Temp_Logs` folder inside the `\CONFETTY\Evaluation Tool` directory.
 
    **Info:**  
    - The **first** generated address is the default (ChorChain) and serves as the Attribute Certifier.
@@ -115,8 +113,6 @@ The Python tests are executed from PowerShell. Inside the `\CONFETTY\Evaluation 
    ```bash
    python test_Auto.py -t3
    ```
-
-   *Info:* This test corresponds to the "Increased size dimension" in the paper.
 
 4. **Parallel Split Synth Test (x1 to x10):**
 
