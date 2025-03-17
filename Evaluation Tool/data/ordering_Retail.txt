@@ -1,0 +1,12 @@
+goodAmount
+priceAv
+productQuantity
+availabilityCost
+receipt1
+stringOrderID
+certificationId
+shipInfo
+receipt2
+orderDetail
+customerAddress
+customerShipment

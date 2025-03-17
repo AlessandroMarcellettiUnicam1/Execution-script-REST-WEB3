@@ -1,6 +1,7 @@
 const axios = require('axios'); // For making HTTP requests
 const fs = require('fs'); // For file system operations (reading files)
 const { Web3 } = require("web3"); // For interacting with Ethereum blockchain
+const { MongoClient } = require('mongodb');
 
 
 // Function to read XML from a file asynchronously
@@ -30,7 +31,7 @@ async function performRestCall(method, endpoint, data = null) {
     // If the HTTP method is POST and the data is a placeholder for XML content
     else if (method === 'POST' && data === "XML_CONTENT_PLACEHOLDER") {
         // Read the XML content from a file and assign it to 'data'
-        data = await readXMLFile('./data/healthcare.xml');
+        data = await readXMLFile('./data/model.xml');
         // Perform a POST request with the XML content
         response = await axios.post(endpoint, data, {
             headers: {

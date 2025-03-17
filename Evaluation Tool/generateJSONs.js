@@ -4,6 +4,7 @@ const bip39 = require('bip39');
 const Web3 = require('web3');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
+const { MongoClient } = require('mongodb');
 
 const argv = yargs(hideBin(process.argv))
     .option('e', {
@@ -89,12 +90,12 @@ function saveModelGeneration(endpoint_spec) {
 
 
 // Function to generate the createInstance JSON object
-function createInstanceGeneration(modelID, optional, mandatory, visibleAt) {
+function createInstanceGeneration(optional, mandatory, visibleAt) {
     const jsonObject = {
         method: "POST",
         endpoint: "http://localhost:8081/ChorChain/rest/createInstance/" + userID,
         data: {
-            modelID: modelID,
+            modelID: "",
             optional: optional,
             mandatory: mandatory,
             visibleAt: visibleAt
@@ -992,37 +993,72 @@ function exclusiveTest2(requests, value) {
 }
 
 
+function fetchUserIdSync() {
+    const deasync = require('deasync');
+    let isDone = false;
+    let userId;
+    (async () => {
+        const client = new MongoClient('mongodb://localhost:27017');
+        await client.connect();
+        let userDocument = null;
+        while (!userDocument) {
+            userDocument = await client.db('ChorChain').collection('User').findOne({});
+            if (!userDocument) {
+                console.log('No user found, retrying...');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+        userId = userDocument._id.toString();
+        await client.close();
+        isDone = true;
+    })();
+    // Block the event loop until the async operation is finished
+    while (!isDone) {
+        deasync.runLoopOnce();
+    }
+    return userId;
+}
+
+
 function main() {
 
-
-
     // INPUT:
-    const input_path = argv.f ?? './data/input_1.json';                     // './data/input_1.json' default
-    const encryptors_Number = argv.e ?? 3;                                  // 3 default
-    const message_Duplication = argv.d ?? 1;                            // 1 default
-    const looping = argv.l ?? 0;                                        // 0 default
-    const testParallel1 = argv.v ?? 0;                                  // 0 default
-    const testParallel2 = argv.w ?? 0;                              // 0 default
+    const input_path = argv.f ?? './data/input_1.json';                         // './data/input_1.json' default
+    const encryptors_Number = argv.e ?? 3;                                      // 3 default
+    const message_Duplication = argv.d ?? 1;                                // 1 default
+    const looping = argv.l ?? 0;                                            // 0 default
+    const testParallel1 = argv.v ?? 0;                                      // 0 default
+    const testParallel2 = argv.w ?? 0;                                      // 0 default
     const testExclusive1 = argv.x ?? 0;                                     // 0 default
     const testExclusive2 = argv.y ?? 0;                                     // 0 default
-    global.userID = "67c621d5cb740acdb0352a6d";
-    const modelID  = "67c62225cb740acdb0352a72";
 
-
-
+    const new_Model = './data/model.xml';
+    fs.copyFileSync('./data/models/healthcare.xml', new_Model);
+    if (input_path === './data/input_2.json') {
+        fs.copyFileSync('./data/models/t4_0.xml', new_Model);
+    }
+    else if (input_path === './data/input_3.json') {
+        fs.copyFileSync('./data/models/t5_0.xml', new_Model);
+    }
+    else if (input_path === './data/input_4.json') {
+        fs.copyFileSync('./data/models/t6_0.xml', new_Model);
+    }
+    else if (input_path === './data/input_5.json') {
+        fs.copyFileSync('./data/models/t7_0.xml', new_Model);
+    }
+    global.userID = fetchUserIdSync();
     createOrClearJson('data/rest_inputs.json');
     createOrClearJson('data/blockchain_inputs.json');
     createOrClearJson('data/messages_data.json');
     const data = fs.readFileSync(input_path, 'utf8');
     let requests = JSON.parse(data);
-    requests["modelID"] = modelID;
     saveModelGeneration(requests.name);
     let requests_Roles = {};
-    // THE ACTOR NAMES NEED TO BE UPPERCASE
-    requests_Roles[getUserWalletInfo(0).address] = ["WARD@AUTH4"];
-    requests_Roles[getUserWalletInfo(1).address] = ["RADIOLOGY@AUTH1"];
-    requests_Roles[getUserWalletInfo(2).address] = ["PATIENT@AUTH2"];
-    requests_Roles[getUserWalletInfo(3).address] = ["INSURANCE@AUTH3"];
+    requests.roles.forEach((role, index) => {
+        const address = getUserWalletInfo(index).address;
+        requests_Roles[address] = role;
+    });
+
     if (encryptors_Number > 3) {
         for (let i = 0; i < encryptors_Number - 3; i++) {
             const userIndex = 4 + i; // Start from index 4
@@ -1034,7 +1070,7 @@ function main() {
     const mandatory_Extracted = Object.values(requests_Roles)
         .map(roleArray => roleArray[0].split('@')[0].toLowerCase())
         .map(role => role.charAt(0).toUpperCase() + role.slice(1));
-    createInstanceGeneration(requests.modelID, requests.optional, mandatory_Extracted, requests.visibleAt);
+    createInstanceGeneration(requests.optional, mandatory_Extracted, requests.visibleAt);
     const mandatoryToLower = mandatory_Extracted.map(str => str.toLowerCase());
     const optionaltoLower = requests.optional.map(str => str.toLowerCase());
     // Generation of private keys and addresses for every mandatory and optional actor.
@@ -1046,18 +1082,23 @@ function main() {
     translationsGeneration();
     // last duplicateRequests input (from_where) is the last message with type 1 from where the new loop should start
     if (looping !== 0) {
+        fs.copyFileSync('./data/models/t3_' + looping + '.xml', new_Model);
         requests = duplicateRequests(requests, looping, 371747)
     }
     if (testParallel1 !== 0) {
+        fs.copyFileSync('./data/models/t4_' + testParallel1 + '.xml', new_Model);
         requests = parallelTest1(requests, testParallel1);
     }
     if (testParallel2 !== 0) {
+        fs.copyFileSync('./data/models/t5_' + testParallel2 + '.xml', new_Model);
         requests = parallelTest2(requests, testParallel2);
     }
     if (testExclusive1 !== 0) {
+        fs.copyFileSync('./data/models/t6_' + testExclusive1 + '.xml', new_Model);
         requests = exclusiveTest1(requests, testExclusive1);
     }
     if (testExclusive2 !== 0) {
+        fs.copyFileSync('./data/models/t7_' + testExclusive2 + '.xml', new_Model);
         requests = exclusiveTest2(requests, testExclusive2);
     }
     requests.messageElements = requests.messageElements.map(item =>
@@ -1065,6 +1106,7 @@ function main() {
     );
     injectElements(requests, 0, requests_Roles)
     if (encryptors_Number !== 3) {
+        fs.copyFileSync('./data/models/t1_' + encryptors_Number + '.xml', new_Model);
         requests.encrypter = modifyEncrypterRoles(requests_Roles, requests.encrypter, encryptors_Number);
     }
 
@@ -1132,6 +1174,18 @@ function main() {
     }
     console.log(requests.encrypter);
     console.log(requests.nextElements);
+
+
+    const new_Ordering = './data/ordering.txt';
+    if (input_path === './data/input_1_Incident.json') {
+        fs.copyFileSync('./data/ordering_Incident.txt', new_Ordering);
+        fs.copyFileSync('./data/models/incident.xml', new_Model);
+    }
+    else if (input_path === './data/input_1_Retail.json') {
+        fs.copyFileSync('./data/ordering_Retail.txt', new_Ordering);
+        fs.copyFileSync('./data/models/retail.xml', new_Model);
+    }
+
 }
 
 

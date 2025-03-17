@@ -6,6 +6,7 @@ const ExcelJS = require('exceljs');
 const yargs = require('yargs/yargs');
 const {hideBin} = require("yargs/helpers");
 const path = require('path');
+const {MongoClient} = require("mongodb");
 
 const argv = yargs(hideBin(process.argv))
     .option('t', {
@@ -71,6 +72,38 @@ function adjustNumber2(n) {
     return n + quotient + Math.floor((n - 1) / 5) * 2;
 }
 
+
+async function fetchId() {
+    const client = new MongoClient('mongodb://localhost:27017');
+    await client.connect();
+    let document;
+    // Wait until at least one document exists in the collection
+    while (!document) {
+        document = await client.db('ChorChain').collection('Model').findOne({});
+        // Wait for 1 second before checking again to avoid overloading the database
+        if (!document) {
+            console.log('No document found, retrying...');
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Retry after 1 second
+        }
+    }
+    await client.close();
+    return document._id.toString();
+}
+
+
+async function dropAllCollectionsExceptUser() {
+    const client = new MongoClient('mongodb://localhost:27017');
+    await client.connect();
+    const db = client.db('ChorChain');
+    const collections = await db.listCollections().toArray();
+    await Promise.all(collections
+        .filter(col => col.name !== 'User')
+        .map(col => db.collection(col.name).drop())
+    );
+    await client.close();
+}
+
+
 /**
  * Processes a Web3 call using predefined parameters.
  * Modifies parameters based on the specific Web3 function requirements.
@@ -101,7 +134,7 @@ async function processWeb3Call(name) {
         const startTime = Date.now();  // Start the timer
         const result = await invokeContractFunction(contractInfo, functionName, params, role);
         const elapsedTime = Date.now() - startTime;  // Calculate elapsed time
-        if ((testType === "t1" || testType === "t3") && (executionNumber === 1 || (executionNumber > 5 && executionNumber % 5 === 1))) {
+        if ((testType === "t1" || testType === "t3" || testType === "t8") && (executionNumber === 1 || (executionNumber > 5 && executionNumber % 5 === 1))) {
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(adjustNumber2(executionNumber)), 'Web3');
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(adjustNumber2(executionNumber)+1), name);
         }
@@ -109,7 +142,7 @@ async function processWeb3Call(name) {
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(1), 'Web3');
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(2), name);
         }
-        if (testType === "t1" || testType === "t3") {
+        if (testType === "t1" || testType === "t3" || testType === "t8") {
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(adjustNumber2(executionNumber) + 2 ), elapsedTime);
         }
         else if (testType !== 0) {
@@ -142,6 +175,13 @@ async function processRestCall(name) {
         const { method, data } = input;
         let { endpoint } = input;
         let response;
+        if (name === "createInstance") {
+            const modell = await fetchId();
+            data.modelID = modell;
+        }
+        else if (name === "saveModel") {
+            await dropAllCollectionsExceptUser();
+        }
         const startTime = Date.now();  // Start the timer
         // Handle different types of REST calls with specific logic
         if (name === "createInstance") {
@@ -177,7 +217,7 @@ async function processRestCall(name) {
             response = await performRestCall(method, endpoint, data);
         }
         let elapsedTime = Date.now() - startTime;  // Calculate elapsed time
-        if ((testType === "t1" || testType === "t3") && (executionNumber === 1 || (executionNumber > 5 && executionNumber % 5 === 1))) {
+        if ((testType === "t1" || testType === "t3" || testType === "t8") && (executionNumber === 1 || (executionNumber > 5 && executionNumber % 5 === 1))) {
             if (executionNumber !== 1) {
                 const greenStyle = {
                     fill: {
@@ -283,7 +323,7 @@ async function processRestCall(name) {
         }
 
 
-        if (testType === "t1" || testType === "t3") {
+        if (testType === "t1" || testType === "t3" || testType === "t8") {
             writeToFirstEmptyCell(worksheet, columnNumberToLetter(adjustNumber2(executionNumber) + 2 ), elapsedTime);
         }
         else if (testType !== 0) {
@@ -317,7 +357,7 @@ async function Execute(order) {
             right: {style: 'thin', color: {argb: '000000'}}
         }
     };
-    if (testType === "t1" || testType === "t3") {
+    if (testType === "t1" || testType === "t3" || testType === "t8") {
         const cell = columnNumberToLetter(adjustNumber2(executionNumber) + 2) + "1";
         worksheet.getCell(cell).value = `Iteration ${executionNumber}`;
         worksheet.getCell(cell).style = greenStyle;
@@ -609,24 +649,14 @@ const Order = [
 
 
 async function checkTransactionsFromBlock(startBlockNumber) {
-    const addressMapping = {
-        "0x7364cc4e7f136a16a7c38de7205b7a5b18f17258": "WARD",
-        "0xa5b6b3729cf8f377ef6f97d87c49661b36ed02bb": "RADIOLOGY",
-        "0xb885e5701a3a4714799ee906f4aa7c297f16d90a": "PATIENT",
-        "0xaa799c5cf973b4efe8386d4acefdaa2bf8e76ab3": "TESTUSER1",
-        "0x73f1328cc53cfd14cce641551e578139ce04a293": "TESTUSER2",
-        "0x75fc6be3aa26608c4dec9521b816d58d7bef35ca": "TESTUSER3",
-        "0x010e9fedc469b54cf8cd8b63c677252323985d3f": "TESTUSER4",
-        "0x2121b11a6d041b86eefcf93497c565d189483358": "TESTUSER5",
-        "0x16e4dcbf2aad0cf2d06eda4125e75750de14a757": "TESTUSER6",
-        "0x75df910245250795d7c2749f02f5d57f7bb04563": "TESTUSER7",
-        "0x0882271d553738ab2b238f7a95fa7ce0de171ef5": "INSURANCE",
+    const users = JSON.parse(fs.readFileSync('./data/users_info.json', 'utf8'));
+    const addressMapping = users.reduce((acc, { address, role }) => ({ ...acc, [address.toLowerCase()]: role.toUpperCase() }), {
         "0x990b35b0946844c93a5ccdb2cf2e1bcce775b973": "AUTHORITY1",
         "0xf7a75671d5c56e470ef40306a0ca1e8decd7fbf7": "AUTHORITY2",
         "0x76dd4d87d2147a076b065342d7610fe3a55cd248": "AUTHORITY3",
         "0x3ca857e3e6c6d7f68944c6fe7eba6fe28d5ba1aa": "AUTHORITY4",
-        "0x4f21892f99a0bec105a6c130c7b0d5613c117a11": "CERTIFIER",
-    };
+        "0x4f21892f99a0bec105a6c130c7b0d5613c117a11": "CERTIFIER"
+    });
     addressMapping[contractAddress1.toLowerCase()] = "StateContract";
     addressMapping[contractAddress2.toLowerCase()] = "ConfidentialContract";
     // Helper function to generate function selector map from ABI

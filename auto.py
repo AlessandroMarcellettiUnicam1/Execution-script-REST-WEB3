@@ -13,6 +13,7 @@ parser.add_argument('-t4', action='store_true', help="Perform first parallel tes
 parser.add_argument('-t5', action='store_true', help="Perform second parallel tests")
 parser.add_argument('-t6', action='store_true', help="Perform first exclusive tests")
 parser.add_argument('-t7', action='store_true', help="Perform second exclusive tests")
+parser.add_argument('-t8', action='store_true', help="Perform 3 base cases test")
 args = parser.parse_args()
 
 success_count = 0
@@ -101,6 +102,17 @@ def run_iteration(iteration: int):
             text=True
         )
         JSON_process.wait()
+    elif args.t8:
+        # Start generateJSONs.js
+        print(f'{chr(9728)}  Test {fileInput} {chr(9728)}')    
+        JSON_process = subprocess.Popen(
+            ["node", "generateJSONs.js", "-f", fileInput],
+            cwd=os.path.join(os.path.dirname(__file__), "Evaluation Tool"),
+            stdout=sys.stdout,
+            stderr=subprocess.STDOUT,
+            text=True
+        )
+        JSON_process.wait()
     # Start API
     api_process = subprocess.Popen(
         ["wsl", "docker", "exec", "-w", "/MARTSIA-KoB-API/src/", "-it", "martsia_ethereum_container",
@@ -139,7 +151,25 @@ def run_iteration(iteration: int):
         
     if node_success:
         success_count += 1
+    # Construct the folder path
+    folder_path = os.path.join(os.path.expanduser("~"), "Desktop", "saving")
+    
+    # List all files in the folder (assuming there's only one file)
+    files = os.listdir(folder_path)
+    if files:
+        file_path = os.path.join(folder_path, files[0])
+        os.remove(file_path)
+        print(f"Deleted {file_path}")
+    else:
+        print("No file found in the folder.")
+        
+    subprocess.run(
+    ['curl', '-X', 'POST', 'http://127.0.0.1:7545', '-H', 'Content-Type: application/json', '-d', '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL
+)
     return node_success
+
 
 caseName = "baseCase"
 
@@ -207,6 +237,17 @@ elif args.t7:
     caseName = "t7"
     loop = 0
     while loop < 10:
+        for i in range(1, total_iterations + 1):
+            run_iteration(i)
+            if i < total_iterations:
+                print("Cooling down...")
+                time.sleep(3)
+        loop += 1
+elif args.t8:
+    caseName = "t8"
+    loop = 0
+    for e in ["./data/input_1.json", "./data/input_1_Retail.json", "./data/input_1_Incident.json"]:
+        fileInput = e
         for i in range(1, total_iterations + 1):
             run_iteration(i)
             if i < total_iterations:

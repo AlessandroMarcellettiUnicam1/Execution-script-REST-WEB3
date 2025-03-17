@@ -1,0 +1,70 @@
+{ 
+  "name": "retailProcessConfetty",
+  "optional": ["null"],
+  "visibleAt": ["null"],
+
+  "roles": [["RETAILER@AUTH1"], ["CUSTOMER@AUTH4"], ["PRODUCER@AUTH2"]],
+
+  "encrypter": [
+    "internal",
+    "Customer",
+    "Producer",
+    "internal",
+    "internal",
+    "Producer",
+    "Retailer",
+    "Retailer",
+    "Producer",
+    "Retailer",
+    "Producer",
+    "Customer",
+    "Retailer",
+    "Customer",
+    "Retailer",
+    "internal"
+    ],
+
+      
+
+  "elements": [587210, 278194, 337729, 344362, 190272, 659958, 843758, 51871, 651366, 754228, 768939, 204808, 86817, 474664, 289174, 875896],
+
+  "nextElements": [[278194], [337729], [344362], [190272, 659958], [204808], [843758], [51871], [651366], [754228], [768939], [190272], [86817], [474664], [289174], [875896], []],
+
+  "PreviousElements": [[], [587210], [278194], [337729], [344362, 768939], [344362], [659958], [843758], [51871], [651366], [754228], [190272], [204808], [86817], [474664], [289174]],
+
+  "types": [2, 1, 1, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8],
+
+  "nameElements": [
+    "", "goodAmount", "priceAv", "", "", "productQuantity", "availabilityCost",
+    "receipt1", "stringOrderID", "certificationId", "shipInfo", "receipt2",
+    "orderDetail", "customerAddress", "customerShipment", ""
+    ],
+
+  "policy": {
+    "278194": "PRODUCER@AUTH2",
+    "337729": "PRODUCER@AUTH2",
+    "659958": "RETAILER@AUTH1",
+    "843758": "PRODUCER@AUTH2",
+    "51871": "PRODUCER@AUTH2",
+    "651366": "RETAILER@AUTH1",
+    "754228": "PRODUCER@AUTH2",
+    "768939": "RETAILER@AUTH1",
+    "204808": "RETAILER@AUTH1",
+    "86817": "CUSTOMER@AUTH4",
+    "474664": "RETAILER@AUTH1",
+    "289174": "CUSTOMER@AUTH4"
+    },
+
+    "elementWithConditions": [190272, 659958],
+    "elementWithPublicVar": [337729, 337729],
+    "publicVariables": ["0x6176000000000000000000000000000000000000000000000000000000000000", "0x6176000000000000000000000000000000000000000000000000000000000000"],
+    "operators": [1, 1],
+    "values": ["0x7472756500000000000000000000000000000000000000000000000000000000", "0x66616c7365000000000000000000000000000000000000000000000000000000"],
+
+    "messageElements": [
+      "", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "", "", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg",
+      "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg",
+      "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", ""
+      ]
+
+}

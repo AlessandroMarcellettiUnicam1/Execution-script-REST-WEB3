@@ -1,1 +1,10 @@
+medicalPrescription
+requestId
+accepted
+appointment
+certificationId
+temperature
 appointmentId
+registration
+report
+medicalReport

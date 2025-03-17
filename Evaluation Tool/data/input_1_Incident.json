@@ -1,0 +1,84 @@
+{ 
+  "name": "incidentManagementConfetty",
+  "optional": ["null"],
+  "visibleAt": ["null"],
+
+  "roles": [["CUSTOMER@AUTH1"], ["MANAGER@AUTH2"], ["FIRSTSUPP@AUTH3"], ["SECONDSUPP@AUTH4"], ["DEVELOPER@AUTH1"]],
+
+  "encrypter": [
+    "internal",
+    "Customer",
+    "Manager",
+    "Customer",
+    "Manager",
+    "internal",
+    "Manager",
+    "Firstsupp",
+    "internal",
+    "Firstsupp",
+    "Secondsupp",
+    "internal",
+    "Secondsupp",
+    "Developer",
+    "Secondsupp",
+    "Firstsupp",
+    "Manager",
+    "internal"
+    ],
+
+      
+
+  "elements": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+
+  "nextElements": [[2], [3], [4], [5], [6], [17, 7], [8], [9], [16, 10], [11], [12], [15, 13], [14], [15], [16], [17], [18], []],
+
+  "PreviousElements": [[], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [12, 14], [9, 15], [6, 16], [17]],
+
+  "types": [2, 1, 1, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 1, 1, 1, 8],
+
+  "nameElements": [
+    "", "problem", "questions", "answer", "handle", "", "firstIssue",
+      "result", "", "secondIssue", "resolved", "",
+      "devIssue", "secondFeedback", "firstFeedback", "finalFeedback", "solution", ""
+    ],
+
+  "policy": {
+    "2": "MANAGER@AUTH2",
+    "3": "CUSTOMER@AUTH1",
+    "4": "MANAGER@AUTH2",
+    "5": "MANAGER@AUTH2",
+    "7": "FIRSTSUPP@AUTH3",
+    "8": "FIRSTSUPP@AUTH3",
+    "10": "SECONDSUPP@AUTH4",
+    "11": "SECONDSUPP@AUTH4",
+    "13": "DEVELOPER@AUTH1",
+    "14": "SECONDSUPP@AUTH4",
+    "15": "FIRSTSUPP@AUTH3",
+    "16": "MANAGER@AUTH2",
+    "17": "CUSTOMER@AUTH1"
+    },
+
+    "elementWithConditions": [17, 7, 16, 10, 15, 13],
+    "elementWithPublicVar": [5, 5, 8, 8, 11, 11],
+    "publicVariables": [
+      "0x68616e646c650000000000000000000000000000000000000000000000000000", 
+      "0x68616e646c650000000000000000000000000000000000000000000000000000",
+      "0x726573756c740000000000000000000000000000000000000000000000000000",
+      "0x726573756c740000000000000000000000000000000000000000000000000000",
+      "0x7265736f6c766564000000000000000000000000000000000000000000000000",
+      "0x7265736f6c766564000000000000000000000000000000000000000000000000"],
+    "operators": [1, 1, 1, 1, 1, 1],
+    "values": [
+      "0x7472756500000000000000000000000000000000000000000000000000000000",          "0x66616c7365000000000000000000000000000000000000000000000000000000",
+      "0x7472756500000000000000000000000000000000000000000000000000000000", 
+      "0x66616c7365000000000000000000000000000000000000000000000000000000",
+      "0x7472756500000000000000000000000000000000000000000000000000000000", 
+      "0x66616c7365000000000000000000000000000000000000000000000000000000"],
+
+    "messageElements": [
+      "", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "", "MjUuMTAuMjAxNg",
+      "MjUuMTAuMjAxNg", "", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "",
+      "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", "MjUuMTAuMjAxNg", ""
+      ]
+
+}

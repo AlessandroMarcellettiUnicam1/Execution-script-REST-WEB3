@@ -3,7 +3,7 @@
     "optional": ["null"],
     "visibleAt": ["null"],
 
-
+    "roles": [["WARD@AUTH4"], ["RADIOLOGY@AUTH1"], ["PATIENT@AUTH2"], ["INSURANCE@AUTH3"]],
     
     "encrypter": [
         "internal", "Radiology", "internal", "internal", "internal"
