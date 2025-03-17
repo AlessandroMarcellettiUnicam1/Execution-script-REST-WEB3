@@ -1,88 +1,176 @@
-## Test Execution Instructions
+# CONFETTY Evaluation Tool
 
-All the tests were executed in **Windows 11 with WSL2** (for Ubuntu!).
+This repository contains the evaluation tool for CONFETTY. All tests have been executed on **Windows 11** using **Ubuntu in WSL2**.
 
-### Default Startup
+## Table of Contents
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Initial Setup and Reset](#initial-setup-and-reset)
+- [Ganache Workspace Setup](#ganache-workspace-setup)
+- [IPFS and Smart Contracts Deployment](#ipfs-and-smart-contracts-deployment)
+- [Python Tests](#python-tests)
+- [Troubleshooting](#troubleshooting)
 
-1. **Start Ganache**
-2. **Start MongoDBCompass** and connect.
-3. **Start IntelliJ IDEA server.**
-4. **Login to the Website** (ensure the cached value ID is correct).
-5. (Run `ipconfig` to get the IPv4 address, and change the "DEFAULT" values in the `sh default.sh` file.)
-6. **In Ubuntu:**
-   1. **Start the API:**
-      - In the `docker run` command below, update the `/mnt` path with your CONFETTY folder path.
-      - Run the following command:
-        ```bash
-        sudo chmod 666 /var/run/docker.sock && \
-        docker ps -aq | xargs docker rm -f && \
-        docker run -it --name martsia_ethereum_container --network host -v /mnt/c/Users/X/Desktop/CONFETTY-main/Confidentiality\ Manager:/MARTSIA-KoB-API 006be17f8d0c \
-        bash -c "python3 -m pip install flask && \
-        python3 -m pip install Flask_cors && \
-        cd /MARTSIA-KoB-API/sh_files && \
-        sh default.sh && \
-        cd ../src && \
-        python3 api.py; exec bash"
-        ```
-   2. **Start IPFS and Deploy Smart Contracts:**
-      - **IPFS:**
-        ```bash
-        docker exec -it martsia_ethereum_container bash -c "cd /MARTSIA-KoB-API/sh_files && sh db_and_IPFS.sh; exec bash"
-        ```
-      - **Smart Contract Deployment:**
-        ```bash
-        docker exec -it martsia_ethereum_container bash -c "cd /MARTSIA-KoB-API/sh_files && sh deployment.sh; exec bash"
-        ```
+## Overview
 
-### Normal Docker Connection
+The CONFETTY Evaluation Tool runs a series of tests that analyze gas costs and execution times for various process configurations. The tests include:
+- **X-ray tests** for the number of writing participants, message size, and process size.
+- **Synthesis tests** including parallel split, parallel split & join, exclusive split, and exclusive split & join.
+- A test with three state-of-the-art processes.
 
-To open an interactive session in the running Docker container, run:
+## Prerequisites
+
+- **Operating System:** Windows 11 with Ubuntu (WSL2)
+- **Software & Tools:**
+  - MongoDBCompass (for managing databases)
+  - Ganache (for Ethereum simulation)
+  - Docker
+  - Python (executed via PowerShell)
+  - Docker Image: `006be17f8d0c` (used for the MARTSIA container)
+
+## Initial Setup and Reset
+
+1. **Database Cleanup:**  
+   Connect to MongoDBCompass and drop all ChorChain databases.  
+   **Note:** The `admin` database cannot be deleted.
+
+2. **Start the Server:**  
+   Launch the server instance.
+
+3. **User Authentication:**  
+   Sign up and log in to the website.
+
+## Ganache Workspace Setup
+
+1. **Create a New Workspace:**  
+   Configure Ganache with the following options:
+   - **Hostname (SERVER):** `0.0.0.0`
+   - **Total accounts to generate (ACCOUNT & KEYS):** `20`
+   - **Seed (ACCOUNTS & KEYS):**  
+     `control pulse code indoor off imitate uncover lesson fragile isolate fault blast`
+   - **Gas limit (CHAIN):** `35700000`
+   - **Output logs to file (ADVANCED):**  
+     Select the `Ganache_Temp_Logs` folder inside the `\CONFETTY\Evaluation Tool` directory.
+
+   **Info:**  
+   - The **first** generated address is the default (ChorChain) and serves as the Attribute Certifier.
+   - The **second**, **third**, **fourth**, and **fifth** addresses are used as Authorities.
+
+## IPFS and Smart Contracts Deployment
+
+Open **two Ubuntu WSL2 consoles** to execute the following steps:
+
+### 1. Start IPFS
+
+In the first console, run the following command.  
+**Note:** Update the `/mnt` path with the absolute path to your CONFETTY folder.
 
 ```bash
-docker exec -it martsia_ethereum_container bash
+sudo chmod 666 /var/run/docker.sock && \
+docker ps -aq | xargs docker rm -f && \
+docker run -it --name martsia_ethereum_container --network host -v \
+/mnt/c/Users/X/Desktop/CONFETTY-main/Confidentiality\ Manager:/MARTSIA-KoB-API 006be17f8d0c \
+bash -c "python3 -m pip install flask && \
+python3 -m pip install Flask_cors && \
+cd /MARTSIA-KoB-API/sh_files && \
+sh db_and_IPFS.sh; exec bash"
 ```
 
-### Reset Instructions
+> **Important:** Leave this console open and idle; do not close it.
 
-1. **Drop all the databases** in MongoDBCompass.
-2. **Start the server.**
-3. **Register and login** to the Website, then copy the cached value from inspect element into `global.userID` in `\Evaluation Tool\generateJSONs.js`.
-4. **Start Ganache** with the following settings:
-   - **Seed (ACCOUNTS & KEYS):**  
-     `"control pulse code indoor off imitate uncover lesson fragile isolate fault blast"`
-   - **Hostname (SERVER):**  
-     `"0.0.0.0"`
-   - **Total accounts to generate (ACCOUNT & KEYS):**  
-     `"20"`
-   - **Gas limit (CHAIN):**  
-     `"35700000"`
+### 2. Deploy the Smart Contracts
 
-   > **Note:**  
-   > The first address is the default and Attribute Certifier.  
-   > The second, third, fourth, and fifth addresses are the Authorities.
-   
-5. (Run `ipconfig` to get the IPv4 address and update the "DEFAULT" values in `sh default.sh`.)
-6. **Start the API** (as described above) and **IPFS** (as described above).
-7. **Run Smart Contract Deployment** (as described above).
-8. **Execute `generateJSONs.js` and `main.js`** once (errors may occur; this is expected).  
-   Then, terminate the API with `CTRL+c`.  
-   Reload the databases in MongoDBCompass (via **View → Reload data**) and copy the database model `_id` (from **ChorChain → Model**) into `const modelID` in `\Evaluation Tool\generateJSONs.js`.
-9. **Restart the API** with:
+In the second console, execute:
+
+```bash
+docker exec -it martsia_ethereum_container bash -c "cd /MARTSIA-KoB-API/sh_files && sh deployment.sh; exec bash"
+```
+
+## Python Tests
+
+The Python tests are executed from PowerShell. Inside the `\CONFETTY\Evaluation Tool` folder, the `test_Auto.py` script will:
+- Generate the required JSON test inputs.
+- Start the confidentiality API.
+- Execute each test case 5 times.
+- Create two Excel files in the `table_Output` folder:
+  - `costs.xlsx` for gas cost measurements.
+  - `timings.xlsx` for execution time measurements.
+
+### Test Cases
+
+1. **Number of Writing Participants X-ray Test (2 to 10 participants):**
+
    ```bash
-   python3 api.py
+   python test_Auto.py -t1
    ```
-   Then, run `\Evaluation Tool\generateJSONs.js` and `\Evaluation Tool\main.js`. Everything should be working as expected!
 
-### Python Tests (Tested in PowerShell)
-> **Note:** These scripts should be executed after the Reset Instructions!
-1. **Ensure the API is closed** (if it's running, terminate with `CTRL+c`).
-2. **Inside the `\CONFETTY` directory, execute the following commands:**
-   1. `python auto.py -t1`
-   2. `python auto.py -t2`
-   3. `python auto.py -t3`
-   4. `python auto.py -t4`
-   5. `python auto.py -t5`
-   6. `python auto.py -t6`
-   7. `python auto.py -t7`
+2. **Message Size Dimension X-ray Test (x1 to x9):**
 
-> **Note:** After running these scripts, PowerShell might crash. This is a known issue.
+   ```bash
+   python test_Auto.py -t2
+   ```
+
+3. **Process Size Dimension X-ray Test (x1 to x10):**
+
+   ```bash
+   python test_Auto.py -t3
+   ```
+
+   *Info:* This test corresponds to the "Increased size dimension" in the paper.
+
+4. **Parallel Split Synth Test (x1 to x10):**
+
+   ```bash
+   python test_Auto.py -t4
+   ```
+
+5. **Parallel Split and Join Synth Test (x1 to x10):**
+
+   ```bash
+   python test_Auto.py -t5
+   ```
+
+6. **Exclusive Split Synth Test (x1 to x10):**
+
+   ```bash
+   python test_Auto.py -t6
+   ```
+
+7. **Exclusive Split and Join Synth Test (x1 to x10):**
+
+   ```bash
+   python test_Auto.py -t7
+   ```
+
+8. **Three State-of-the-Art Processes Test:**
+
+   ```bash
+   python test_Auto.py -t8
+   ```
+
+9. **Default Execution:**
+
+   Without any `-t` input, the script will execute 5 times the last process generated by `generateJSONs.js`:
+
+   ```bash
+   python test_Auto.py
+   ```
+
+10. **Execute All Tests Together:**
+
+    Run the following command to execute all tests sequentially.  
+    **Note:** This process will take approximately **3 hours**.
+
+    ```bash
+    python test_Auto.py; python test_Auto.py -t1; python test_Auto.py -t2; python test_Auto.py -t3; python test_Auto.py -t4; python test_Auto.py -t5; python test_Auto.py -t6; python test_Auto.py -t7; python test_Auto.py -t8
+    ```
+
+> **Note:** After executing the scripts, PowerShell may crash.
+
+## Troubleshooting
+
+- **Ganache Performance Issues:**  
+  If you experience performance degradation in Ganache, ensure that logs are being directed to the specified file (`Ganache_Temp_Logs`).
+
+- **Docker Container Issues:**  
+  Verify that the volume mapping for the CONFETTY folder is correct in the Docker command.
